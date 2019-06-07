@@ -41,8 +41,8 @@ class Filter {
                 C[7] = Common.CLR(Input, srcx, srcy, x, y, 0, 1);
                 C[8] = Common.CLR(Input, srcx, srcy, x, y, 1, 1);
 
-                switch(scale)
-                {
+                switch(scale) {
+                    
                     case 3:
                         
                         P[1] = (Common.IsLike(C[0], C[1]) && Common.IsLike(C[0], C[3])) ? Interpolate.Interpolate3P(C[0], C[1], C[3]) : C[4];
