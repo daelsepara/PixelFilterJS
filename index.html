@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="robots" content="noindex">
+  <title>Pixel Scaler</title>
+
+	<script src="js/angular.min.js"></script>
+	<script src="js/ng-webworker.min.js"></script>
+	<script src="js/angular-file-saver.bundle.min.js"></script>
+	<script src="js/PixelScale.js"></script>
+</head>
+
+<body>
+	<br/>
+	<div class="container border border-secondary rounded">
+		<div class="container">
+			<br/>
+			<h1 class = "text-primary">PixelFIlterJS</h1><br/>
+			<div ng-app="PixelFilter">
+				<div ng-controller="PixelScaleController">
+					<input type="file" multiple name="InputImageFiles" id = "InputImageFiles" input-bind class="btn btn-outline-secondary" ng-disabled = "Processing" /><br/><br/>
+					<input type="button" class="btn btn-outline-primary" value="Upload image" ng-click="LoadInputImage()" ng-disabled = "Processing"/>
+					<br/><br/>
+					<div>
+						<img ng-src="{{InputImage}}" id = "InputImage"/>
+					</div>
+					<br/>
+					<h2 class = "text-primary">Select filter</h2>
+					<select class="form-control" ng-model="FilterChosen" ng-disabled = "Processing" ng-change = "SelectFilter()">
+						<option ng-repeat="option in Filters" value="{{option.name}}">{{option.description}}</option>
+					</select><br/>
+					<h2 ng-show = "Parameters.length > 0" class = "text-success">Scale / Parameter value</h2>
+					<select class="form-control" ng-model="Parameter" ng-disabled = "Processing" ng-show = "Parameters.length > 0">
+						<option ng-repeat="option in Parameters" value="{{option}}">{{option}}</option>
+					</select><br/>
+					<input type="button" class="btn btn-outline-success" value="Apply filter" ng-click="ApplyFilter()" ng-disabled = "Processing"/><br/><br/>
+					<div>
+						<canvas id = "OutputCanvas"></canvas>
+						<br/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br/><br/>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
+
+
