@@ -1,10 +1,6 @@
 // nX Pixel duplication
 class Filter {
 
-    constructor() {
-        
-    }
-    
     Apply(Input, srcx, srcy, scale) {
 
         scale = Math.max(1, scale);

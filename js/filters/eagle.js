@@ -1,10 +1,6 @@
 // Eagle nX Family of Filters
 class Filter {
 
-    constructor() {
-        
-    }
-    
     Apply(Input, srcx, srcy, scale) {
 
         scale = Math.max(2, Math.min(3, scale));

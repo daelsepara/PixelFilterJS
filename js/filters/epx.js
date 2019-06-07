@@ -1,10 +1,6 @@
-// EPX/Scale 2X - Eric's Pixel eXpander / Advance Mame Scale 2/3X
+// EPX/Scale 2/3X - Eric\'s Pixel eXpander / Advance Mame Scale 2/3X
 class Filter {
 
-    constructor() {
-        
-    }
-    
     Apply(Input, srcx, srcy, scale) {
 
         scale = Math.max(2, Math.min(3, scale));

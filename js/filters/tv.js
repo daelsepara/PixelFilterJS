@@ -1,10 +1,6 @@
 // TV-like effect using interlacing and gamma reduction
 class Filter {
 
-    constructor() {
-        
-    }
-    
     Apply(Input, srcx, srcy, scale) {
 
         scale = Math.max(1, Math.min(4, scale));

@@ -29,7 +29,7 @@
 					<br/>
 					<h2 class = "text-primary">Select filter</h2>
 					<select class="form-control" ng-model="FilterChosen" ng-disabled = "Processing" ng-change = "SelectFilter()">
-						<option ng-repeat="option in Filters" value="{{option.name}}">{{option.description}}</option>
+						<option ng-repeat="option in Filters" value="{{option.name}}">{{option.name}} - {{option.description}}</option>
 					</select><br/>
 					<h2 ng-show = "Parameters.length > 0" class = "text-success">Scale / Parameter value</h2>
 					<select class="form-control" ng-model="Parameter" ng-disabled = "Processing" ng-show = "Parameters.length > 0">

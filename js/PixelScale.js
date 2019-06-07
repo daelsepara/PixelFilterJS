@@ -12,10 +12,13 @@ angular
 		$scope.Parameters = [];
 
 		$scope.Filters = [
-			{name: "epx", parameters: [2, 3], description: 'EPX/Scale 2X - Eric\'s Pixel eXpander / Advance Mame Scale 2/3X'},
+			{name: "advancemame", parameters: [2, 3], description: 'AdvanceMame scaling using interpolation'},
+			{name: "eagle", parameters: [2, 3], description: 'Eagle nX Family of Filters'},
+			{name: "epx", parameters: [2, 3], description: 'EPX/Scale 2/3X - Eric\'s Pixel eXpander / Advance Mame Scale 2/3X'},
 			{name: "magnify", parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'nX Pixel Duplication'},
+			{name: "rgb", parameters: [1, 2, 3, 4], description: 'Dot-Matrix Printer Effect'},
 			{name: "tv", parameters: [1, 2, 3, 4], description: 'TV-like effect using interlacing and gamma reduction'},
-			{name: "eagle", parameters: [2, 3], description: 'Eagle nX Family of Filters'}
+			{name: "tvzero", parameters: [2, 3, 4], description: 'No-scaling TV-like effect using interlacing and gamma reduction'}
 		];
 
 		$scope.LoadInputImage = function() {
