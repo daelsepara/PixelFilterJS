@@ -481,8 +481,8 @@ class Interpolate {
 // image flips
 class Flip {
 
-    static FlipUD(src, sizex, sizey)
-    {
+    static FlipUD(src, sizex, sizey) {
+        
         var Channels = 4;
         
         if (src.size() > 0) {
@@ -504,8 +504,8 @@ class Flip {
         }
     }
 
-    static FlipLR(src, sizex, sizey)
-    {
+    static FlipLR(src, sizex, sizey) {
+
         var Channels = 4;
 
         if (src.size() > 0) {
