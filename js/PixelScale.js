@@ -13,6 +13,7 @@ angular
 
 		$scope.Filters = [
 			{name: "2xsai", parameters: [2], description: 'Derek Liauw Kie Fa\'s 2XSaI'},
+			{name: "2xscl", parameters: [2], description: 'FNES\' 2x Scaling (wiithout palette mixing)'},
 			{name: "advancemame", parameters: [2, 3], description: 'AdvanceMame scaling using interpolation'},
 			{name: "des", parameters: [1, 2], description: 'DES filters from FNES'},
 			{name: "eagle", parameters: [2, 3], description: 'Eagle nX Family of Filters'},
