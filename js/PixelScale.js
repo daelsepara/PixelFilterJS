@@ -21,6 +21,7 @@ angular
 			{name: "magnify", parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'nX Pixel Duplication'},
 			{name: "reverseaa", parameters: [2], description: 'Christoph Feck\'s (christoph@maxiom.de) Reverse Anti-Alias filter'},
 			{name: "rgb", parameters: [1, 2, 3, 4], description: 'Dot-Matrix Printer Effect'},
+			{name: "supereagle", parameters: [2], description: 'Kreed\'s SuperEagle modified by Hawkynt to allow thresholds'},
 			{name: "supersai", parameters: [2], description: 'Kreed\'s SuperSaI'},
 			{name: "tv", parameters: [1, 2, 3, 4], description: 'TV-like effect using interlacing and gamma reduction'},
 			{name: "tvzero", parameters: [2, 3, 4], description: 'No-scaling TV-like effect using interlacing and gamma reduction'},
