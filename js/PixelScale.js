@@ -3,7 +3,7 @@ angular
 	.controller('PixelScaleController', ['$scope', 'Webworker', 'FileSaver', 'Blob', function($scope, Webworker, FileSaver, Blob) {
 
 		$scope.Processing = false;
-		$scope.SelectedFile = "";
+		$scope.SelectedFile = '';
 		$scope.InputImage = undefined;
 		$scope.asyncFilter = undefined;
 		$scope.Processing = false;
@@ -12,23 +12,23 @@ angular
 		$scope.Parameters = [];
 
 		$scope.Filters = [
-			{name: "2xsai", parameters: [2], description: 'Derek Liauw Kie Fa\'s 2XSaI'},
-			{name: "2xscl", parameters: [2], description: 'FNES\' 2x Scaling (wiithout palette mixing)'},
-			{name: "advancemame", parameters: [2, 3], description: 'AdvanceMame scaling using interpolation'},
-			{name: "des", parameters: [1, 2], description: 'DES filters from FNES'},
-			{name: "eagle", parameters: [2, 3], description: 'Eagle nX Family of Filters'},
-			{name: "epx", parameters: [2, 3], description: 'EPX/Scale 2/3X - Eric\'s Pixel eXpander / Advance Mame Scale 2/3X'},
-			{name: "kuwahara", parameters: [3, 5, 7, 9, 11, 13, 15], description: 'Kuwahara Filter (nxn window)'},
-			{name: "hqnx", parameters: [2, 3, 4], description: 'Maxim Stepin\'s High Quality nX Magnification'},
-			{name: "magnify", parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'nX Pixel Duplication'},
-			{name: "reverseaa", parameters: [2], description: 'Christoph Feck\'s (christoph@maxiom.de) Reverse Anti-Alias filter'},
-			{name: "rgb", parameters: [1, 2, 3, 4], description: 'Dot-Matrix Printer Effect'},
-			{name: "super2x", parameters: [2], description: 'FNES\' Super 2x Scaling'},
-			{name: "supereagle", parameters: [2], description: 'Kreed\'s SuperEagle modified by Hawkynt to allow thresholds'},
-			{name: "supersai", parameters: [2], description: 'Kreed\'s SuperSaI'},
-			{name: "tv", parameters: [1, 2, 3, 4], description: 'TV-like effect using interlacing and gamma reduction'},
-			{name: "tvzero", parameters: [2, 3, 4], description: 'No-scaling TV-like effect using interlacing and gamma reduction'},
-			{name: "ultra2x", parameters: [2], description: 'FNES\' Ultra 2x Scaling'}
+			{name: '2xsai', parameters: [2], description: 'Derek Liauw Kie Fa\'s 2XSaI'},
+			{name: '2xscl', parameters: [2], description: 'FNES\' 2x Scaling (wiithout palette mixing)'},
+			{name: 'advancemame', parameters: [2, 3], description: 'AdvanceMame scaling using interpolation'},
+			{name: 'des', parameters: [1, 2], description: 'DES filters from FNES'},
+			{name: 'eagle', parameters: [2, 3], description: 'Eagle nX Family of Filters'},
+			{name: 'epx', parameters: [2, 3], description: 'EPX/Scale 2/3X - Eric\'s Pixel eXpander / Advance Mame Scale 2/3X'},
+			{name: 'kuwahara', parameters: [3, 5, 7, 9, 11, 13, 15], description: 'Kuwahara Filter (nxn window)'},
+			{name: 'hqnx', parameters: [2, 3, 4], description: 'Maxim Stepin\'s High Quality nX Magnification'},
+			{name: 'magnify', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'nX Pixel Duplication'},
+			{name: 'reverseaa', parameters: [2], description: 'Christoph Feck\'s (christoph@maxiom.de) Reverse Anti-Alias filter'},
+			{name: 'rgb', parameters: [1, 2, 3, 4], description: 'Dot-Matrix Printer Effect'},
+			{name: 'super2x', parameters: [2], description: 'FNES\' Super 2x Scaling'},
+			{name: 'supereagle', parameters: [2], description: 'Kreed\'s SuperEagle modified by Hawkynt to allow thresholds'},
+			{name: 'supersai', parameters: [2], description: 'Kreed\'s SuperSaI'},
+			{name: 'tv', parameters: [1, 2, 3, 4], description: 'TV-like effect using interlacing and gamma reduction'},
+			{name: 'tvzero', parameters: [2, 3, 4], description: 'No-scaling TV-like effect using interlacing and gamma reduction'},
+			{name: 'ultra2x', parameters: [2], description: 'FNES\' Ultra 2x Scaling'}
 		];
 
 		$scope.LoadInputImage = function() {
@@ -107,14 +107,14 @@ angular
 					$scope.Processing = false;
 					
 					// promise is resolved.
-					var c = document.getElementById("OutputCanvas");
+					var c = document.getElementById('OutputCanvas');
 					c.width = result.width;
 					c.height = result.height;
 
 					var newImg = new ImageData(result.width, result.height);
 					newImg.data.set(result.output);
 
-					var ctx = c.getContext("2d");
+					var ctx = c.getContext('2d');
 					ctx.putImageData(newImg, 0, 0);
 
 				}, null, function(result) {
@@ -128,11 +128,11 @@ angular
 			}
 		}
 
-	}]).directive("inputBind", function() {
+	}]).directive('inputBind', function() {
 		
 		return function(scope, elm, attrs) {
 			
-			elm.bind("change", function(evt) {
+			elm.bind('change', function(evt) {
 				
 				scope.$apply(function(scope) {
 					
