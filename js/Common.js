@@ -609,7 +609,7 @@ class ReverseAA {
         return Common._Clip8(value);
     }
     
-    static _ReverseAntiAlias(b1, b, d, e, f, h, h5, d0, f4, dest, rd, gn, bl, alpha) {
+    static _ReverseAntiAlias(b1, b, d, e, f, h, h5, d0, f4) {
 
         var n1 = b1;
         var n2 = b;
@@ -671,10 +671,7 @@ class ReverseAA {
         var e3 = s + tilt / 2;
         var e2 = e3 - tilt;
     
-        dest[rd] = this.FullClamp(e0);
-        dest[gn] = this.FullClamp(e1);
-        dest[bl] = this.FullClamp(e2);
-        dest[alpha] = this.FullClamp(e3);
+        return {rd: this.FullClamp(e0), gn: this.FullClamp(e1), bl: this.FullClamp(e2), alpha: this.FullClamp(e3)};
     }
 }
 
