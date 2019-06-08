@@ -13,6 +13,7 @@ angular
 
 		$scope.Filters = [
 			{name: "advancemame", parameters: [2, 3], description: 'AdvanceMame scaling using interpolation'},
+			{name: "des", parameters: [1, 2], description: 'DES filters from FNES'},
 			{name: "eagle", parameters: [2, 3], description: 'Eagle nX Family of Filters'},
 			{name: "epx", parameters: [2, 3], description: 'EPX/Scale 2/3X - Eric\'s Pixel eXpander / Advance Mame Scale 2/3X'},
 			{name: "kuwahara", parameters: [3, 5, 7, 9, 11, 13, 15], description: 'Kuwahara Filter (nxn window)'},

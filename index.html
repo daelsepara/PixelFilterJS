@@ -27,7 +27,7 @@
 						<img ng-src="{{InputImage}}" id = "InputImage"/>
 					</div>
 					<br/>
-					<h2 class = "text-primary">Select filter</h2>
+					<h2 class = "text-warning">Select filter <span class = "text-secondary">({{Filters.length}})</span></h2>
 					<select class="form-control" ng-model="FilterChosen" ng-disabled = "Processing" ng-change = "SelectFilter()">
 						<option ng-repeat="option in Filters" value="{{option.name}}">{{option.name}} - {{option.description}}</option>
 					</select><br/>
