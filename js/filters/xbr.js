@@ -19,7 +19,7 @@ class Filter {
 
                 // Pixel mapping schemes for 2, 3, 4x
 					
-                // x2
+                // 2x
                 /*
                    A1 B1 C1
                 A0 PA PB PC C4    P1 P2
@@ -28,7 +28,7 @@ class Filter {
                    G5 H5 I5
                 */
                 
-                // x3
+                // 3x
                 /*
                    A1 B1 C1
                 A0 PA PB PC C4    P1 P2 P3
@@ -37,7 +37,7 @@ class Filter {
                    G5 H5 I5
                 */
                 
-                // x4
+                // 4x
                 /*
                    A1 B1 C1       P01|P02|P03|P04
                 A0 PA PB PC C4    P05|P06|P07|P08
@@ -74,7 +74,7 @@ class Filter {
                
                 switch(scale) {
 
-                    case 3: // x3
+                    case 3: // 3x
 							
                         P[1] = P[2] = P[3] = P[4] = P[5] = P[6] = P[7] = P[8] = P[9] = pe;
 
@@ -90,7 +90,7 @@ class Filter {
                         
                         break;
 
-                    case 4: // x4
+                    case 4: // 4x
 						
                         P[1] = P[2] = P[3] = P[4] = P[5] = P[6] = P[7] = P[8] = pe;
                         P[9] = P[10] = P[11] = P[12] = P[13] = P[14] = P[15] = P[16] = pe;
@@ -107,7 +107,7 @@ class Filter {
                         
                         break;                        
 
-                    default:
+                    default: // 2x
 
                         P[1] = P[2] = P[3] = P[4] = pe;
 
@@ -127,6 +127,7 @@ class Filter {
         }
     }
 
+    // color difference
     AbsDifference(pixel1, pixel2) {
 	
         const _LUMINANCE_TRIGGER = 48;
@@ -150,6 +151,7 @@ class Filter {
         return (Common.IsLike(a, b));
     }
 
+    // alpha blending
     _AlphaBlend32W(dst, offset, src, blend) {
         
         if (blend)
@@ -178,6 +180,7 @@ class Filter {
         dst[offset] = blend ? Interpolate.Interpolate2P2Q(dst[offset], src, 1, 7) : src;
     }
     
+    // region 2x
     _Left2_2X(dst, n3, n2, pixel, blend) {
 
         this._AlphaBlend192W(dst, n3, pixel, blend);
@@ -195,7 +198,6 @@ class Filter {
         this._AlphaBlend128W(dst, n3, pixel, blend);
     }
 
-    // region 2x
     _Kernel2Xv5(pe, pi, ph, pf, pg, pc, pd, pb, f4, i4, h5, i5, dst, n1, n2, n3, blend) {
 
         var ex = (pe != ph && pe != pf);
