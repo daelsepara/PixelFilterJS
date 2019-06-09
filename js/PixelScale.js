@@ -28,7 +28,8 @@ angular
 			{name: 'supersai', parameters: [2], description: 'Kreed\'s SuperSaI'},
 			{name: 'tv', parameters: [1, 2, 3, 4], description: 'TV-like effect using interlacing and gamma reduction'},
 			{name: 'tvzero', parameters: [2, 3, 4], description: 'No-scaling TV-like effect using interlacing and gamma reduction'},
-			{name: 'ultra2x', parameters: [2], description: 'FNES\' Ultra 2x Scaling'}
+			{name: 'ultra2x', parameters: [2], description: 'FNES\' Ultra 2x Scaling'},
+			{name: 'xbr', parameters: [2, 3, 4], description: 'XBRnX family of filters by Hyllian'}
 		];
 
 		$scope.LoadInputImage = function() {
