@@ -72,6 +72,7 @@ class Common {
         var Channels = 4;
 
         if (y >= 0 && y < srcy && x >= 0 && x < srcx) {
+            
             var index = (y * srcx + x) * Channels;
 
             var r = Input[index];
@@ -89,25 +90,8 @@ class Common {
         var xx = x + dx;
         var yy = y + dy;
 
-        if (xx < 0) {
-            
-            xx = 0;
-        }
-
-        if (xx > srcx - 1) {
-            
-            xx = srcx - 1;
-        }
-
-        if (yy < 0) {
-
-            yy = 0;
-        }
-
-        if (yy > srcy - 1) {
-
-            yy = srcy - 1;
-        }
+        xx = Math.max(0, Math.min(srcx - 1, xx));
+        yy = Math.max(0, Math.min(srcy - 1, yy));
 
         return this._CLR(Input, srcx, srcy, xx, yy);
     }
