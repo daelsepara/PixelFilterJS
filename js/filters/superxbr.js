@@ -8,7 +8,7 @@ class Filter {
 
     clamp(x, floor, ceil) {
         
-        return Math.max(Math.min(x, ceil), floor);
+        return Interpolate.Fix(x, floor, ceil);
     }
 
     matrix4() {

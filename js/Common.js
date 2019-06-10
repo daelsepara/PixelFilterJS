@@ -439,7 +439,7 @@ class Interpolate {
 
     static Fix(n, min, max) {
 
-        return (n < min ? min : n > max ? max : n);
+        return Math.max(Math.min(n, max), min);
     }
 
     static Unmix(c1, c2) {
