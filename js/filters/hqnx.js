@@ -5470,7 +5470,8 @@ class Filter {
     Hq4xKernel(pattern, c0, c1, c2, c3, c4, c5, c6, c7, c8, Pixel) {
     
         var e00, e01, e02, e03, e10, e11, e12, e13, e20, e21, e22, e23, e30, e31, e32, e33;
-        var e00 = e01 = e02 = e03 = e10 = e11 = e12 = e13 = e20 = e21 = e22 = e23 = e30 = e31 = e32 = e33 = c4;
+        
+        e00 = e01 = e02 = e03 = e10 = e11 = e12 = e13 = e20 = e21 = e22 = e23 = e30 = e31 = e32 = e33 = c4;
         
         switch (pattern) {
                 
