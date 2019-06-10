@@ -30,6 +30,7 @@ angular
 			{name: 'super2x', parameters: [2], description: 'FNES\' Super 2x Scaling'},
 			{name: 'supereagle', parameters: [2], description: 'Kreed\'s SuperEagle modified by Hawkynt to allow thresholds'},
 			{name: 'supersai', parameters: [2], description: 'Kreed\'s SuperSaI'},
+			{name: 'superxbr', parameters: [2], description: 'Hyllian\'s Super-XBR'},
 			{name: 'tv', parameters: [1, 2, 3, 4], description: 'TV-like effect using interlacing and gamma reduction'},
 			{name: 'tvzero', parameters: [2, 3, 4], description: 'No-scaling TV-like effect using interlacing and gamma reduction'},
 			{name: 'ultra2x', parameters: [2], description: 'FNES\' Ultra 2x Scaling'},

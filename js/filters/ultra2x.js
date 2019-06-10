@@ -5,8 +5,6 @@ class Filter {
 
         scale = 2;
         
-        scale = Math.max(2, Math.min(3, scale));
-			
         Init.Init(srcx, srcy, scale, scale, false);
 
         var P = Array(5);
