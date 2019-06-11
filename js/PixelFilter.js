@@ -1,6 +1,6 @@
 angular
 	.module('PixelFilter', ['ngWebworker', 'ngFileSaver'])
-	.controller('PixelScaleController', ['$scope', 'Webworker', 'FileSaver', 'Blob', function($scope, Webworker, FileSaver, Blob) {
+	.controller('PixelFilterController', ['$scope', 'Webworker', 'FileSaver', 'Blob', function($scope, Webworker, FileSaver, Blob) {
 
 		$scope.Processing = false;
 		$scope.SelectedFile = '';

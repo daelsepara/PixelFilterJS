@@ -9,7 +9,7 @@
 	<script src="js/angular.min.js"></script>
 	<script src="js/ng-webworker.min.js"></script>
 	<script src="js/angular-file-saver.bundle.min.js"></script>
-	<script src="js/PixelScale.js"></script>
+	<script src="js/PixelFilter.js"></script>
 </head>
 
 <body>
@@ -19,7 +19,7 @@
 			<br/>
 			<h1 class = "text-primary">PixelFIlterJS</h1><br/>
 			<div ng-app="PixelFilter">
-				<div ng-controller="PixelScaleController">
+				<div ng-controller="PixelFilterController">
 					<input type="file" multiple name="InputImageFiles" id = "InputImageFiles" input-bind class="btn btn-outline-secondary" ng-disabled = "Processing" /><br/><br/>
 					<input type="button" class="btn btn-outline-primary" value="Upload image" ng-click="LoadInputImage()" ng-disabled = "Processing"/>
 					<br/><br/>
