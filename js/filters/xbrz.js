@@ -1271,17 +1271,17 @@ class Filter {
                 ker3._[h] = src[sP1 + x];
                 ker3._[i] = src[sP1 + xP1];
                 
+                /*
                 this._ScalePixel(scaleSize.scaler, RotationDegree.Rot0, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
                 this._ScalePixel(scaleSize.scaler, RotationDegree.Rot90, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
                 this._ScalePixel(scaleSize.scaler, RotationDegree.Rot180, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
                 this._ScalePixel(scaleSize.scaler, RotationDegree.Rot270, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
+                */
 
-                /*
                 this.blendPixel(scaleSize.scaler, RotationDegree.Rot0, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
                 this.blendPixel(scaleSize.scaler, RotationDegree.Rot90, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
                 this.blendPixel(scaleSize.scaler, RotationDegree.Rot180, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
                 this.blendPixel(scaleSize.scaler, RotationDegree.Rot270, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
-                */
             }
         }
     }
