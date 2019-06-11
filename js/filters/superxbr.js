@@ -162,6 +162,7 @@ class Filter {
                 Common.ScaledImage[((y + 1) * outw + x + 1) * Channels + 1] = gi; 
                 Common.ScaledImage[((y + 1) * outw + x + 1) * Channels + 2] = bi;
                 Common.ScaledImage[((y + 1) * outw + x + 1) * Channels + 3] = ai;
+                
                 ++x;
             }
 
