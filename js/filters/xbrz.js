@@ -142,10 +142,10 @@ class Utility {
 
         const kB = 0.0593; //ITU-R BT.2020 conversion
         const kR = 0.2627; //
-        const kG = 1 - kB - kR;
+        const kG = 1.0 - kB - kR;
 
-        const scaleB = 0.5 / (1 - kB);
-        const scaleR = 0.5 / (1 - kR);
+        const scaleB = 0.5 / (1.0 - kB);
+        const scaleR = 0.5 / (1.0 - kR);
 
         var y = kR * rDiff + kG * gDiff + kB * bDiff; //[!], analog YCbCr!
         var cB = scaleB * (bDiff - y);
@@ -154,7 +154,6 @@ class Utility {
         // Skip division by 255.
         // Also skip square root here by pre-squaring the
         // config option equalColorTolerance.
-        //return Math.sqrt(square(lumaWeight * y) + square(c_b) + square(c_r));
         return this._Square(lumaWeight * y) + this._Square(cB) + this._Square(cR);
     }
 }
@@ -300,72 +299,50 @@ class BlendInfo {
 
     static GetTopL(b) {
         
-        b = Common._Clip8(b);
-
-        return Math.max(0, Math.min((b) & 0x03, 2));
+        return ((b) & 0x03);
     }
 
     static GetTopR(b) {
         
-        b = Common._Clip8(b);
-
-        return Math.max(0, Math.min((b >> 2) & 0x03, 2));
+        return ((b >> 2) & 0x03);
     }
 
     static GetBottomR(b) {
         
-        b = Common._Clip8(b);
-
-        return Math.max(0, Math.min((b >> 4) & 0x03, 2));
+        return ((b >> 4) & 0x03);
     }
 
     static GetBottomL(b) {
         
-        b = Common._Clip8(b);
-
-        return Math.max(0, Math.min((b >> 6) & 0x03, 2));
+        return ((b >> 6) & 0x03);
     }
 
     static SetTopL(b, bt) {
-        
-        b = Common._Clip8(b);
-        bt = Common._Clip8(bt);
 
-        return Common._Clip8(b | bt);
+        return b | bt;
     }
 
     static SetTopR(b, bt) {
         
-        b = Common._Clip8(b);
-        bt = Common._Clip8(bt);
-
-        return Common._Clip8(b | (bt << 2));
+        return (b | (bt << 2));
     }
 
     static SetBottomR(b, bt) {
         
-        b = Common._Clip8(b);
-        bt = Common._Clip8(bt);
-
-        return Common._Clip8(b | (bt << 2));
+        return (b | (bt << 2));
     }
 
     static SetBottomL(b, bt) {
         
-        b = Common._Clip8(b);
-        bt = Common._Clip8(bt);
-
-        return Common._Clip8(b | (bt << 6));
+        return (b | (bt << 6));
     }
 
     static Rotate(b, rotDeg) {
         
-        b = Common._Clip8(b);
-
-        var l = parseInt(rotDeg) << 1;
+        var l = (rotDeg) << 1;
         var r = 8 - l;
         
-        return Common._Clip8(b << l | b >> r);
+        return (b << l | b >> r);
     }
 }
 
@@ -390,8 +367,6 @@ class Alpha {
         var b = calcColor(Common.Blue(col), Common.Blue(p));
 
         dstPtr.SetPixel(Common.ARGBINT(a, r, g, b));
-
-        //dstPtr.SetPixel(Interpolate.Interpolate2P2Q(col, dstPtr.GetPixel(), m, (n - m)));
     }
 }
 
@@ -844,8 +819,9 @@ class Filter {
 				var r = Input[pixel];
 				var g = Input[pixel + 1];
 				var b = Input[pixel + 2];
+                var a = Input[pixel + 3];
 
-				dst[index] = Common.ARGBINT(255, r, g, b);
+				dst[index] = Common.ARGBINT(a, r, g, b);
 			}
         }
         
@@ -1105,7 +1081,7 @@ class Filter {
         var trgWidth = srcWidth * scaleSize.size;
 
         //temporary buffer for "on the fly preprocessing"
-        var preProcBuffer = new Uint8ClampedArray(srcWidth);
+        var preProcBuffer = new Array(srcWidth);
         preProcBuffer.fill(0);
 
         var ker4 = new Kernel_4X4();
@@ -1271,13 +1247,6 @@ class Filter {
                 ker3._[h] = src[sP1 + x];
                 ker3._[i] = src[sP1 + xP1];
                 
-                /*
-                this._ScalePixel(scaleSize.scaler, RotationDegree.Rot0, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
-                this._ScalePixel(scaleSize.scaler, RotationDegree.Rot90, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
-                this._ScalePixel(scaleSize.scaler, RotationDegree.Rot180, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
-                this._ScalePixel(scaleSize.scaler, RotationDegree.Rot270, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
-                */
-
                 this.blendPixel(scaleSize.scaler, RotationDegree.Rot0, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
                 this.blendPixel(scaleSize.scaler, RotationDegree.Rot90, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
                 this.blendPixel(scaleSize.scaler, RotationDegree.Rot180, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
