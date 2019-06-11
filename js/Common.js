@@ -96,19 +96,24 @@ class Common {
         return this._CLR(Input, srcx, srcy, xx, yy);
     }
 
+    static Alpha(rgb) {
+
+        return parseInt((rgb & 0xFF000000) >> 24);
+    }
+
     static Red(rgb) {
 
-        return parseInt(rgb >> 16);
+        return parseInt((rgb & 0x00FF0000) >> 16);
     }
 
     static Green(rgb) {
 
-        return parseInt((rgb & 0x00FF00) >> 8);
+        return parseInt((rgb & 0x0000FF00) >> 8);
     }
 
     static Blue(rgb) {
 
-        return parseInt(rgb & 0x0000FF);
+        return parseInt(rgb & 0x000000FF);
     }
 
     static Brightness(rgb) {
@@ -354,6 +359,11 @@ class Common {
         return parseInt((this._Clip8(r) << 16) + (this._Clip8(g) << 8) + this._Clip8(b));
     }
 
+    static ARGBINT(a, r, g, b) {
+
+        return parseInt((this._Clip8(a) << 24) + (this._Clip8(r) << 16) + (this._Clip8(g) << 8) + this._Clip8(b));
+    }
+
     static Truncate(color) {
 
         return this._Clip8(color);
@@ -399,6 +409,18 @@ class Interpolate {
         var b = parseInt(parseInt(Common.Blue(pixel1) * quantifier1 + Common.Blue(pixel2) * quantifier2) / total);
     
         return Common.RGBINT(r, g, b);
+    }
+
+    static Interpolate2P2QA(pixel1, pixel2, quantifier1, quantifier2) {
+
+        var total = parseInt(quantifier1 + quantifier2);
+    
+        var r = parseInt(parseInt(Common.Red(pixel1) * quantifier1 + Common.Red(pixel2) * quantifier2) / total);
+        var g = parseInt(parseInt(Common.Green(pixel1) * quantifier1 + Common.Green(pixel2) * quantifier2) / total);
+        var b = parseInt(parseInt(Common.Blue(pixel1) * quantifier1 + Common.Blue(pixel2) * quantifier2) / total);
+        var a = parseInt(parseInt(Common.Alpha(pixel1) * quantifier1 + Common.Alpha(pixel2) * quantifier2) / total);
+    
+        return Common.ARGBINT(a, r, g, b);
     }
 
     static Interpolate3P3Q(pixel1, pixel2, pixel3, quantifier1, quantifier2, quantifier3)
