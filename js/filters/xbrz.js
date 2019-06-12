@@ -86,8 +86,8 @@ class Tuple {
 
     constructor (i, j) {
 
-      this.Item1 = i;
-      this.Item2 = j;
+      this.I = i;
+      this.J = j;
     }
 }
 
@@ -181,8 +181,26 @@ class IColorEq {
     _(col1, col2) {
 
         var dist = new IColorDist();
-        
-        return dist._ColorDist(col1, col2, Constants.CONFIGURATION.luminanceWeight) < this._eqColorThres;
+
+        const a1 = Common.Alpha(col1) / 255.0;
+        const a2 = Common.Alpha(col2) / 255.0;
+			
+        /*
+        Requirements for a color distance handling alpha channel: with a1, a2 in [0, 1]
+
+        1. if a1 = a2, distance should be: a1 * distYCbCr()
+        2. if a1 = 0,  distance should be: a2 * distYCbCr(black, white) = a2 * 255
+        3. if a1 = 1,  ??? maybe: 255 * (1 - a2) + a2 * distYCbCr()
+        */
+
+        //return std::min(a1, a2) * DistYCbCrBuffer::dist(pix1, pix2) + 255 * abs(a1 - a2);
+        //=> following code is 15% faster:
+        const d = dist._ColorDist(col1, col2, Constants.CONFIGURATION.luminanceWeight) ;
+            
+        if (a1 < a2)
+            return (a1 * d + 255 * (a2 - a1)) < this._eqColorThres;
+        else
+            return (a2 * d + 255 * (a1 - a2)) < this._eqColorThres;
     }
 }
 
@@ -199,8 +217,10 @@ class Kernel_4X4 {
 
     constructor() {
 
+        this.a = 0;
         this.b = 0;
         this.c = 0;
+        this.d = 0;
         this.e = 0;
         this.f = 0;
         this.g = 0;
@@ -209,8 +229,10 @@ class Kernel_4X4 {
         this.j = 0;
         this.k = 0;
         this.l = 0;
+        this.m = 0;
         this.n = 0;
         this.o = 0;
+        this.p = 0;
     }
 }
 
@@ -361,10 +383,10 @@ class Alpha {
 		const weightBack = Common.Alpha(p) * (n - m);
         const weightSum = weightFront + weightBack;
 
-        var a = (weightSum / n);
-        var r = calcColor(Common.Red(col), Common.Red(p));
-        var g = calcColor(Common.Green(col), Common.Green(p));
-        var b = calcColor(Common.Blue(col), Common.Blue(p));
+        var a = Common._Clip8(weightSum / n);
+        var r = Common._Clip8(calcColor(Common.Red(col), Common.Red(p)));
+        var g = Common._Clip8(calcColor(Common.Green(col), Common.Green(p)));
+        var b = Common._Clip8(calcColor(Common.Blue(col), Common.Blue(p)));
 
         dstPtr.SetPixel(Common.ARGBINT(a, r, g, b));
     }
@@ -393,7 +415,7 @@ class OutputMatrix {
         j = parseInt(j);
 
         var rot = Constants.MATRIX_ROTATION[this._nr + i * Constants.MAX_SCALE + j];
-        this._output.Position(this._outi + rot.Item2 + rot.Item1 * this._outWidth);
+        this._output.Position(this._outi + rot.J + rot.I * this._outWidth);
         
         return this._output;
     }
@@ -715,7 +737,7 @@ class Filter {
 
     constructor() {
 
-        var MATRIX_ROTATION = new Array((Constants.MAX_SCALE - 1) * Constants.MAX_SCALE_SQUARED * Constants.MAX_ROTS);
+        Constants.MATRIX_ROTATION = new Array((Constants.MAX_SCALE - 1) * Constants.MAX_SCALE_SQUARED * Constants.MAX_ROTS);
 
         for (var n = 2; n < Constants.MAX_SCALE + 1; n++) {
             for (var r = 0; r < Constants.MAX_ROTS; r++) {
@@ -725,13 +747,11 @@ class Filter {
                 for (var i = 0; i < Constants.MAX_SCALE; i++) {
                     for (var j = 0; j < Constants.MAX_SCALE; j++) {
 
-                        MATRIX_ROTATION[nr + i * Constants.MAX_SCALE + j] = this._BuildMatrixRotation(r, i, j, n);
+                        Constants.MATRIX_ROTATION[nr + i * Constants.MAX_SCALE + j] = this._BuildMatrixRotation(r, i, j, n);
                     }
                 }
             }
         }
-
-        Constants.MATRIX_ROTATION = MATRIX_ROTATION;
 
         Rot.Initialize();
     }
@@ -750,8 +770,8 @@ class Filter {
 
             //old coordinates before rotation!
             var old = this._BuildMatrixRotation(rotDeg - 1, i, j, n);
-            iOld = n - 1 - old.Item2;
-            jOld = old.Item1;
+            iOld = n - 1 - old.J;
+            jOld = old.I;
         }
 
         return new Tuple(iOld, jOld);
@@ -862,7 +882,7 @@ class Filter {
 
         var dist = preProcessCornersColorDist;
 
-        var weight = 4;
+        var weight = 4.0;
         var jg = dist._(kernel.i, kernel.f) + dist._(kernel.f, kernel.c) + dist._(kernel.n, kernel.k) + dist._(kernel.k, kernel.h) + weight * dist._(kernel.j, kernel.g);
         var fk = dist._(kernel.e, kernel.j) + dist._(kernel.j, kernel.o) + dist._(kernel.b, kernel.g) + dist._(kernel.g, kernel.l) + weight * dist._(kernel.f, kernel.k);
 
@@ -961,17 +981,24 @@ class Filter {
 
 				if (haveShallowLine) {
 
-					if (haveSteepLine)
-						scaler.BlendLineSteepAndShallow(px, output);
-					else
+					if (haveSteepLine) {
+                        
+                        scaler.BlendLineSteepAndShallow(px, output);
+                    
+                    } else
+                        
                         scaler.BlendLineShallow(px, output);
                 
                     } else {
 
-					if (haveSteepLine)
-						scaler.BlendLineSteep(px, output);
-					else
+					if (haveSteepLine) {
+
+                        scaler.BlendLineSteep(px, output);
+                    
+                    } else {
+                        
                         scaler.BlendLineDiagonal(px, output);
+                    }
                 }
                 
             } else {
