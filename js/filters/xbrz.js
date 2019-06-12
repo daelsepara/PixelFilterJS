@@ -922,7 +922,7 @@ class Filter {
     -------------
     */
 
-    blendPixel(scaler, rotDeg, ker, trg, trgi, trgWidth, blendInfo, scalePixelColorEq, scalePixelColorDist, outputMatrix) {
+    blendPixel(scaler, rotDeg, ker, trgi, blendInfo, scalePixelColorEq, scalePixelColorDist, outputMatrix) {
 
         var b = ker._[Rot._[(1 << 2) + (rotDeg)]];
         var c = ker._[Rot._[(2 << 2) + (rotDeg)]];
@@ -1010,7 +1010,7 @@ class Filter {
         }
     }
 
-    _ScalePixel(scaler, rotDeg, ker, trg, trgi, trgWidth, blendInfo, //result of preprocessing all four corners of pixel "e"
+    _ScalePixel(scaler, rotDeg, ker, trgi, blendInfo, //result of preprocessing all four corners of pixel "e"
         scalePixelColorEq,
         scalePixelColorDist,
         outputMatrix) {
@@ -1192,7 +1192,8 @@ class Filter {
             sP2 = srcWidth * Math.min(y + 2, srcHeight - 1);
 
             var blendXy1 = 0;
-
+            var blendXy = 0;
+            
             for (x = xFirst; x < xLast; ++x, trgi += scaleSize.size) {
 
                 xM1 = Math.max(x - 1, 0);
@@ -1201,8 +1202,7 @@ class Filter {
 
                 //evaluate the four corners on bottom-right of current pixel
                 //blend_xy for current (x, y) position
-                var blendXy;
-
+               
                 {
                     //read sequentially from memory as far as possible
                     ker4.b = src[sM1 + x];
@@ -1276,10 +1276,10 @@ class Filter {
                 ker3._[h] = src[sP1 + x];
                 ker3._[i] = src[sP1 + xP1];
                 
-                this.blendPixel(scaleSize.scaler, RotationDegree.Rot0, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
-                this.blendPixel(scaleSize.scaler, RotationDegree.Rot90, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
-                this.blendPixel(scaleSize.scaler, RotationDegree.Rot180, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
-                this.blendPixel(scaleSize.scaler, RotationDegree.Rot270, ker3, trg, trgi, trgWidth, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
+                this.blendPixel(scaleSize.scaler, RotationDegree.Rot0, ker3, trgi, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
+                this.blendPixel(scaleSize.scaler, RotationDegree.Rot90, ker3, trgi, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
+                this.blendPixel(scaleSize.scaler, RotationDegree.Rot180, ker3, trgi, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
+                this.blendPixel(scaleSize.scaler, RotationDegree.Rot270, ker3, trgi, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
             }
         }
     }
