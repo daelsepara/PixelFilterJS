@@ -18,12 +18,12 @@ class ImagePointer {
 
     Position(offset) {
 
-      this._offset = parseInt(offset);
+      this._offset = (offset);
     }
 
     GetPixel() {
         
-        return this._imageData[this._offset];
+        return this._imageData[parseInt(this._offset)];
     }
 
     SetPixel(val) {
@@ -129,32 +129,32 @@ class Utility {
 
     static _Square(value) {
         
-        return value * value;
+        return parseFloat(value * value);
     }
 
     static _DistYCbCr(pix1, pix2, lumaWeight) {
         
         //http://en.wikipedia.org/wiki/YCbCr#ITU-R_BT.601_conversion
         //YCbCr conversion is a matrix multiplication => take advantage of linearity by subtracting first!
-        var rDiff = Common.Red(pix1) - Common.Red(pix2);
-        var gDiff = Common.Green(pix1) - Common.Green(pix2);
-        var bDiff = Common.Blue(pix1) - Common.Blue(pix2);
+        var rDiff = parseFloat(Common.Red(pix1) - Common.Red(pix2));
+        var gDiff = parseFloat(Common.Green(pix1) - Common.Green(pix2));
+        var bDiff = parseFloat(Common.Blue(pix1) - Common.Blue(pix2));
 
         const kB = 0.0593; //ITU-R BT.2020 conversion
         const kR = 0.2627; //
-        const kG = 1.0 - kB - kR;
+        const kG = parseFloat(1.0 - kB - kR);
 
         const scaleB = 0.5 / (1.0 - kB);
         const scaleR = 0.5 / (1.0 - kR);
 
-        var y = kR * rDiff + kG * gDiff + kB * bDiff; //[!], analog YCbCr!
-        var cB = scaleB * (bDiff - y);
-        var cR = scaleR * (rDiff - y);
+        var y = parseFloat(kR * rDiff + kG * gDiff + kB * bDiff); //[!], analog YCbCr!
+        var cB = parseFloat(scaleB * (bDiff - y));
+        var cR = parseFloat(scaleR * (rDiff - y));
 
         // Skip division by 255.
         // Also skip square root here by pre-squaring the
         // config option equalColorTolerance.
-        return this._Square(lumaWeight * y) + this._Square(cB) + this._Square(cR);
+        return parseFloat(this._Square(lumaWeight * y) + this._Square(cB) + this._Square(cR));
     }
 }
 
@@ -182,8 +182,8 @@ class IColorEq {
 
         var dist = new IColorDist();
 
-        const a1 = Common.Alpha(col1) / 255.0;
-        const a2 = Common.Alpha(col2) / 255.0;
+        const a1 = parseFloat(Common.Alpha(col1)) / 255.0;
+        const a2 = parseFloat(Common.Alpha(col2)) / 255.0;
 			
         /*
         Requirements for a color distance handling alpha channel: with a1, a2 in [0, 1]
@@ -196,11 +196,15 @@ class IColorEq {
         //return std::min(a1, a2) * DistYCbCrBuffer::dist(pix1, pix2) + 255 * abs(a1 - a2);
         //=> following code is 15% faster:
         const d = dist._ColorDist(col1, col2, Constants.CONFIGURATION.luminanceWeight) ;
-            
+
+        /*
         if (a1 < a2)
             return (a1 * d + 255 * (a2 - a1)) < this._eqColorThres;
         else
             return (a2 * d + 255 * (a1 - a2)) < this._eqColorThres;
+        */
+
+       return (a1 * a2 * Utility._Square(d) + Utility._Square(255 * (a1 - a2))) < this._eqColorThres;
     }
 }
 
@@ -374,19 +378,19 @@ class Alpha {
 
         var calcColor = function(colFront, colBack) {
             
-            return (colFront * weightFront + colBack * weightBack) / weightSum; 
+            return parseFloat((colFront * weightFront + colBack * weightBack) / weightSum); 
         }
 
         var p = dstPtr.GetPixel();
 
-        const weightFront = Common.Alpha(col) * m;
-		const weightBack = Common.Alpha(p) * (n - m);
+        const weightFront = parseFloat(Common.Alpha(col)) * m;
+		const weightBack = parseFloat(Common.Alpha(p)) * (n - m);
         const weightSum = weightFront + weightBack;
 
-        var a = Common._Clip8(weightSum / n);
-        var r = Common._Clip8(calcColor(Common.Red(col), Common.Red(p)));
-        var g = Common._Clip8(calcColor(Common.Green(col), Common.Green(p)));
-        var b = Common._Clip8(calcColor(Common.Blue(col), Common.Blue(p)));
+        var a = parseInt(weightSum / n);
+        var r = parseInt(calcColor(Common.Red(col), Common.Red(p)));
+        var g = parseInt(calcColor(Common.Green(col), Common.Green(p)));
+        var b = parseInt(calcColor(Common.Blue(col), Common.Blue(p)));
 
         dstPtr.SetPixel(Common.ARGBINT(a, r, g, b));
     }
@@ -405,16 +409,13 @@ class OutputMatrix {
 
     Move(rotDeg, outi) {
         
-        this._nr = this._n + parseInt(rotDeg) * Constants.MAX_SCALE_SQUARED;
+        this._nr = this._n + rotDeg * Constants.MAX_SCALE_SQUARED;
         this._outi = outi;
     }
 
     Reference(i, j) {
         
-        i = parseInt(i);
-        j = parseInt(j);
-
-        var rot = Constants.MATRIX_ROTATION[this._nr + i * Constants.MAX_SCALE + j];
+        var rot = Constants.MATRIX_ROTATION[this._nr + parseInt(i * Constants.MAX_SCALE + j)];
         this._output.Position(this._outi + rot.J + rot.I * this._outWidth);
         
         return this._output;
@@ -460,7 +461,7 @@ class Scaler_2X {
     BlendCorner(col, output) {
         
         //model a round corner
-        Alpha.Blend(21, 100, output.Reference(1, 1), col); //exact: 1 - pi/4 = 0.2146018366
+        Alpha.Blend(2146018366, 10000000000, output.Reference(1, 1), col); //exact: 1 - pi/4 = 0.2146018366
     }
 }
 
@@ -511,7 +512,7 @@ class Scaler_3X {
     BlendCorner(col, output) {
 
         //model a round corner
-        Alpha.Blend(45, 100, output.Reference(2, 2), col); //exact: 0.4545939598
+        Alpha.Blend(4545939598, 10000000000, output.Reference(2, 2), col); //exact: 0.4545939598
     }
   }
 
@@ -568,10 +569,10 @@ class Scaler_3X {
 
     BlendCorner(col, output) {
         
-        //model a round corner
-        Alpha.Blend(68, 100, output.Reference(3, 3), col); //exact: 0.6848532563
-        Alpha.Blend(9, 100, output.Reference(3, 2), col); //0.08677704501
-        Alpha.Blend(9, 100, output.Reference(2, 3), col); //0.08677704501
+        // model a round corner
+        Alpha.Blend(6848532563, 10000000000, output.Reference(3, 3), col); //exact: 0.6848532563
+        Alpha.Blend(8677704501, 10000000000, output.Reference(3, 2), col); //0.08677704501
+        Alpha.Blend(8677704501, 10000000000, output.Reference(2, 3), col); //0.08677704501
     }
   }
 
@@ -642,9 +643,9 @@ class Scaler_3X {
     BlendCorner(col, output) {
         
         //model a round corner
-        Alpha.Blend(86, 100, output.Reference(4, 4), col); //exact: 0.8631434088
-        Alpha.Blend(23, 100, output.Reference(4, 3), col); //0.2306749731
-        Alpha.Blend(23, 100, output.Reference(3, 4), col); //0.2306749731
+        Alpha.Blend(8631434088, 10000000000, output.Reference(4, 4), col); //exact: 0.8631434088
+        Alpha.Blend(2306749731, 10000000000, output.Reference(4, 3), col); //0.2306749731
+        Alpha.Blend(2306749731, 10000000000, output.Reference(3, 4), col); //0.2306749731
     }
 }
 
@@ -725,11 +726,11 @@ class Scaler_6X {
     BlendCorner(col, output) {
     
         //model a round corner
-        Alpha.Blend(97, 100, output.Reference(5, 5), col); //exact: 0.9711013910
-        Alpha.Blend(42, 100, output.Reference(4, 5), col); //0.4236372243
-        Alpha.Blend(42, 100, output.Reference(5, 4), col); //0.4236372243
-        Alpha.Blend( 6, 100, output.Reference(5, 3), col); //0.05652034508
-        Alpha.Blend( 6, 100, output.Reference(3, 5), col); //0.05652034508
+        Alpha.Blend(9711013910, 10000000000, output.Reference(5, 5), col); //exact: 0.9711013910
+        Alpha.Blend(4236372243, 10000000000, output.Reference(4, 5), col); //0.4236372243
+        Alpha.Blend(4236372243, 10000000000, output.Reference(5, 4), col); //0.4236372243
+        Alpha.Blend( 5652034508, 10000000000, output.Reference(5, 3), col); //0.05652034508
+        Alpha.Blend( 5652034508, 10000000000, output.Reference(3, 5), col); //0.05652034508
     }
 }
 
@@ -923,18 +924,18 @@ class Filter {
 
     blendPixel(scaler, rotDeg, ker, trg, trgi, trgWidth, blendInfo, scalePixelColorEq, scalePixelColorDist, outputMatrix) {
 
-        var b = ker._[Rot._[(1 << 2) + parseInt(rotDeg)]];
-        var c = ker._[Rot._[(2 << 2) + parseInt(rotDeg)]];
-        var d = ker._[Rot._[(3 << 2) + parseInt(rotDeg)]];
-        var e = ker._[Rot._[(4 << 2) + parseInt(rotDeg)]];
-        var f = ker._[Rot._[(5 << 2) + parseInt(rotDeg)]];
-        var g = ker._[Rot._[(6 << 2) + parseInt(rotDeg)]];
-        var h = ker._[Rot._[(7 << 2) + parseInt(rotDeg)]];
-        var i = ker._[Rot._[(8 << 2) + parseInt(rotDeg)]];
+        var b = ker._[Rot._[(1 << 2) + (rotDeg)]];
+        var c = ker._[Rot._[(2 << 2) + (rotDeg)]];
+        var d = ker._[Rot._[(3 << 2) + (rotDeg)]];
+        var e = ker._[Rot._[(4 << 2) + (rotDeg)]];
+        var f = ker._[Rot._[(5 << 2) + (rotDeg)]];
+        var g = ker._[Rot._[(6 << 2) + (rotDeg)]];
+        var h = ker._[Rot._[(7 << 2) + (rotDeg)]];
+        var i = ker._[Rot._[(8 << 2) + (rotDeg)]];
 
         var blend = BlendInfo.Rotate(blendInfo, rotDeg);
 
-        if (BlendInfo.GetBottomR(blend) >= BlendType.BlendNormal) {
+        if ((BlendInfo.GetBottomR(blend)) >= BlendType.BlendNormal && BlendInfo.GetBottomR(blend) <= BlendType.BlendDominant) {
         
             var eq = function(pix1, pix2) { 
                 
@@ -948,7 +949,7 @@ class Filter {
 
             var doLineBlend = function() {
 
-                if (BlendInfo.GetBottomR(blend) >= BlendType.BlendDominant)
+                if (BlendInfo.GetBottomR(blend) == BlendType.BlendDominant)
                     return true;
 
                 //make sure there is no second blending in an adjacent rotation for this pixel: handles insular pixels, mario eyes
@@ -985,11 +986,12 @@ class Filter {
                         
                         scaler.BlendLineSteepAndShallow(px, output);
                     
-                    } else
+                    } else { 
                         
                         scaler.BlendLineShallow(px, output);
+                    }
                 
-                    } else {
+                } else {
 
 					if (haveSteepLine) {
 
@@ -1014,14 +1016,14 @@ class Filter {
         outputMatrix) {
 
         //int a = kernel._[Rot._[(0 << 2) + rotDeg]];
-        var b = ker._[Rot._[(1 << 2) + parseInt(rotDeg)]];
-        var c = ker._[Rot._[(2 << 2) + parseInt(rotDeg)]];
-        var d = ker._[Rot._[(3 << 2) + parseInt(rotDeg)]];
-        var e = ker._[Rot._[(4 << 2) + parseInt(rotDeg)]];
-        var f = ker._[Rot._[(5 << 2) + parseInt(rotDeg)]];
-        var g = ker._[Rot._[(6 << 2) + parseInt(rotDeg)]];
-        var h = ker._[Rot._[(7 << 2) + parseInt(rotDeg)]];
-        var i = ker._[Rot._[(8 << 2) + parseInt(rotDeg)]];
+        var b = ker._[Rot._[(1 << 2) + (rotDeg)]];
+        var c = ker._[Rot._[(2 << 2) + (rotDeg)]];
+        var d = ker._[Rot._[(3 << 2) + (rotDeg)]];
+        var e = ker._[Rot._[(4 << 2) + (rotDeg)]];
+        var f = ker._[Rot._[(5 << 2) + (rotDeg)]];
+        var g = ker._[Rot._[(6 << 2) + (rotDeg)]];
+        var h = ker._[Rot._[(7 << 2) + (rotDeg)]];
+        var i = ker._[Rot._[(8 << 2) + (rotDeg)]];
 
         var blend = BlendInfo.Rotate(blendInfo, rotDeg);
 
