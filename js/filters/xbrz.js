@@ -836,7 +836,7 @@ class Filter {
     // helper functions added to work with PixelFilter
 	ToArray(Input, srcx, srcy) {
 
-        var dst = new Array(srcx * srcy);
+        var dst = new Uint32Array(srcx * srcy);
         
 		var Channels = 4;
 
