@@ -361,7 +361,7 @@ class Common {
 
     static ARGBINT(a, r, g, b) {
 
-        return parseInt((this._Clip8(a) << 24) + (this._Clip8(r) << 16) + (this._Clip8(g) << 8) + this._Clip8(b));
+        return ((this._Clip8(a) << 24) + (this._Clip8(r) << 16) + (this._Clip8(g) << 8) + this._Clip8(b)) >>> 0;
     }
 
     static Truncate(color) {
