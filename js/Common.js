@@ -98,27 +98,27 @@ class Common {
 
     static Alpha(rgb) {
 
-        return parseInt((rgb & 0xFF000000) >> 24);
+        return parseInt(rgb >>> 24);
     }
 
     static Red(rgb) {
 
-        return parseInt((rgb & 0x00FF0000) >> 16);
+        return parseInt((rgb >>> 0 & 0x00FF0000) >> 16);
     }
 
     static Green(rgb) {
 
-        return parseInt((rgb & 0x0000FF00) >> 8);
+        return parseInt((rgb >>> 0 & 0x0000FF00) >> 8);
     }
 
     static Blue(rgb) {
 
-        return parseInt(rgb & 0x000000FF);
+        return parseInt(rgb >>> 0 & 0x000000FF);
     }
 
     static Brightness(rgb) {
 
-        var dwordC = rgb & 0xFFFFFF;
+        var dwordC = rgb >>> 0 & 0xFFFFFF;
 
         return parseInt((this.Red(dwordC) * 3 + this.Green(dwordC) * 3 + this.Blue(dwordC) * 2) >> 3);
     }
@@ -361,7 +361,7 @@ class Common {
 
     static ARGBINT(a, r, g, b) {
 
-        return ((this._Clip8(a) << 24) + (this._Clip8(r) << 16) + (this._Clip8(g) << 8) + this._Clip8(b)) >>> 0;
+        return (((((this._Clip8(a) >>> 0) << 24) >>> 0) | ((this._Clip8(r) << 16)  + (this._Clip8(g) << 8) + (this._Clip8(b)))) >>> 0);
     }
 
     static Truncate(color) {

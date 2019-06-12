@@ -871,6 +871,7 @@ class Filter {
 				dst[pixel] = Common.Red(src[index]);
 				dst[pixel + 1] = Common.Green(src[index]);
                 dst[pixel + 2] = Common.Blue(src[index]);
+                dst[pixel + 3] = Common.Alpha(src[index]);
 			}
 		}
     }
