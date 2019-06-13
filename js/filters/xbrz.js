@@ -28,7 +28,7 @@ class ImagePointer {
 
     SetPixel(val) {
 
-      this._imageData[this._offset] = val;
+      this._imageData[this._offset] = val >>> 0;
     }
 }
 
