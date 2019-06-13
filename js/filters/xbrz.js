@@ -128,7 +128,7 @@ class Utility {
 
     static getByte(val, N) {
 
-        return (val >> (8 * N)) & 0xff;
+        return (val >>> (8 * N)) & 0xff;
     }
 
     static _Square(value) {
