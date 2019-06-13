@@ -413,12 +413,12 @@ class Interpolate {
 
     static Interpolate2P2QA(pixel1, pixel2, quantifier1, quantifier2) {
 
-        var total = parseInt(quantifier1 + quantifier2);
+        var total = (quantifier1 + quantifier2) >>> 0;
     
-        var r = parseInt(parseInt(Common.Red(pixel1) * quantifier1 + Common.Red(pixel2) * quantifier2) / total);
-        var g = parseInt(parseInt(Common.Green(pixel1) * quantifier1 + Common.Green(pixel2) * quantifier2) / total);
-        var b = parseInt(parseInt(Common.Blue(pixel1) * quantifier1 + Common.Blue(pixel2) * quantifier2) / total);
-        var a = parseInt(parseInt(Common.Alpha(pixel1) * quantifier1 + Common.Alpha(pixel2) * quantifier2) / total);
+        var r = parseInt(((Common.Red(pixel1) * quantifier1 + Common.Red(pixel2) * quantifier2) >>> 0) / total);
+        var g = parseInt(((Common.Green(pixel1) * quantifier1 + Common.Green(pixel2) * quantifier2) >>> 0) / total);
+        var b = parseInt(((Common.Blue(pixel1) * quantifier1 + Common.Blue(pixel2) * quantifier2) >>> 0) / total);
+        var a = parseInt(((Common.Alpha(pixel1) * quantifier1 + Common.Alpha(pixel2) * quantifier2) >>> 0)/ total);
     
         return Common.ARGBINT(a, r, g, b);
     }

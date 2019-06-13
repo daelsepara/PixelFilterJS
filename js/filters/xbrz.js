@@ -23,12 +23,12 @@ class ImagePointer {
 
     GetPixel() {
         
-        return this._imageData[parseInt(this._offset)] >>> 0;
+        return this._imageData[this._offset];
     }
 
     SetPixel(val) {
 
-      this._imageData[this._offset] = val >>> 0;
+      this._imageData[this._offset] = val;
     }
 }
 
@@ -122,6 +122,11 @@ class Constants {
 
         this._MATRIX_ROTATION = v;
     }
+
+    static get USE_INTERP() {
+
+        return this.hasOwnProperty('_USE_INTERP') ? this._USE_INTERP : false;
+    }
 }
 
 class Utility {
@@ -133,12 +138,7 @@ class Utility {
 
     static _Square(value) {
         
-        return parseFloat(value * value);
-    }
-
-    static _Wrap(val, max) {
-
-        return val % max;
+        return (value * value);
     }
 }
 
@@ -154,21 +154,47 @@ class ColorDistanceARGB {
         const k_r = 0.2627; //
         const k_g = 1 - k_b - k_r;
 
-        const scale_b = 0.5 / (1 - k_b);
-        const scale_r = 0.5 / (1 - k_r);
+        const scale_b = 0.5 / (1.0 - k_b);
+        const scale_r = 0.5 / (1.0 - k_r);
 
         const y = k_r * r_diff + k_g * g_diff + k_b * b_diff; //[!], analog YCbCr!
         const c_b = scale_b * (b_diff - y);
         const c_r = scale_r * (r_diff - y);
 
-        return parseFloat((Utility._Square(y * luminanceWeight) + Utility._Square(c_b) + Utility._Square(c_r)));
+        return parseFloat(Math.sqrt(Utility._Square(y * luminanceWeight) + Utility._Square(c_b) + Utility._Square(c_r)));
     }
 
+    static DistYCbCr(pix1, pix2, lumaWeight) {
+
+        //http://en.wikipedia.org/wiki/YCbCr#ITU-R_BT.601_conversion
+        //YCbCr conversion is a matrix multiplication => take advantage of linearity by subtracting first!
+        var rDiff = Common.Red(pix1) - Common.Red(pix2);
+        var gDiff = Common.Green(pix1) - Common.Green(pix2);
+        var bDiff = Common.Blue(pix1) - Common.Blue(pix2);
+
+        const kB = 0.0722; //ITU-R BT.709 conversion
+        const kR = 0.2126; //
+        const kG = 1 - kB - kR;
+
+        const scaleB = 0.5 / (1 - kB);
+        const scaleR = 0.5 / (1 - kR);
+
+        var y = kR * rDiff + kG * gDiff + kB * bDiff; //[!], analog YCbCr!
+        var cB = scaleB * (bDiff - y);
+        var cR = scaleR * (rDiff - y);
+
+        // Skip division by 255.
+        // Also skip square root here by pre-squaring the
+        // config option equalColorTolerance.
+        //return Math.sqrt(square(lumaWeight * y) + square(c_b) + square(c_r));
+        return  Math.sqrt(Utility._Square(lumaWeight * y) + Utility._Square(cB) + Utility._Square(cR));
+    }
+      
     static DistYCbCrBuffer(pix1, pix2, luminanceWeight) {
 
-        const r_diff = (Common.Red(pix1)) - Common.Red(pix2) >>> 0;
-        const g_diff = (Common.Green(pix1)) - Common.Green(pix2) >>> 0;
-        const b_diff = (Common.Blue(pix1)) - Common.Blue(pix2) >>> 0;
+        const r_diff = (Common.Red(pix1) - Common.Red(pix2));
+        const g_diff = (Common.Green(pix1) - Common.Green(pix2));
+        const b_diff = (Common.Blue(pix1) - Common.Blue(pix2));
 
         var i = (((r_diff + 255) / 2) << 16) | //slightly reduce precision (division by 2) to squeeze value into single byte
 				(((g_diff + 255) / 2) << 8) |
@@ -179,12 +205,21 @@ class ColorDistanceARGB {
 
     static dist(pix1, pix2, luminanceWeight) {
 
+        if (Constants.USE_INTERP)
+            return this.DistYCbCr(pix1, pix2, luminanceWeight);
+
         const a1 = Common.Alpha(pix1) / 255.0;
         const a2 = Common.Alpha(pix2) / 255.0;
         
         const d = this.DistYCbCrBuffer(pix1, pix2, luminanceWeight);
-       
-        return (a1 * a2 * Utility._Square(d) + Utility._Square(255 * (a1 - a2))) >>> 0;
+        
+        if (a1 < a2)
+            return a1 * d + 255 * (a2 - a1);
+        else
+            return a2 * d + 255 * (a1 - a2);
+        
+        //alternative?
+        //return (a1 * a2 * Utility._Square(d) + Utility._Square(255 * (a1 - a2))) >>> 0;
     }
 }
     
@@ -293,6 +328,7 @@ class Rot {
     static Initialize() {
 
         this._rot = new Array(9 * 4);
+
         this.a = 0, this.b = 1, this.c = 2, this.d = 3, this.e = 4, this.f = 5, this.g = 6, this.h = 7, this.i = 8;
 
         this.deg0 = [
@@ -380,25 +416,40 @@ class BlendInfo {
 
 class Alpha {
 
+    static Grad(m, n, dstPtr, col) {
+
+        dstPtr.SetPixel(Interpolate.Interpolate2P2QA(col, dstPtr.GetPixel(), m, n));
+    }
+
     static Blend(m, n, dstPtr, col) {
 
-        var calcColor = function(colFront, colBack) {
+        if (Constants.USE_INTERP) {
             
-            return parseFloat((colFront * weightFront + colBack * weightBack) / weightSum); 
+            this.Grad(m, n, dstPtr, col);
+        
+        } else {
+
+            var calcColor = function(colFront, colBack) {
+            
+                return ((colFront * weightFront + colBack * weightBack) / weightSum); 
+            }
+    
+            var p = dstPtr.GetPixel();
+    
+            const weightFront = (Common.Alpha(col)) * m;
+            const weightBack = (Common.Alpha(p)) * (n - m);
+            const weightSum = weightFront + weightBack;
+    
+            if (weightSum == 0)
+                dstPtr.SetPixel(0);
+                
+            var a = (weightSum / n);
+            var r = (calcColor(Common.Red(col), Common.Red(p)));
+            var g = (calcColor(Common.Green(col), Common.Green(p)));
+            var b = (calcColor(Common.Blue(col), Common.Blue(p)));
+            
+            dstPtr.SetPixel(Common.ARGBINT(a, r, g, b));
         }
-
-        var p = dstPtr.GetPixel();
-
-        const weightFront = parseFloat(Common.Alpha(col)) * m;
-		const weightBack = parseFloat(Common.Alpha(p)) * (n - m);
-        const weightSum = weightFront + weightBack;
-
-        var a = parseInt(weightSum / n);
-        var r = parseInt(calcColor(Common.Red(col), Common.Red(p)));
-        var g = parseInt(calcColor(Common.Green(col), Common.Green(p)));
-        var b = parseInt(calcColor(Common.Blue(col), Common.Blue(p)));
-
-        dstPtr.SetPixel(Common.ARGBINT(a, r, g, b));
     }
 }
 
@@ -420,8 +471,11 @@ class OutputMatrix {
     }
 
     Reference(i, j) {
+
+        i = Math.floor(i);
+        j = Math.floor(j);
         
-        var rot = Constants.MATRIX_ROTATION[this._nr + parseInt(i * Constants.MAX_SCALE + j)];
+        var rot = Constants.MATRIX_ROTATION[this._nr + i * Constants.MAX_SCALE + j];
         this._output.Position(this._outi + rot.J + rot.I * this._outWidth);
         
         return this._output;
@@ -880,7 +934,7 @@ class Filter {
         
         for (var y = 0; y < blockSize; ++y, trgi += pitch)
             for (var x = 0; x < blockSize; ++x)
-                trg[trgi + x] = col >>> 0;
+                trg[trgi + x] = col;
     }
 
     _PreProcessCorners(kernel, blendResult, preProcessCornersColorDist) {
@@ -1061,25 +1115,25 @@ class Filter {
                 ker4 = new Kernel_4X4();
 
                 // read sequentially from memory as far as possible
-                ker4.a = src[sM1 + xM1] >>> 0; 
-                ker4.b = src[sM1 + x] >>> 0;
-                ker4.c = src[sM1 + xP1] >>> 0;
-                ker4.d = src[sM1 + xP2] >>> 0;
+                ker4.a = (src[sM1 + xM1]); 
+                ker4.b = (src[sM1 + x]);
+                ker4.c = (src[sM1 + xP1]);
+                ker4.d = (src[sM1 + xP2]);
 
-                ker4.e = src[s0 + xM1] >>> 0;
-                ker4.f = src[s0 + x] >>> 0;
-                ker4.g = src[s0 + xP1] >>> 0;
-                ker4.h = src[s0 + xP2] >>> 0;
+                ker4.e = (src[s0 + xM1]);
+                ker4.f = (src[s0 + x]);
+                ker4.g = (src[s0 + xP1]);
+                ker4.h = (src[s0 + xP2]);
 
-                ker4.i = src[sP1 + xM1] >>> 0;
-                ker4.j = src[sP1 + x] >>> 0;
-                ker4.k = src[sP1 + xP1] >>> 0;
-                ker4.l = src[sP1 + xP2] >>> 0;
+                ker4.i = (src[sP1 + xM1]);
+                ker4.j = (src[sP1 + x]);
+                ker4.k = (src[sP1 + xP1]);
+                ker4.l = (src[sP1 + xP2]);
 
-                ker4.m = src[sP2 + xM1] >>> 0;
-                ker4.n = src[sP2 + x] >>> 0;
-                ker4.o = src[sP2 + xP1] >>> 0;
-                ker4.p = src[sP2 + xP2] >>> 0;
+                ker4.m = (src[sP2 + xM1]);
+                ker4.n = (src[sP2 + x]);
+                ker4.o = (src[sP2 + xP1]);
+                ker4.p = (src[sP2 + xP2]);
 
                 blendResult = new BlendResult();
 
@@ -1101,7 +1155,7 @@ class Filter {
             }
         }
 
-        var equalColorTolerance = Constants.Configuration.equalColorTolerance * Constants.Configuration.equalColorTolerance;
+        var equalColorTolerance = Constants.Configuration.equalColorTolerance;
         var scalePixelColorEq = new IColorEq(equalColorTolerance);
         var scalePixelColorDist = new IColorDist();
         var outputMatrix = new OutputMatrix(scaleSize.size, trg, trgWidth);
@@ -1117,41 +1171,40 @@ class Filter {
             sP2 = srcWidth * Math.min(y + 2, srcHeight - 1);
 
             var blendXy1 = 0;
-            var blendXy = 0;
-            
+
             for (x = 0; x < srcWidth; ++x, trgi += scaleSize.size) {
 
                 xM1 = Math.max(x - 1, 0);
                 xP1 = Math.min(x + 1, srcWidth - 1);
                 xP2 = Math.min(x + 2, srcWidth - 1);
 
+                ker4 = new Kernel_4X4();
+
+                //read sequentially from memory as far as possible
+                ker4.a = (src[sM1 + xM1]); 
+                ker4.b = (src[sM1 + x]);
+                ker4.c = (src[sM1 + xP1]);
+                ker4.d = (src[sM1 + xP2]);
+
+                ker4.e = (src[s0 + xM1]);
+                ker4.f = (src[s0 + x]);
+                ker4.g = (src[s0 + xP1]);
+                ker4.h = (src[s0 + xP2]);
+
+                ker4.i = (src[sP1 + xM1]);
+                ker4.j = (src[sP1 + x]);
+                ker4.k = (src[sP1 + xP1]);
+                ker4.l = (src[sP1 + xP2]);
+
+                ker4.m = (src[sP2 + xM1]);
+                ker4.n = (src[sP2 + x]);
+                ker4.o = (src[sP2 + xP1]);
+                ker4.p = (src[sP2 + xP2]);
+
                 //evaluate the four corners on bottom-right of current pixel
                 //blend_xy for current (x, y) position
-               
+                var blendXy = 0;
                 {
-                    ker4 = new Kernel_4X4();
-
-                    //read sequentially from memory as far as possible
-                    ker4.a = src[sM1 + xM1] >>> 0; 
-                    ker4.b = src[sM1 + x] >>> 0;
-                    ker4.c = src[sM1 + xP1] >>> 0;
-                    ker4.d = src[sM1 + xP2] >>> 0;
-
-                    ker4.e = src[s0 + xM1] >>> 0;
-                    ker4.f = src[s0 + x] >>> 0;
-                    ker4.g = src[s0 + xP1] >>> 0;
-                    ker4.h = src[s0 + xP2] >>> 0;
-
-                    ker4.i = src[sP1 + xM1] >>> 0;
-                    ker4.j = src[sP1 + x] >>> 0;
-                    ker4.k = src[sP1 + xP1] >>> 0;
-                    ker4.l = src[sP1 + xP2] >>> 0;
-
-                    ker4.m = src[sP2 + xM1] >>> 0;
-                    ker4.n = src[sP2 + x] >>> 0;
-                    ker4.o = src[sP2 + xP1] >>> 0;
-                    ker4.p = src[sP2 + xP2] >>> 0;
-
                     blendResult = new BlendResult();
                     
                     this._PreProcessCorners(ker4, blendResult, preProcessCornersColorDist); // writes to blendResult
@@ -1197,17 +1250,17 @@ class Filter {
                 //read sequentially from memory as far as possible
                 ker3 = new Kernel_3X3();
 
-                ker3._[a] = ker4.a >>> 0;
-                ker3._[b] = ker4.b >>> 0;
-                ker3._[c] = ker4.c >>> 0;
+                ker3._[a] = (ker4.a);
+                ker3._[b] = (ker4.b);
+                ker3._[c] = (ker4.c);
 
-                ker3._[d] = ker4.e >>> 0;
-                ker3._[e] = ker4.f >>> 0;
-                ker3._[f] = ker4.g >>> 0;
+                ker3._[d] = (ker4.e);
+                ker3._[e] = (ker4.f);
+                ker3._[f] = (ker4.g);
 
-                ker3._[g] = ker4.i >>> 0;
-                ker3._[h] = ker4.j >>> 0;
-                ker3._[i] = ker4.k >>> 0;
+                ker3._[g] = (ker4.i);
+                ker3._[h] = (ker4.j);
+                ker3._[i] = (ker4.k);
 
                 this.blendPixel(scaleSize.scaler, RotationDegree.Rot0, ker3, trgi, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
                 this.blendPixel(scaleSize.scaler, RotationDegree.Rot90, ker3, trgi, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
