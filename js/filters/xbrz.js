@@ -440,15 +440,19 @@ class Alpha {
             const weightBack = (Common.Alpha(p)) * (n - m);
             const weightSum = weightFront + weightBack;
     
-            if (weightSum == 0)
-                dstPtr.SetPixel(0);
+            if (weightSum == 0) {
                 
-            var a = (weightSum / n);
-            var r = (calcColor(Common.Red(col), Common.Red(p)));
-            var g = (calcColor(Common.Green(col), Common.Green(p)));
-            var b = (calcColor(Common.Blue(col), Common.Blue(p)));
+                dstPtr.SetPixel(0);
             
-            dstPtr.SetPixel(Common.ARGBINT(a, r, g, b));
+            } else {
+
+                var a = (weightSum / n);
+                var r = (calcColor(Common.Red(col), Common.Red(p)));
+                var g = (calcColor(Common.Green(col), Common.Green(p)));
+                var b = (calcColor(Common.Blue(col), Common.Blue(p)));
+                
+                dstPtr.SetPixel(Common.ARGBINT(a, r, g, b));
+            }
         }
     }
 }
