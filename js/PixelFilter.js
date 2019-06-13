@@ -35,7 +35,7 @@ angular
 			{name: 'tvzero', parameters: [2, 3, 4], description: 'No-scaling TV-like effect using interlacing and gamma reduction'},
 			{name: 'ultra2x', parameters: [2], description: 'FNES\' Ultra 2x Scaling'},
 			{name: 'xbr', parameters: [2, 3, 4], description: 'XBRnX family of filters by Hyllian'},
-			{name: 'xbrz', parameters: [2, 3, 4, 5, 6], description: 'XBRZnX family of filters'}
+			{name: 'xbrz', parameters: [2, 3, 4, 5, 6], description: 'Zenju\'s XBRz nX family of filters'}
 		];
 
 		$scope.LoadInputImage = function() {

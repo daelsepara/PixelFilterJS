@@ -1,4 +1,4 @@
-//  XBRZ
+//  Zenju's XBRz nX family of filters
 class ScaleSize {
   
     constructor(scaler) {
