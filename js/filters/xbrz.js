@@ -573,8 +573,8 @@ class Scaler_3X {
 
         //model a round corner
         Alpha.Blend(45, 100, output.Reference(2, 2), col); //exact: 0.4545939598
-        Alpha.Blend( 7, 256, output.Reference(2, 1), col); //0.02826017254 -> negligible + avoid conflicts with other rotations for this odd scale
-		Alpha.Blend( 7, 256, output.Reference(1, 2), col); //0.02826017254
+        //Alpha.Blend( 7, 256, output.Reference(2, 1), col); //0.02826017254 -> negligible + avoid conflicts with other rotations for this odd scale
+        //Alpha.Blend( 7, 256, output.Reference(1, 2), col); //0.02826017254
     }
   }
 
@@ -708,8 +708,8 @@ class Scaler_3X {
         Alpha.Blend(86, 100, output.Reference(4, 4), col); //exact: 0.8631434088
         Alpha.Blend(23, 100, output.Reference(4, 3), col); //0.2306749731
         Alpha.Blend(23, 100, output.Reference(3, 4), col); //0.2306749731
-        Alpha.Blend(1, 64, output.Reference(4, 2), col); //0.01676812367 -> negligible + avoid conflicts with other rotations for this odd scale
-        Alpha.Blend(1, 64, output.Reference(2, 4), col); //0.01676812367
+        //Alpha.Blend(1, 64, output.Reference(4, 2), col); //0.01676812367 -> negligible + avoid conflicts with other rotations for this odd scale
+        //Alpha.Blend(1, 64, output.Reference(2, 4), col); //0.01676812367
     }
 }
 
