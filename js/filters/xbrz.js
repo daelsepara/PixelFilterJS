@@ -476,10 +476,7 @@ class OutputMatrix {
 
     Reference(i, j) {
 
-        i = Math.floor(i);
-        j = Math.floor(j);
-        
-        var rot = Constants.MATRIX_ROTATION[this._nr + i * Constants.MAX_SCALE + j];
+        var rot = Constants.MATRIX_ROTATION[this._nr + parseInt(i * Constants.MAX_SCALE + j)];
         this._output.Position(this._outi + rot.J + rot.I * this._outWidth);
         
         return this._output;
