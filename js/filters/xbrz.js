@@ -397,7 +397,7 @@ class BlendInfo {
 
     static SetBottomR(b, bt) {
         
-        return (b | (bt << 2));
+        return (b | (bt << 4));
     }
 
     static SetBottomL(b, bt) {
