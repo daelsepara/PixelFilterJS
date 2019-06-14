@@ -176,17 +176,13 @@ class ColorDistanceARGB {
 		const kR = 0.2126; //
 		const kG = 1 - kB - kR;
 
-		const scaleB = 0.5 / (1 - kB);
-		const scaleR = 0.5 / (1 - kR);
+		const scaleB = 0.5 / (1.0 - kB);
+		const scaleR = 0.5 / (1.0 - kR);
 
 		var y = kR * rDiff + kG * gDiff + kB * bDiff; //[!], analog YCbCr!
 		var cB = scaleB * (bDiff - y);
 		var cR = scaleR * (rDiff - y);
 
-		// Skip division by 255.
-		// Also skip square root here by pre-squaring the
-		// config option equalColorTolerance.
-		//return Math.sqrt(square(lumaWeight * y) + square(c_b) + square(c_r));
 		return Math.sqrt(Utility._Square(lumaWeight * y) + Utility._Square(cB) + Utility._Square(cR));
 	}
 
@@ -1204,7 +1200,9 @@ class Filter {
 
 				//evaluate the four corners on bottom-right of current pixel
 				//blend_xy for current (x, y) position
-				var blendXy = 0; {
+				var blendXy = 0;
+				
+				{
 					blendResult = new BlendResult();
 
 					this._PreProcessCorners(ker4, blendResult, preProcessCornersColorDist); // writes to blendResult
