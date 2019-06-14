@@ -5,7 +5,7 @@ class Filter {
 
         scale = Math.max(2, Math.min(scale, 4));
 			
-        Init.Init(srcx, srcy, scale, scale, false);
+        Init.Init(srcx, srcy, scale, scale, true);
 
         var Pixel;
         var P = Array(17);
