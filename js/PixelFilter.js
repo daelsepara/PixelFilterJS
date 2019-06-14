@@ -15,6 +15,7 @@ angular
 			{name: '2xsai', parameters: [2], description: 'Derek Liauw Kie Fa\'s 2XSaI'},
 			{name: '2xscl', parameters: [2], description: 'FNES\' 2x Scaling (wiithout palette mixing)'},
 			{name: 'advancemame', parameters: [2, 3], description: 'AdvanceMame scaling using interpolation'},
+			{name: 'bicubic', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Bicubic interpolation'},
 			{name: 'bilinear+', parameters: [2], description: 'Bilinear+'},
 			{name: 'bilinear++', parameters: [2], description: 'Bilinear+ with gamma adjustment'},
 			{name: 'des', parameters: [1, 2], description: 'DES filters from FNES'},
