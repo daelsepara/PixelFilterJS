@@ -2,7 +2,7 @@ class Filter {
 
     Apply(Input, srcx, srcy, scale) {
 
-		scale = 2;
+		scale = Math.max(1, scale);
 
 		Init.Init(srcx, srcy, scale, scale, false);
 
@@ -63,6 +63,7 @@ class Filter {
 				trg[trgi + x] = col;
     }
     
+    // from Zenju's XBRZ code
     nearestNeighborScale(src, srcWidth, srcHeight, srcPitch, trg, trgWidth, trgHeight, trgPitch, yFirst, yLast) {
 
         yFirst = Math.max(yFirst, 0);
@@ -75,7 +76,7 @@ class Filter {
             //mathematically: ySrc = floor(srcHeight * yTrg / trgHeight)
             // => search for integers in: [ySrc, ySrc + 1) * trgHeight / srcHeight
 
-            //keep within for loop to support MT input slices!
+            // keep within for loop to support MT input slices!
             const yTrg_first = parseInt((y * trgHeight + srcHeight - 1) / srcHeight); //=ceil(y * trgHeight / srcHeight)
             const yTrg_last = parseInt(((y + 1) * trgHeight + srcHeight - 1) / srcHeight); //=ceil(((y + 1) * trgHeight) / srcHeight)
             const blockHeight = parseInt(yTrg_last - yTrg_first);
