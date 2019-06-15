@@ -1,4 +1,4 @@
-//  Zenju's XBRz nX family of filters
+// Zenju's XBRz nX family of filters
 class ScaleSize {
 
 	constructor(scaler) {
@@ -363,22 +363,22 @@ class BlendInfo {
 
 	static GetTopL(b) {
 
-		return ((b) & 0x03);
+		return b & 0x03;
 	}
 
 	static GetTopR(b) {
 
-		return ((b >> 2) & 0x03);
+		return (b >> 2) & 0x03;
 	}
 
 	static GetBottomR(b) {
 
-		return ((b >> 4) & 0x03);
+		return (b >> 4) & 0x03;
 	}
 
 	static GetBottomL(b) {
 
-		return ((b >> 6) & 0x03);
+		return (b >> 6) & 0x03;
 	}
 
 	static SetTopL(b, bt) {
@@ -388,17 +388,17 @@ class BlendInfo {
 
 	static SetTopR(b, bt) {
 
-		return (b | (bt << 2));
+		return b | (bt << 2);
 	}
 
 	static SetBottomR(b, bt) {
 
-		return (b | (bt << 4));
+		return b | (bt << 4);
 	}
 
 	static SetBottomL(b, bt) {
 
-		return (b | (bt << 6));
+		return b | (bt << 6);
 	}
 
 	static Rotate(b, rotDeg) {
@@ -406,7 +406,7 @@ class BlendInfo {
 		var l = (rotDeg) << 1;
 		var r = 8 - l;
 
-		return (b << l | b >> r);
+		return (b << l) | (b >> r);
 	}
 }
 
@@ -427,13 +427,13 @@ class Alpha {
 
 			var calcColor = function(colFront, colBack) {
 
-				return ((colFront * weightFront + colBack * weightBack) / weightSum);
+				return (colFront * weightFront + colBack * weightBack) / weightSum;
 			}
 
 			var p = dstPtr.GetPixel();
 
-			const weightFront = (Common.Alpha(col)) * m;
-			const weightBack = (Common.Alpha(p)) * (n - m);
+			const weightFront = Common.Alpha(col) * m;
+			const weightBack = Common.Alpha(p) * (n - m);
 			const weightSum = weightFront + weightBack;
 
 			if (weightSum == 0) {
@@ -442,10 +442,10 @@ class Alpha {
 
 			} else {
 
-				var a = (weightSum / n);
-				var r = (calcColor(Common.Red(col), Common.Red(p)));
-				var g = (calcColor(Common.Green(col), Common.Green(p)));
-				var b = (calcColor(Common.Blue(col), Common.Blue(p)));
+				var a = weightSum / n;
+				var r = calcColor(Common.Red(col), Common.Red(p));
+				var g = calcColor(Common.Green(col), Common.Green(p));
+				var b = calcColor(Common.Blue(col), Common.Blue(p));
 
 				dstPtr.SetPixel(Common.ARGBINT(a, r, g, b));
 			}
@@ -832,6 +832,7 @@ class Filter {
 
 			//old coordinates before rotation!
 			var old = this._BuildMatrixRotation(rotDeg - 1, i, j, n);
+
 			iOld = n - 1 - old.J;
 			jOld = old.I;
 		}
@@ -897,6 +898,7 @@ class Filter {
 
 				var index = y * srcx + x;
 				var pixel = index * Channels;
+
 				var r = Input[pixel];
 				var g = Input[pixel + 1];
 				var b = Input[pixel + 2];
@@ -1112,25 +1114,25 @@ class Filter {
 				ker4 = new Kernel_4X4();
 
 				// read sequentially from memory as far as possible
-				ker4.a = (src[sM1 + xM1]);
-				ker4.b = (src[sM1 + x]);
-				ker4.c = (src[sM1 + xP1]);
-				ker4.d = (src[sM1 + xP2]);
+				ker4.a = src[sM1 + xM1];
+				ker4.b = src[sM1 + x];
+				ker4.c = src[sM1 + xP1];
+				ker4.d = src[sM1 + xP2];
 
-				ker4.e = (src[s0 + xM1]);
-				ker4.f = (src[s0 + x]);
-				ker4.g = (src[s0 + xP1]);
-				ker4.h = (src[s0 + xP2]);
+				ker4.e = src[s0 + xM1];
+				ker4.f = src[s0 + x];
+				ker4.g = src[s0 + xP1];
+				ker4.h = src[s0 + xP2];
 
-				ker4.i = (src[sP1 + xM1]);
-				ker4.j = (src[sP1 + x]);
-				ker4.k = (src[sP1 + xP1]);
-				ker4.l = (src[sP1 + xP2]);
+				ker4.i = src[sP1 + xM1];
+				ker4.j = src[sP1 + x];
+				ker4.k = src[sP1 + xP1];
+				ker4.l = src[sP1 + xP2];
 
-				ker4.m = (src[sP2 + xM1]);
-				ker4.n = (src[sP2 + x]);
-				ker4.o = (src[sP2 + xP1]);
-				ker4.p = (src[sP2 + xP2]);
+				ker4.m = src[sP2 + xM1];
+				ker4.n = src[sP2 + x];
+				ker4.o = src[sP2 + xP1];
+				ker4.p = src[sP2 + xP2];
 
 				blendResult = new BlendResult();
 
@@ -1178,25 +1180,25 @@ class Filter {
 				ker4 = new Kernel_4X4();
 
 				//read sequentially from memory as far as possible
-				ker4.a = (src[sM1 + xM1]);
-				ker4.b = (src[sM1 + x]);
-				ker4.c = (src[sM1 + xP1]);
-				ker4.d = (src[sM1 + xP2]);
+				ker4.a = src[sM1 + xM1];
+				ker4.b = src[sM1 + x];
+				ker4.c = src[sM1 + xP1];
+				ker4.d = src[sM1 + xP2];
 
-				ker4.e = (src[s0 + xM1]);
-				ker4.f = (src[s0 + x]);
-				ker4.g = (src[s0 + xP1]);
-				ker4.h = (src[s0 + xP2]);
+				ker4.e = src[s0 + xM1];
+				ker4.f = src[s0 + x];
+				ker4.g = src[s0 + xP1];
+				ker4.h = src[s0 + xP2];
 
-				ker4.i = (src[sP1 + xM1]);
-				ker4.j = (src[sP1 + x]);
-				ker4.k = (src[sP1 + xP1]);
-				ker4.l = (src[sP1 + xP2]);
+				ker4.i = src[sP1 + xM1];
+				ker4.j = src[sP1 + x];
+				ker4.k = src[sP1 + xP1];
+				ker4.l = src[sP1 + xP2];
 
-				ker4.m = (src[sP2 + xM1]);
-				ker4.n = (src[sP2 + x]);
-				ker4.o = (src[sP2 + xP1]);
-				ker4.p = (src[sP2 + xP2]);
+				ker4.m = src[sP2 + xM1];
+				ker4.n = src[sP2 + x];
+				ker4.o = src[sP2 + xP1];
+				ker4.p = src[sP2 + xP2];
 
 				//evaluate the four corners on bottom-right of current pixel
 				//blend_xy for current (x, y) position
@@ -1256,17 +1258,17 @@ class Filter {
 				//read sequentially from memory as far as possible
 				ker3 = new Kernel_3X3();
 
-				ker3._[a] = (ker4.a);
-				ker3._[b] = (ker4.b);
-				ker3._[c] = (ker4.c);
+				ker3._[a] = ker4.a;
+				ker3._[b] = ker4.b;
+				ker3._[c] = ker4.c;
 
-				ker3._[d] = (ker4.e);
-				ker3._[e] = (ker4.f);
-				ker3._[f] = (ker4.g);
+				ker3._[d] = ker4.e;
+				ker3._[e] = ker4.f;
+				ker3._[f] = ker4.g;
 
-				ker3._[g] = (ker4.i);
-				ker3._[h] = (ker4.j);
-				ker3._[i] = (ker4.k);
+				ker3._[g] = ker4.i;
+				ker3._[h] = ker4.j;
+				ker3._[i] = ker4.k;
 
 				this.blendPixel(scaleSize.scaler, RotationDegree.Rot0, ker3, trgi, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
 				this.blendPixel(scaleSize.scaler, RotationDegree.Rot90, ker3, trgi, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
