@@ -63,7 +63,6 @@ class Filter {
         return Common.RGBINT(r, g, b);
     }
 
-
     length(a, b) {
 
         return Math.sqrt(a * a + b * b);
@@ -116,8 +115,6 @@ class Filter {
         if (this.is_different(w6, w4)) pattern |= (1 << 5);
         if (this.is_different(w7, w4)) pattern |= (1 << 6);
         if (this.is_different(w8, w4)) pattern |= (1 << 7);
-        
-
 
         if ((this.P(pattern, 0xbf, 0x37) || this.P(pattern, 0xdb, 0x13)) && this.is_different(w1, w5))
             return this.mix(w4, w3, 0.5 - px);
