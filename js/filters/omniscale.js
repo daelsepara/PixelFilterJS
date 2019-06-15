@@ -63,6 +63,12 @@ class Filter {
         return Common.RGBINT(r, g, b);
     }
 
+
+    length(a, b) {
+
+        return Math.sqrt(a * a + b * b);
+    }
+
     ScaleImage(image, ppx, ppy, srcx, srcy, dstx, dsty) {
 
         var ox = 1.0 / srcx;
@@ -112,10 +118,6 @@ class Filter {
         if (this.is_different(w8, w4)) pattern |= (1 << 7);
         
 
-        var length = function(a, b) {
-
-            return Math.sqrt(a * a + b * b);
-        }
 
         if ((this.P(pattern, 0xbf, 0x37) || this.P(pattern, 0xdb, 0x13)) && this.is_different(w1, w5))
             return this.mix(w4, w3, 0.5 - px);
@@ -140,8 +142,8 @@ class Filter {
         
         if (this.P(pattern, 0x2f, 0x2f)) {
 
-            dist = length(px - 0.5, py - 0.5);
-            pixel_size = length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy));
+            dist = this.length(px - 0.5, py - 0.5);
+            pixel_size = this.length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy));
             
             if (dist < 0.5 - pixel_size / 2) {
                 
@@ -168,7 +170,7 @@ class Filter {
         if (this.P(pattern, 0xbf, 0x37) || this.P(pattern, 0xdb, 0x13)) {
             
             dist = px - 2.0 * py;
-            pixel_size = length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy)) * Math.sqrt(5.0);
+            pixel_size = this.length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy)) * Math.sqrt(5.0);
             
             if (dist > pixel_size / 2) {
 
@@ -188,7 +190,7 @@ class Filter {
         if (this.P(pattern, 0xdb, 0x49) || this.P(pattern, 0xef, 0x6d)) {
 
             dist = py - 2.0 * px;
-            pixel_size = length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy)) * Math.sqrt(5.0);
+            pixel_size = this.length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy)) * Math.sqrt(5.0);
             
             if (py - 2.0 * px > pixel_size / 2) {
                 
@@ -209,7 +211,7 @@ class Filter {
 
             dist = px + 2.0 * py;
 
-            pixel_size = length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy)) * Math.sqrt(5.0);
+            pixel_size = this.length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy)) * Math.sqrt(5.0);
     
             if (dist > 1.0 + pixel_size / 2) {
                 
@@ -236,7 +238,7 @@ class Filter {
         if (this.P(pattern, 0x7e, 0x2a) || this.P(pattern, 0xef, 0xab)) {
 
             dist = py + 2.0 * px;
-            pixel_size = length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy)) * Math.sqrt(5.0);
+            pixel_size = this.length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy)) * Math.sqrt(5.0);
     
             if (py + 2.0 * px > 1.0 + pixel_size / 2) {
                 
@@ -272,7 +274,7 @@ class Filter {
         if (this.P(pattern, 0x4f,0x4b) || this.P(pattern, 0x9f,0x1b) || this.P(pattern, 0x2f,0x0b) || this.P(pattern, 0xbe,0x0a) || this.P(pattern, 0xee,0x0a) || this.P(pattern, 0x7e,0x0a) || this.P(pattern, 0xeb,0x4b) || this.P(pattern, 0x3b,0x1b)) {
 
             dist = px + py;
-            pixel_size = length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy));
+            pixel_size = this.length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy));
     
             if (dist > 0.5 + pixel_size / 2) {
 
@@ -303,7 +305,7 @@ class Filter {
             return this.mix(this.mix(w4, w3, 0.5 - px), this.mix(w1, w0, 0.5 - px), 0.5 - py);
     
         dist = px + py;
-        pixel_size = length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy));
+        pixel_size = this.length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy));
     
         if (dist > 0.5 + pixel_size / 2)
             return w4;
