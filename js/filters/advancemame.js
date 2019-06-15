@@ -12,6 +12,9 @@ class Filter {
         
         P.fill(0);
 
+        var total = srcy;
+        var current = 0;
+        
         for (var y = 0; y < srcy; y++) {
             for (var x = 0; x < srcx; x++) {
 
@@ -115,6 +118,10 @@ class Filter {
                         break;
                 }
             }
+
+            current++;
+
+            notify({ScalingProgress: current / total });
         }
     }
 }

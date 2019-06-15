@@ -30,6 +30,9 @@ class Filter {
         var n;
         var ys, xs;
 
+		var total = 2 * srcy + ofs;
+		var current = 0;
+
 		for (ys = -ofs; ys < srcy; ys++) {
 			for (xs = -ofs; xs < srcx; xs++) {
 
@@ -54,6 +57,10 @@ class Filter {
 				mean[index] = sum / n;
 				variance[index] = varr - sum * mean[index];
 			}
+
+			current++;
+
+            notify({ScalingProgress: current / total });
 		}
 
 		var xc = 0, yc = 0;
@@ -100,6 +107,10 @@ class Filter {
 				Common.ScaledImage[dst + 1] = Common._Clip8(parseInt(luminance - 0.344 * cbb - 0.714 * crr));
 				Common.ScaledImage[dst + 2] = Common._Clip8(parseInt(luminance + 1.772 * cbb));
 			}
+
+			current++;
+
+            notify({ScalingProgress: current / total });
 		}
 	}
 

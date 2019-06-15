@@ -40,6 +40,9 @@ class Filter {
         var r, c, i, j, v_toSet, weight, row_within, col_within, floor_row, floor_col, lanc_term;
         var win = parseInt(lanczos_size);
 
+        var total = (Channels - 1) * N;
+        var current = 0;
+
         // do not include alpha channel
         for (var Channel = 0; Channel < Channels - 1; Channel++) {
 
@@ -79,6 +82,10 @@ class Filter {
 
                     resized[(r * M + c) * Channels + Channel] = Common._Clip8(parseInt(v_toSet));
                 }
+
+                current++;
+
+                notify({ScalingProgress: current / total });
             }
         }
     }

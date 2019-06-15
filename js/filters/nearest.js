@@ -102,7 +102,7 @@ class Filter {
                         trgLine += blockWidth;
                     }
                 }
-            }
+			}
         }
     }
 }

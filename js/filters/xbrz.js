@@ -1159,6 +1159,9 @@ class Filter {
 		var scalePixelColorDist = new IColorDist();
 		var outputMatrix = new OutputMatrix(scaleSize.size, trg, trgWidth);
 
+		var total = yLast - yFirst;
+		var current = 0;
+
 		for (y = yFirst; y < yLast; ++y) {
 
 			//consider MT "striped" access
@@ -1275,6 +1278,10 @@ class Filter {
 				this.blendPixel(scaleSize.scaler, RotationDegree.Rot180, ker3, trgi, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
 				this.blendPixel(scaleSize.scaler, RotationDegree.Rot270, ker3, trgi, blendXy, scalePixelColorEq, scalePixelColorDist, outputMatrix);
 			}
+
+			current++;
+
+            notify({ScalingProgress: current / total });
 		}
 	}
 }

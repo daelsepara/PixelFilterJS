@@ -34,7 +34,9 @@
 					<h2 ng-show = "Parameters.length > 0" class = "text-success">Scale / Parameter value</h2>
 					<select class="form-control" ng-model="Parameter" ng-disabled = "Processing" ng-show = "Parameters.length > 0">
 						<option ng-repeat="option in Parameters" value="{{option}}">{{option}}</option>
-					</select><br/>
+					</select>
+					<br ng-show = "ScalingProgress > 0 && ScalingProgress <= 1"/>
+					<progress class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" ng-show = "ScalingProgress > 0 && ScalingProgress < 1" value="{{ScalingProgress}}"></progress><br ng-show = "ScalingProgress >= 0 && ScalingProgress < 1"/>
 					<input type="button" class="btn btn-outline-success" value="Apply filter" ng-click="ApplyFilter()" ng-disabled = "Processing"/><br/><br/>
 					<div>
 						<canvas id = "OutputCanvas"></canvas>

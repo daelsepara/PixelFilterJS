@@ -8,6 +8,9 @@ class Filter {
         scale = Math.max(1, scale);
 			
         Init.Init(srcx, srcy, scale, scale, true);
+        
+        var total = Common.SizeY;
+        var current = 0;
 
         for (var y = 0; y < Common.SizeY; y++) {
 
@@ -21,7 +24,12 @@ class Filter {
                 Common.ScaledImage[(offset + x) * Channels] = Common.Red(rgb);
                 Common.ScaledImage[(offset + x) * Channels + 1] = Common.Green(rgb);
                 Common.ScaledImage[(offset + x) * Channels + 2] = Common.Blue(rgb);
+
             }
+
+            current++;
+
+            notify({ScalingProgress: current / total });
         }
     }
     

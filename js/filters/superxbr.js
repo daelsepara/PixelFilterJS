@@ -94,6 +94,9 @@ class Filter {
         var min_b_sample, max_b_sample;
         var min_a_sample, max_a_sample;
 
+        var total = outh * 3;
+        var current = 0;
+
         for (y = 0; y < outh; ++y) {
             for (x = 0; x < outw; ++x) {
 
@@ -167,6 +170,10 @@ class Filter {
             }
 
             ++y;
+
+            current += 2;
+
+            notify({ScalingProgress: current / total });
         }
         
         // Second Pass
@@ -294,6 +301,10 @@ class Filter {
             }
 
             ++y;
+
+            current += 2;
+
+            notify({ScalingProgress: current / total });
         }
 
         // Third Pass
@@ -365,6 +376,10 @@ class Filter {
                 Common.ScaledImage[(y * outw + x) * Channels + 2] = bi;
                 Common.ScaledImage[(y * outw + x) * Channels + 3] = ai;
             }
+
+            current++;
+
+            notify({ScalingProgress: current / total });
         }
     }
 }

@@ -10,6 +10,9 @@ class Filter {
         var Channels = 4;
         var row = 0;
 
+        var total = Common.SizeY;
+        var current = 0;
+
         for (var y = 0; y < Common.SizeY; ++y) {
 
             var destPixel = row;
@@ -25,9 +28,14 @@ class Filter {
                 Common.ScaledImage[destPixel + 1] = sample[1];
                 Common.ScaledImage[destPixel + 2] = sample[2];
                 destPixel += Channels;
+
             }
 
             row += Common.SizeX * Channels;
+
+            current++;
+
+            notify({ScalingProgress: current / total });
         }
     }
 

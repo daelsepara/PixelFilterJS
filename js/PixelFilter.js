@@ -10,6 +10,7 @@ angular
 		$scope.FilterChosen = undefined;
 		$scope.Parameter = 0;
 		$scope.Parameters = [];
+		$scope.ScalingProgress = 0;
 
 		$scope.Filters = [
 			{name: '2xsai', parameters: [2], description: 'Derek Liauw Kie Fa\'s 2XSaI'},
@@ -128,10 +129,11 @@ angular
 					var ctx = c.getContext('2d');
 					ctx.putImageData(newImg, 0, 0);
 
-				}, null, function(result) {
+				}, null, function(progress) {
 					
 					// promise has a notification
-					
+					$scope.ScalingProgress = progress.ScalingProgress;
+
 				}).catch(function(oError) {
 					
 					$scope.asyncFilter = null;
