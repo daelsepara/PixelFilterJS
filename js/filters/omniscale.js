@@ -24,7 +24,6 @@ class Filter {
                 Common.ScaledImage[(offset + x) * Channels] = Common.Red(rgb);
                 Common.ScaledImage[(offset + x) * Channels + 1] = Common.Green(rgb);
                 Common.ScaledImage[(offset + x) * Channels + 2] = Common.Blue(rgb);
-
             }
 
             current++;

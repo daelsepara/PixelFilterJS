@@ -929,10 +929,10 @@ class Filter {
 		}
 	}
 
-	_FillBlock(trg, trgi, pitch, col, blockSize) {
+	_FillBlock(trg, trgi, pitch, col, blockWidth, blockHeight) {
 
-		for (var y = 0; y < blockSize; ++y, trgi += pitch)
-			for (var x = 0; x < blockSize; ++x)
+		for (var y = 0; y < blockHeight; ++y, trgi += pitch)
+			for (var x = 0; x < blockWidth; ++x)
 				trg[trgi + x] = col;
 	}
 
@@ -1240,9 +1240,9 @@ class Filter {
 				}
 
 				//fill block of size scale * scale with the given color
-				//  //place *after* preprocessing step, to not overwrite the
-				//  //results while processing the the last pixel!
-				this._FillBlock(trg, trgi, trgWidth, ker4.f, scaleSize.size);
+				//place *after* preprocessing step, to not overwrite the
+				//results while processing the the last pixel!
+				this._FillBlock(trg, trgi, trgWidth, ker4.f, scaleSize.size, scaleSize.size);
 
 				//blend four corners of current pixel
 				if (blendXy == 0)
