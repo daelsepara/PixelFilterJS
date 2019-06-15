@@ -87,8 +87,8 @@ class Common {
 
     static CLR(Input, srcx, srcy, x, y, dx = 0, dy = 0) {
 
-        var xx = x + dx;
-        var yy = y + dy;
+        var xx = parseInt(x + dx);
+        var yy = parseInt(y + dy);
 
         xx = Math.max(0, Math.min(srcx - 1, xx));
         yy = Math.max(0, Math.min(srcy - 1, yy));
@@ -397,6 +397,15 @@ class Interpolate {
         var g = parseInt(parseInt(Common.Green(pixel1) + Common.Green(pixel2)) >> 1);
         var b = parseInt(parseInt(Common.Blue(pixel1) + Common.Blue(pixel2)) >> 1);
 
+        return Common.RGBINT(r, g, b);
+    }
+
+    static Interpolate2P1Q(pixel1, pixel2, quantifier) {
+
+        var r = parseInt(parseInt(Common.Red(pixel1) * (1.0 - quantifier) + Common.Red(pixel2) * quantifier));
+        var g = parseInt(parseInt(Common.Green(pixel1) * (1.0 - quantifier) + Common.Green(pixel2) * quantifier));
+        var b = parseInt(parseInt(Common.Blue(pixel1) * (1.0 - quantifier) + Common.Blue(pixel2) * quantifier));
+    
         return Common.RGBINT(r, g, b);
     }
 

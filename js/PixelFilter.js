@@ -28,6 +28,7 @@ angular
 			{name: 'magnify', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'nX Pixel Duplication'},
 			{name: 'lanczos', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Lanczos (window size = 3) Resampling'},
 			{name: 'nearest', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Nearest-neighbor scaling'},
+			{name: 'omniscale', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Lior Halphon\'s Omniscale (Modified)'},
 			{name: 'reverseaa', parameters: [2], description: 'Christoph Feck\'s (christoph@maxiom.de) Reverse Anti-Alias filter'},
 			{name: 'rgb', parameters: [1, 2, 3, 4], description: 'Dot-Matrix Printer Effect'},
 			{name: 'super2x', parameters: [2], description: 'FNES\' Super 2x Scaling'},
