@@ -37,9 +37,9 @@ class Filter {
                 dst[pixel + 2] = Common.Blue(src[index]);
                 
                 // skip the alpha channel
-			}
-		}
-	}
+            }
+        }
+    }
 
     is_different(a, b) {
 
