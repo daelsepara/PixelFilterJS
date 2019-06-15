@@ -133,28 +133,28 @@ class Filter {
             return Math.sqrt(a * a + b * b);
         }
 
-        if ((this.P( pattern, 0xbf, 0x37) || this.P( pattern, 0xdb, 0x13)) && this.is_different(w1, w5))
+        if ((this.P(pattern, 0xbf, 0x37) || this.P(pattern, 0xdb, 0x13)) && this.is_different(w1, w5))
             return this.mix(w4, w3, 0.5 - px);
         
-        if ((this.P( pattern, 0xdb, 0x49) || this.P( pattern, 0xef, 0x6d)) && this.is_different(w7, w3))
+        if ((this.P(pattern, 0xdb, 0x49) || this.P(pattern, 0xef, 0x6d)) && this.is_different(w7, w3))
             return this.mix(w4, w1, 0.5 - py);
         
-        if ((this.P( pattern, 0x0b, 0x0b) || this.P( pattern, 0xfe, 0x4a) || this.P( pattern, 0xfe, 0x1a)) && this.is_different(w3, w1))
+        if ((this.P(pattern, 0x0b, 0x0b) || this.P(pattern, 0xfe, 0x4a) || this.P(pattern, 0xfe, 0x1a)) && this.is_different(w3, w1))
             return w4;
         
-        if ((this.P( pattern, 0x6f, 0x2a) || this.P( pattern, 0x5b, 0x0a) || this.P( pattern, 0xbf, 0x3a) || this.P( pattern, 0xdf, 0x5a) || this.P( pattern, 0x9f, 0x8a) || this.P( pattern, 0xcf, 0x8a) || this.P( pattern, 0xef, 0x4e) || this.P( pattern, 0x3f, 0x0e) ||
-            this.P( pattern, 0xfb, 0x5a) || this.P( pattern, 0xbb, 0x8a) || this.P( pattern, 0x7f, 0x5a) || this.P( pattern, 0xaf, 0x8a) || this.P( pattern, 0xeb, 0x8a)) && this.is_different(w3, w1))
+        if ((this.P(pattern, 0x6f, 0x2a) || this.P(pattern, 0x5b, 0x0a) || this.P(pattern, 0xbf, 0x3a) || this.P(pattern, 0xdf, 0x5a) || this.P(pattern, 0x9f, 0x8a) || this.P(pattern, 0xcf, 0x8a) || this.P(pattern, 0xef, 0x4e) || this.P(pattern, 0x3f, 0x0e) ||
+            this.P(pattern, 0xfb, 0x5a) || this.P(pattern, 0xbb, 0x8a) || this.P(pattern, 0x7f, 0x5a) || this.P(pattern, 0xaf, 0x8a) || this.P(pattern, 0xeb, 0x8a)) && this.is_different(w3, w1))
             return this.mix(w4, this.mix(w4, w0, 0.5 - px), 0.5 - py);
         
-        if (this.P( pattern, 0x0b, 0x08))
+        if (this.P(pattern, 0x0b, 0x08))
             return this.mix(this.mix(this.Mul(w0, 0.375) + this.Mul(w1, 0.25) + this.Mul(w4, 0.375), this.Mul(w4, 0.5) + this.Mul(w1, 0.5), px * 2.0), w4, py * 2.0);
 
-        if (this.P( pattern, 0x0b, 0x02))
+        if (this.P(pattern, 0x0b, 0x02))
             return this.mix(this.mix(this.Mul(w0, 0.375) + this.Mul(w3, 0.25) + this.Mul(w4, 0.375), this.Mul(w4, 0.5) + this.Mul(w3, 0.5), py * 2.0), w4, px * 2.0);
         
         var r, dist, pixel_size;
         
-        if (this.P( pattern, 0x2f, 0x2f)) {
+        if (this.P(pattern, 0x2f, 0x2f)) {
 
             dist = length(px - 0.5, py - 0.5);
             pixel_size = length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy));
@@ -181,7 +181,7 @@ class Filter {
             return this.mix(w4, r, (dist - 0.5 + pixel_size / 2) / pixel_size);
         }
 
-        if (this.P( pattern, 0xbf, 0x37) || this.P( pattern, 0xdb, 0x13)) {
+        if (this.P(pattern, 0xbf, 0x37) || this.P(pattern, 0xdb, 0x13)) {
             
             dist = px - 2.0 * py;
             pixel_size = length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy)) * Math.sqrt(5.0);
@@ -201,7 +201,7 @@ class Filter {
             return this.mix(r, w1, (dist + pixel_size / 2) / pixel_size);
         }
 
-        if (this.P( pattern, 0xdb, 0x49) || this.P( pattern, 0xef, 0x6d)) {
+        if (this.P(pattern, 0xdb, 0x49) || this.P(pattern, 0xef, 0x6d)) {
 
             dist = py - 2.0 * px;
             pixel_size = length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy)) * Math.sqrt(5.0);
@@ -221,7 +221,7 @@ class Filter {
             return this.mix(r, w3, (dist + pixel_size / 2) / pixel_size);
         }
 
-        if (this.P( pattern, 0xbf,0x8f) || this.P( pattern, 0x7e,0x0e)) {
+        if (this.P(pattern, 0xbf,0x8f) || this.P(pattern, 0x7e,0x0e)) {
 
             dist = px + 2.0 * py;
 
@@ -249,7 +249,7 @@ class Filter {
             return this.mix(r, w4, (dist + pixel_size / 2 - 1.0) / pixel_size);    
         }
 
-        if (this.P( pattern, 0x7e, 0x2a) || this.P( pattern, 0xef, 0xab)) {
+        if (this.P(pattern, 0x7e, 0x2a) || this.P(pattern, 0xef, 0xab)) {
 
             dist = py + 2.0 * px;
             pixel_size = length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy)) * Math.sqrt(5.0);
@@ -276,16 +276,16 @@ class Filter {
             return this.mix(r, w4, (dist + pixel_size / 2 - 1.0) / pixel_size);
         }
     
-        if (this.P( pattern, 0x1b, 0x03) || this.P( pattern, 0x4f, 0x43) || this.P( pattern, 0x8b, 0x83) || this.P( pattern, 0x6b, 0x43))
+        if (this.P(pattern, 0x1b, 0x03) || this.P(pattern, 0x4f, 0x43) || this.P(pattern, 0x8b, 0x83) || this.P(pattern, 0x6b, 0x43))
             return this.mix(w4, w3, 0.5 - px);
     
-        if (this.P( pattern, 0x4b, 0x09) || this.P( pattern, 0x8b, 0x89) || this.P( pattern, 0x1f, 0x19) || this.P( pattern, 0x3b, 0x19))
+        if (this.P(pattern, 0x4b, 0x09) || this.P(pattern, 0x8b, 0x89) || this.P(pattern, 0x1f, 0x19) || this.P(pattern, 0x3b, 0x19))
             return this.mix(w4, w1, 0.5 - py);
     
-        if (this.P( pattern, 0xfb,0x6a) || this.P( pattern, 0x6f,0x6e) || this.P( pattern, 0x3f,0x3e) || this.P( pattern, 0xfb,0xfa) || this.P( pattern, 0xdf,0xde) || this.P( pattern, 0xdf,0x1e))
+        if (this.P(pattern, 0xfb,0x6a) || this.P(pattern, 0x6f,0x6e) || this.P(pattern, 0x3f,0x3e) || this.P(pattern, 0xfb,0xfa) || this.P(pattern, 0xdf,0xde) || this.P(pattern, 0xdf,0x1e))
             return this.mix(w4, w0, (1.0 - px - py) / 2.0);
     
-        if (this.P( pattern, 0x4f,0x4b) || this.P( pattern, 0x9f,0x1b) || this.P( pattern, 0x2f,0x0b) || this.P( pattern, 0xbe,0x0a) || this.P( pattern, 0xee,0x0a) || this.P( pattern, 0x7e,0x0a) || this.P( pattern, 0xeb,0x4b) || this.P( pattern, 0x3b,0x1b)) {
+        if (this.P(pattern, 0x4f,0x4b) || this.P(pattern, 0x9f,0x1b) || this.P(pattern, 0x2f,0x0b) || this.P(pattern, 0xbe,0x0a) || this.P(pattern, 0xee,0x0a) || this.P(pattern, 0x7e,0x0a) || this.P(pattern, 0xeb,0x4b) || this.P(pattern, 0x3b,0x1b)) {
 
             dist = px + py;
             pixel_size = length(1.0 / (dstx / srcx), 1.0 / (dsty / srcy));
@@ -312,10 +312,10 @@ class Filter {
             return this.mix(r, w4, (dist + pixel_size / 2 - 0.5) / pixel_size);
         }
     
-        if (this.P( pattern, 0x0b, 0x01))
+        if (this.P(pattern, 0x0b, 0x01))
             return this.mix(this.mix(w4, w3, 0.5 - px), this.mix(w1, this.Add(w1,  w3, 0.5), 0.5 - px), 0.5 - py);
     
-        if (this.P( pattern, 0x0b, 0x00))
+        if (this.P(pattern, 0x0b, 0x00))
             return this.mix(this.mix(w4, w3, 0.5 - px), this.mix(w1, w0, 0.5 - px), 0.5 - py);
     
         dist = px + py;
