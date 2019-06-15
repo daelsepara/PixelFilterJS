@@ -3,12 +3,12 @@ class Filter {
 
     Apply(Input, srcx, srcy, scale) {
 
+        var Channels = 4;
+
         scale = Math.max(1, scale);
 			
         Init.Init(srcx, srcy, scale, scale, true);
 
-        var dst = new Uint32Array(Common.SizeX * Common.SizeY);
-        
         for (var y = 0; y < Common.SizeY; y++) {
 
             var offset = y * Common.SizeX;
@@ -18,33 +18,13 @@ class Filter {
 
                 var rgb = this.ScaleImage(Input, x / Common.SizeX, positiony, srcx, srcy, Common.SizeX, Common.SizeY);
 
-                dst[(offset + x)] = rgb;
+                Common.ScaledImage[(offset + x) * Channels] = Common.Red(rgb);
+                Common.ScaledImage[(offset + x) * Channels + 1] = Common.Green(rgb);
+                Common.ScaledImage[(offset + x) * Channels + 2] = Common.Blue(rgb);
             }
         }
-
-        this.ToImage(Common.ScaledImage, dst, Common.SizeX, Common.SizeY);
     }
     
-    // helper function added to work with PixelFilter
-    ToImage(dst, src, srcx, srcy) {
-        
-        var Channels = 4;
-        
-        for (var y = 0; y < srcy; y++) {
-            for (var x = 0; x < srcx; x++) {
-                
-                var index = y * srcx + x;
-                var pixel = index * Channels;
-                
-                dst[pixel] = Common.Red(src[index]);
-                dst[pixel + 1] = Common.Green(src[index]);
-                dst[pixel + 2] = Common.Blue(src[index]);
-                
-                // skip the alpha channel
-            }
-        }
-    }
-
     is_different(a, b) {
 
         return Common.IsNotLike(a, b);
