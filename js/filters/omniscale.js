@@ -10,11 +10,15 @@ class Filter {
         var dst = new Uint32Array(Common.SizeX * Common.SizeY);
         
         for (var y = 0; y < Common.SizeY; y++) {
+
+            var offset = y * Common.SizeX;
+            var positiony = y / Common.SizeY;
+
             for (var x = 0; x < Common.SizeX; x++) {
 
-                var rgb = this.ScaleImage(Input, x / Common.SizeX, y / Common.SizeY, srcx, srcy, Common.SizeX, Common.SizeY);
+                var rgb = this.ScaleImage(Input, x / Common.SizeX, positiony, srcx, srcy, Common.SizeX, Common.SizeY);
 
-                dst[(y * Common.SizeX + x)] = rgb;
+                dst[(offset + x)] = rgb;
             }
         }
 
