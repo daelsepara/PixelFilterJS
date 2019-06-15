@@ -20,20 +20,20 @@ class Filter {
 
         this.ToImage(Common.ScaledImage, dst, Common.SizeX, Common.SizeY);
     }
-
+    
     // helper function added to work with PixelFilter
-	ToImage(dst, src, srcx, srcy) {
-
-		var Channels = 4;
-
-		for (var y = 0; y < srcy; y++) {
-			for (var x = 0; x < srcx; x++) {
-
-				var index = y * srcx + x;
-				var pixel = index * Channels;
-
-				dst[pixel] = Common.Red(src[index]);
-				dst[pixel + 1] = Common.Green(src[index]);
+    ToImage(dst, src, srcx, srcy) {
+        
+        var Channels = 4;
+        
+        for (var y = 0; y < srcy; y++) {
+            for (var x = 0; x < srcx; x++) {
+                
+                var index = y * srcx + x;
+                var pixel = index * Channels;
+                
+                dst[pixel] = Common.Red(src[index]);
+                dst[pixel + 1] = Common.Green(src[index]);
                 dst[pixel + 2] = Common.Blue(src[index]);
                 
                 // skip the alpha channel
