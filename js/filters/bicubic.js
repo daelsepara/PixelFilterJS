@@ -7,6 +7,7 @@ class Filter {
 			
         Init.Init(srcx, srcy, scale, scale, false);
 
+        var Channels = 4;
         var row = 0;
 
         for (var y = 0; y < Common.SizeY; ++y) {
@@ -23,10 +24,10 @@ class Filter {
                 Common.ScaledImage[destPixel + 0] = sample[0];
                 Common.ScaledImage[destPixel + 1] = sample[1];
                 Common.ScaledImage[destPixel + 2] = sample[2];
-                destPixel += 4;
+                destPixel += Channels;
             }
 
-            row += Common.SizeX * 4;
+            row += Common.SizeX * Channels;
         }
     }
 
