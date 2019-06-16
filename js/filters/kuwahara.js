@@ -43,7 +43,7 @@ class Filter {
 				for (var xf = xs; xf < xs + pad; xf++) {
 					for (var yf = ys; yf < ys + pad; yf++) {
 
-						var val = parseFloat(Common.Luminance(Common.CLR(Input, srcx, srcy, xf, yf, 0, 0)));
+						var val = parseFloat(Common.Luminance(Common.CLRA(Input, srcx, srcy, xf, yf, 0, 0)));
 
 						sum += val;
 						varr += val * val;
@@ -95,7 +95,7 @@ class Filter {
 				var dst = (yy + x) * Channels;
 
 				// YUV to RGB (ITU-R) see https://en.wikipedia.org/wiki/YUV
-				var pixel = Common.CLR(Input, srcx, srcy, x, y, 0, 0);
+				var pixel = Common.CLRA(Input, srcx, srcy, x, y, 0, 0);
 
 				var luminance = mean[yc * fx + xc] + 0.5;
 				var cr = parseFloat(Common.ChromaU(pixel));
@@ -106,11 +106,12 @@ class Filter {
 				Common.ScaledImage[dst] = Common._Clip8(parseInt(luminance + 1.042 * crr));
 				Common.ScaledImage[dst + 1] = Common._Clip8(parseInt(luminance - 0.344 * cbb - 0.714 * crr));
 				Common.ScaledImage[dst + 2] = Common._Clip8(parseInt(luminance + 1.772 * cbb));
+				Common.ScaledImage[dst + 3] = Common.Alpha(pixel);
 			}
 
 			current++;
 
-            notify({ScalingProgress: current / total});
+            notify({ScalingProgress: current / total });
 		}
 	}
 
