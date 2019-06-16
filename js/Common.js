@@ -674,6 +674,16 @@ class Interpolate {
         return Common.RGBINT(r, g, b);
     }
 
+    static Interpolate4PA(pixel1, pixel2, pixel3, pixel4) {
+
+        var r = parseInt((Common.Red(pixel1) + Common.Red(pixel2) + Common.Red(pixel3) + Common.Red(pixel4)) >> 2);
+        var g = parseInt((Common.Green(pixel1) + Common.Green(pixel2) + Common.Green(pixel3) + Common.Green(pixel4)) >> 2);
+        var b = parseInt((Common.Blue(pixel1) + Common.Blue(pixel2) + Common.Blue(pixel3) + Common.Blue(pixel4)) >> 2);
+        var a = parseInt((Common.Alpha(pixel1) + Common.Alpha(pixel2) + Common.Alpha(pixel3) + Common.Alpha(pixel4)) >> 2);
+
+        return Common.ARGBINT(a, r, g, b);
+    }
+
     static Interpolate4P4Q(pixel1, pixel2, pixel3, pixel4, quantifier1, quantifier2, quantifier3, quantifier4) {
 
         var total = parseInt(quantifier1 + quantifier2 + quantifier3 + quantifier4);
