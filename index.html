@@ -31,6 +31,10 @@
 					<select class="form-control" ng-model="FilterChosen" ng-disabled = "Processing" ng-change = "SelectFilter()">
 						<option ng-repeat="option in Filters" value="{{option.name}}">{{option.name}} - {{option.description}}</option>
 					</select><br/>
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="Threshold" ng-model = "Threshold" ng-checked = "Threshold" ng-disabled = "(ScalingProgress > 0 && ScalingProgress < 1)">
+						<label class="custom-control-label" for="Threshold">Use threshold for color comparisons</label>
+					</div><br/>
 					<h2 ng-show = "Parameters.length > 0" class = "text-success">Scale / Parameter value</h2>
 					<select class="form-control" ng-model="Parameter" ng-disabled = "Processing" ng-show = "Parameters.length > 0">
 						<option ng-repeat="option in Parameters" value="{{option}}">{{option}}</option>

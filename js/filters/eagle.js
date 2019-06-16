@@ -1,11 +1,11 @@
 // Eagle nX Family of Filters
 class Filter {
 
-    Apply(Input, srcx, srcy, scale) {
+    Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = Math.max(2, Math.min(3, scale));
 			
-        Init.Init(srcx, srcy, scale, scale, false);
+        Init.Init(srcx, srcy, scale, scale, threshold);
 
         var Pixel;
         var P = Array(10);

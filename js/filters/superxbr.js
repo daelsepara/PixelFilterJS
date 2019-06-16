@@ -65,14 +65,14 @@ class Filter {
         return (dw1 - dw2);
     }
     
-    Apply(Input, srcx, srcy, scale) {
+    Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = 2;
 
         const Channels = 4;
         var Channel, sample, csx, csy, sx, sy, x, y, cx, cy;
 			
-        Init.Init(srcx, srcy, scale, scale, false);
+        Init.Init(srcx, srcy, scale, scale, threshold);
 
         var wgt1 = 0.129633;
         var wgt2 = 0.175068;

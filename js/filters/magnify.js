@@ -1,11 +1,11 @@
 // nX Pixel duplication
 class Filter {
 
-    Apply(Input, srcx, srcy, scale) {
+    Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = Math.max(1, scale);
 			
-        Init.Init(srcx, srcy, scale, scale, false);
+        Init.Init(srcx, srcy, scale, scale, threshold);
 
         var P = Array(10);
         

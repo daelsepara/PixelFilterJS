@@ -1,11 +1,11 @@
 // No-scaling TV-like effect using interlacing and gamma reduction
 class Filter {
 
-    Apply(Input, srcx, srcy, scale) {
+    Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = Math.max(1, Math.min(4, scale));
 			
-        Init.Init(srcx, srcy, 1, 1, false);
+        Init.Init(srcx, srcy, 1, 1, threshold);
 
         var Channels = 4;
         var P = Array(10);

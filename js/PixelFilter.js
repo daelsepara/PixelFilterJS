@@ -11,6 +11,7 @@ angular
 		$scope.Parameter = 0;
 		$scope.Parameters = [];
 		$scope.ScalingProgress = 0;
+		$scope.Threshold = true;
 
 		$scope.Filters = [
 			{name: '2xsai', parameters: [2], description: 'Derek Liauw Kie Fa\'s 2XSaI'},
@@ -76,14 +77,14 @@ angular
 
 		$scope.ApplyFilter = function() {
 
-			function async(currentPath, parameter, input) {
+			function async(currentPath, parameter, input, threshold) {
 
 				importScripts(currentPath + 'js/Common.js');
 				importScripts(currentPath + 'js/filters/' + parameter.filter + '.js');
 
 				var filter = new Filter();
 
-				filter.Apply(input.data, input.width, input.height, parameter.value);
+				filter.Apply(input.data, input.width, input.height, parameter.value, threshold);
 
 				var output = Common.ScaledImage;
 
@@ -114,7 +115,7 @@ angular
 				var parameter = {filter: $scope.FilterChosen, value: parseInt($scope.Parameter)};
 				
 				// uses the native $q style notification: https://docs.angularjs.org/api/ng/service/$q
-				$scope.asyncFilter.run(currentPath, parameter, input).then(function(result) {
+				$scope.asyncFilter.run(currentPath, parameter, input, $scope.Threshold).then(function(result) {
 					
 					$scope.Processing = false;
 					

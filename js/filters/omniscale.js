@@ -1,13 +1,13 @@
 // Lior Halphon's Omniscale (Modified: Uses Maxim Stepin's Color comparison routine)
 class Filter {
 
-    Apply(Input, srcx, srcy, scale) {
+    Apply(Input, srcx, srcy, scale, threshold) {
 
         var Channels = 4;
 
         scale = Math.max(1, scale);
 			
-        Init.Init(srcx, srcy, scale, scale, true);
+        Init.Init(srcx, srcy, scale, scale, threshold);
         
         var total = Common.SizeY;
         var current = 0;

@@ -1,11 +1,11 @@
 // Maxim Stepin's High Quality nX Magnification
 class Filter {
 
-    Apply(Input, srcx, srcy, scale) {
+    Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = Math.max(2, Math.min(scale, 4));
 			
-        Init.Init(srcx, srcy, scale, scale, true);
+        Init.Init(srcx, srcy, scale, scale, threshold);
 
         var Pixel;
         var P = Array(17);

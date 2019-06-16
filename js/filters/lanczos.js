@@ -1,11 +1,11 @@
 class Filter {
 
-    Apply(Input, srcx, srcy, scale, win = 3.0) {
+    Apply(Input, srcx, srcy, scale, threshold, win = 3.0) {
 
         scale = Math.max(1, scale);
         win = Math.max(3, win);
 
-        Init.Init(srcx, srcy, scale, scale, false);
+        Init.Init(srcx, srcy, scale, scale, threshold);
         
         this.Resize(Input, srcx, srcy, win, Common.ScaledImage, Common.SizeX, Common.SizeY);
     }

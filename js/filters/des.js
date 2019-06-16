@@ -1,13 +1,13 @@
 // DES filters from FNES
 class Filter {
 
-    Apply(Input, srcx, srcy, scale) {
+    Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = Math.max(1, Math.min(2, scale));
         
         var Channels = 4;
 
-        Init.Init(srcx, srcy, scale, scale, false);
+        Init.Init(srcx, srcy, scale, scale, threshold);
 
         var P = Array(5);
         

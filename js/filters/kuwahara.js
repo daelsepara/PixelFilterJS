@@ -114,11 +114,11 @@ class Filter {
 		}
 	}
 
-    Apply(Input, srcx, srcy, win) {
+    Apply(Input, srcx, srcy, win, threshold) {
 
         win = Math.max(3, win);
         
-        Init.Init(srcx, srcy, 1, 1, false);
+        Init.Init(srcx, srcy, 1, 1, threshold);
 
         this.Kuwahara(Input, srcx, srcy, win);
     }

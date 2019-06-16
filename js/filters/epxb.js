@@ -1,11 +1,11 @@
 // SNES9x's EPX (variant B) modified by Hawkynt to support thresholds
 class Filter {
 
-    Apply(Input, srcx, srcy, scale) {
+    Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = 2;
 			
-        Init.Init(srcx, srcy, scale, scale, false);
+        Init.Init(srcx, srcy, scale, scale, threshold);
 
         var P = Array(5);
         

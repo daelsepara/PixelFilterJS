@@ -1,10 +1,10 @@
 class Filter {
 
-    Apply(Input, srcx, srcy, scale) {
+    Apply(Input, srcx, srcy, scale, threshold) {
 
 		scale = Math.max(1, scale);
 
-		Init.Init(srcx, srcy, scale, scale, false);
+		Init.Init(srcx, srcy, scale, scale, threshold);
 
 		var src = this.ToArray(Input, srcx, srcy);
 		var dst = new Uint32Array(Common.SizeX * Common.SizeY);

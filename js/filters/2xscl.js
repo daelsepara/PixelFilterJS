@@ -1,11 +1,11 @@
 // FNES' 2x Scaling (wiithout palette mixing)
 class Filter {
 
-    Apply(Input, srcx, srcy, scale) {
+    Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = 2;
 			
-        Init.Init(srcx, srcy, scale, scale, false);
+        Init.Init(srcx, srcy, scale, scale, threshold);
 
         var P = Array(5);
         

@@ -1,11 +1,11 @@
 // Kreed's SuperEagle modified by Hawkynt to allow thresholds
 class Filter {
 
-    Apply(Input, srcx, srcy, scale) {
+    Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = 2;
 			
-        Init.Init(srcx, srcy, scale, scale, false);
+        Init.Init(srcx, srcy, scale, scale, threshold);
 
         var P = Array(5);
         

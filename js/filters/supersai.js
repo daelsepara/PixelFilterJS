@@ -1,13 +1,13 @@
 // Kreed's SuperSaI
 class Filter {
 
-    Apply(Input, srcx, srcy, scale) {
+    Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = 2;
         
         scale = Math.max(2, Math.min(3, scale));
 			
-        Init.Init(srcx, srcy, scale, scale, false);
+        Init.Init(srcx, srcy, scale, scale, threshold);
 
         var P = Array(5);
         

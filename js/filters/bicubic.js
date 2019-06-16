@@ -1,11 +1,11 @@
 // Bicubic - see: https://blog.demofox.org/2015/08/15/resizing-images-with-bicubic-interpolation/
 class Filter {
 
-    Apply(Input, srcx, srcy, scale) {
+    Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = Math.max(1, scale);
 			
-        Init.Init(srcx, srcy, scale, scale, false);
+        Init.Init(srcx, srcy, scale, scale, threshold);
 
         var Channels = 4;
         var row = 0;

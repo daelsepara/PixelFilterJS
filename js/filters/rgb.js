@@ -1,11 +1,11 @@
 // Dot-Matrix Printer Effect
 class Filter {
 
-    Apply(Input, srcx, srcy, scale) {
+    Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = Math.max(1, Math.min(4, scale));
 			
-        Init.Init(srcx, srcy, scale, scale, false);
+        Init.Init(srcx, srcy, scale, scale, threshold);
 
         var Pixel, Channels = 4;
         var P = Array(17);
