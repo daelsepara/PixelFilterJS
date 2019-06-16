@@ -40,11 +40,11 @@ class Filter {
         var r, c, i, j, v_toSet, weight, row_within, col_within, floor_row, floor_col, lanc_term;
         var win = parseInt(lanczos_size);
 
-        var total = (Channels - 1) * N;
+        var total = (Channels) * N;
         var current = 0;
 
         // do not include alpha channel
-        for (var Channel = 0; Channel < Channels - 1; Channel++) {
+        for (var Channel = 0; Channel < Channels; Channel++) {
 
             // Now apply a filter to the image.
             for (r = 0; r < N; ++r) {

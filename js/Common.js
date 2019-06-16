@@ -632,8 +632,8 @@ class Interpolate {
         return Common.ARGBINT(a, r, g, b);
     }
 
-    static Interpolate3P3Q(pixel1, pixel2, pixel3, quantifier1, quantifier2, quantifier3)
-    {
+    static Interpolate3P3Q(pixel1, pixel2, pixel3, quantifier1, quantifier2, quantifier3) {
+
         var total = parseInt(quantifier1 + quantifier2 + quantifier3);
         
         var r = parseInt((Common.Red(pixel1) * quantifier1 + Common.Red(pixel2) * quantifier2 + Common.Red(pixel3) * quantifier3) / total);
@@ -641,6 +641,18 @@ class Interpolate {
         var b = parseInt((Common.Blue(pixel1) * quantifier1 + Common.Blue(pixel2) * quantifier2 + Common.Blue(pixel3) * quantifier3) / total);
 
         return Common.RGBINT(r, g, b);
+    }
+
+    static Interpolate3P3QA(pixel1, pixel2, pixel3, quantifier1, quantifier2, quantifier3) {
+        
+        var total = parseInt(quantifier1 + quantifier2 + quantifier3);
+        
+        var r = parseInt((Common.Red(pixel1) * quantifier1 + Common.Red(pixel2) * quantifier2 + Common.Red(pixel3) * quantifier3) / total);
+        var g = parseInt((Common.Green(pixel1) * quantifier1 + Common.Green(pixel2) * quantifier2 + Common.Green(pixel3) * quantifier3) / total);
+        var b = parseInt((Common.Blue(pixel1) * quantifier1 + Common.Blue(pixel2) * quantifier2 + Common.Blue(pixel3) * quantifier3) / total);
+        var a = parseInt((Common.Alpha(pixel1) * quantifier1 + Common.Alpha(pixel2) * quantifier2 + Common.Alpha(pixel3) * quantifier3) / total);
+
+        return Common.ARGBINT(a, r, g, b);
     }
 
     static Interpolate4P(pixel1, pixel2, pixel3, pixel4) {
