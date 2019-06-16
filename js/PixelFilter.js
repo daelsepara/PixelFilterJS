@@ -25,6 +25,7 @@ angular
 			{name: 'epx', parameters: [2, 3], description: 'EPX/Scale 2/3X - Eric\'s Pixel eXpander / Advance Mame Scale 2/3X'},
 			{name: 'epxb', parameters: [2], description: 'SNES9x\'s EPX (variant B) modified by Hawkynt to support thresholds'},
 			{name: 'epxc', parameters: [2], description: 'SNES9x\'s EPX (variant C) modified by Hawkynt to support thresholds'},
+			{name: 'grayscale', parameters: [1], description: 'Grayscale filter'},
 			{name: 'hqnx', parameters: [2, 3, 4], description: 'Maxim Stepin\'s High Quality nX Magnification'},
 			{name: 'kuwahara', parameters: [3, 5, 7, 9, 11, 13, 15], description: 'Kuwahara Filter (nxn window)'},
 			{name: 'lanczos', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Lanczos (window size = 3) Resampling'},
