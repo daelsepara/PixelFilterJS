@@ -148,7 +148,7 @@ class Common {
 
     static Brightness(rgb) {
 
-        var dwordC = rgb >>> 0 & 0xFFFFFF;
+        var dwordC = rgb & 0xFFFFFF;
 
         return parseInt((this.Red(dwordC) * 3 + this.Green(dwordC) * 3 + this.Blue(dwordC) * 2) >> 3);
     }
