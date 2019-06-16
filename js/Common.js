@@ -695,6 +695,18 @@ class Interpolate {
         return Common.RGBINT(r, g, b);
     }
 
+    static Interpolate4P4QA(pixel1, pixel2, pixel3, pixel4, quantifier1, quantifier2, quantifier3, quantifier4) {
+
+        var total = parseInt(quantifier1 + quantifier2 + quantifier3 + quantifier4);
+        
+        var r = parseInt((Common.Red(pixel1) * quantifier1 + Common.Red(pixel2) * quantifier2 + Common.Red(pixel3) * quantifier3 + Common.Red(pixel4) * quantifier4) / total);
+        var g = parseInt((Common.Green(pixel1) * quantifier1 + Common.Green(pixel2) * quantifier2 + Common.Green(pixel3) * quantifier3 + Common.Green(pixel4) * quantifier4) / total);
+        var b = parseInt((Common.Blue(pixel1) * quantifier1 + Common.Blue(pixel2) * quantifier2 + Common.Blue(pixel3) * quantifier3 + Common.Blue(pixel4) * quantifier4) / total);
+        var a = parseInt((Common.Alpha(pixel1) * quantifier1 + Common.Alpha(pixel2) * quantifier2 + Common.Alpha(pixel3) * quantifier3 + Common.Alpha(pixel4) * quantifier4) / total);
+    
+        return Common.ARGBINT(a, r, g, b);
+    }
+
     static Mixpal(c1, c2) {
 
         return (this.Interpolate2P2Q(c1, c2, 3, 1));

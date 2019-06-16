@@ -15,15 +15,16 @@ class Filter {
         for (var y = 0; y < srcy; y++) {
             for (var x = 0; x < srcx; x++) {
 
-                var pixel = Common.CLR(Input, srcx, srcy, x, y, 0, 0);
+                var pixel = Common.CLRA(Input, srcx, srcy, x, y, 0, 0);
 					
                 var R = Common.Red(pixel);
                 var G = Common.Green(pixel);
                 var B = Common.Blue(pixel);
+                var A = Common.Alpha(pixel);
 
-                var subPixel = Common.RGBINT((R * 5) >> 3, (G * 5) >> 3, (B * 5) >> 3);
-                var subPixel2 = Common.RGBINT((R * 5) >> 4, (G * 5) >> 4, (B * 5) >> 4);
-                var subPixel3 = Common.RGBINT((R * 5) >> 5, (G * 5) >> 5, (B * 5) >> 5);
+                var subPixel = Common.ARGBINT((A * 14) >> 4, (R * 5) >> 3, (G * 5) >> 3, (B * 5) >> 3);
+                var subPixel2 = Common.ARGBINT((A * 14) >> 4, (R * 5) >> 4, (G * 5) >> 4, (B * 5) >> 4);
+                var subPixel3 = Common.ARGBINT((A * 14) >> 4, (R * 5) >> 5, (G * 5) >> 5, (B * 5) >> 5);
 
                 var odd = (y % 2) > 0;
                 
@@ -40,7 +41,7 @@ class Filter {
 
                         for (Pixel = 1; Pixel < 5; Pixel++) {
 
-                            Common.Write4RGB(Common.ScaledImage, srcx, srcy, x, y, Pixel, P[Pixel]);
+                            Common.Write4RGBA(Common.ScaledImage, srcx, srcy, x, y, Pixel, P[Pixel]);
                         }
                         
                         break;
@@ -59,7 +60,7 @@ class Filter {
 
                         for (Pixel = 1; Pixel < 10; Pixel++) {
 
-                            Common.Write9RGB(Common.ScaledImage, srcx, srcy, x, y, Pixel, P[Pixel]);
+                            Common.Write9RGBA(Common.ScaledImage, srcx, srcy, x, y, Pixel, P[Pixel]);
                         }
                     
                         break;
@@ -73,7 +74,7 @@ class Filter {
                         
                         for (Pixel = 1; Pixel < 17; Pixel++) {
                             
-                            Common.Write16RGB(Common.ScaledImage, srcx, srcy, x, y, Pixel, P[Pixel]);
+                            Common.Write16RGBA(Common.ScaledImage, srcx, srcy, x, y, Pixel, P[Pixel]);
                         }
                     
                         break;
@@ -83,6 +84,7 @@ class Filter {
                         Common.ScaledImage[dst] = odd ? Common.Red(subPixel) : Common.Red(pixel);
                         Common.ScaledImage[dst + 1] = odd ? Common.Green(subPixel) : Common.Green(pixel);
                         Common.ScaledImage[dst + 2] = odd ? Common.Blue(subPixel) : Common.Blue(pixel);
+                        Common.ScaledImage[dst + 3] = odd ? Common.Alpha(subPixel) : Common.Alpha(pixel);
                         
                         break;
                 }
