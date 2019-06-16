@@ -14,40 +14,44 @@
 
 <body>
 	<br/>
-	<div class="container border border-secondary rounded">
-		<div class="container">
-			<br/>
-			<h1 class = "text-primary">PixelFIlterJS</h1><br/>
-			<div ng-app="PixelFilter">
-				<div ng-controller="PixelFilterController">
-					<input type="file" multiple name="InputImageFiles" id = "InputImageFiles" input-bind class="btn btn-outline-secondary" ng-disabled = "Processing" /><br/><br/>
-					<input type="button" class="btn btn-outline-primary" value="Upload image" ng-click="LoadInputImage()" ng-disabled = "Processing"/>
-					<br/><br/>
-					<div>
-						<img ng-src="{{InputImage}}" id = "InputImage"/>
-					</div>
-					<br/>
-					<h2 class = "text-warning">Select filter <span class = "text-secondary">({{Filters.length}})</span></h2>
-					<select class="form-control" ng-model="FilterChosen" ng-disabled = "Processing" ng-change = "SelectFilter()">
-						<option ng-repeat="option in Filters" value="{{option.name}}">{{option.name}} - {{option.description}}</option>
-					</select><br/>
-					<div class="custom-control custom-checkbox">
-						<input type="checkbox" class="custom-control-input" id="Threshold" ng-model = "Threshold" ng-checked = "Threshold" ng-disabled = "(ScalingProgress > 0 && ScalingProgress < 1)">
-						<label class="custom-control-label" for="Threshold">Use threshold for color comparisons</label>
-					</div><br/>
-					<h2 ng-show = "Parameters.length > 0" class = "text-success">Scale / Parameter value</h2>
-					<select class="form-control" ng-model="Parameter" ng-disabled = "Processing" ng-show = "Parameters.length > 0">
-						<option ng-repeat="option in Parameters" value="{{option}}">{{option}}</option>
-					</select>
-					<br ng-show = "ScalingProgress > 0 && ScalingProgress <= 1"/>
-					<progress class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" ng-show = "ScalingProgress > 0 && ScalingProgress < 1" value="{{ScalingProgress}}"></progress><br ng-show = "ScalingProgress >= 0 && ScalingProgress < 1"/>
-					<input type="button" class="btn btn-outline-success" value="Apply filter" ng-click="ApplyFilter()" ng-disabled = "Processing"/><br/><br/>
-					<div>
-						<canvas id = "OutputCanvas"></canvas>
+	<div>
+		<div class = "row">
+			<div class = "col-sm-1"></div>
+			<div class="col-sm-10 border border-secondary rounded">
+				<br/>
+				<h1 class = "text-primary">PixelFIlterJS</h1><br/>
+				<div ng-app="PixelFilter">
+					<div ng-controller="PixelFilterController">
+						<input type="file" multiple name="InputImageFiles" id = "InputImageFiles" input-bind class="btn btn-outline-secondary" ng-disabled = "Processing" /><br/><br/>
+						<input type="button" class="btn btn-outline-primary" value="Upload image" ng-click="LoadInputImage()" ng-disabled = "Processing"/>
+						<br/><br/>
+						<div>
+							<img ng-src="{{InputImage}}" id = "InputImage"/>
+						</div>
 						<br/>
+						<h2 class = "text-warning">Select filter <span class = "text-secondary">({{Filters.length}})</span></h2>
+						<select class="form-control" ng-model="FilterChosen" ng-disabled = "Processing" ng-change = "SelectFilter()">
+							<option ng-repeat="option in Filters" value="{{option.name}}">{{option.name}} - {{option.description}}</option>
+						</select><br/>
+						<div class="custom-control custom-checkbox">
+							<input type="checkbox" class="custom-control-input" id="Threshold" ng-model = "Threshold" ng-checked = "Threshold" ng-disabled = "(ScalingProgress > 0 && ScalingProgress < 1)">
+							<label class="custom-control-label" for="Threshold">Use threshold for color comparisons</label>
+						</div><br/>
+						<h2 ng-show = "Parameters.length > 0" class = "text-success">Scale / Parameter value</h2>
+						<select class="form-control" ng-model="Parameter" ng-disabled = "Processing" ng-show = "Parameters.length > 0">
+							<option ng-repeat="option in Parameters" value="{{option}}">{{option}}</option>
+						</select>
+						<br ng-show = "ScalingProgress > 0 && ScalingProgress <= 1"/>
+						<progress class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" ng-show = "ScalingProgress > 0 && ScalingProgress < 1" value="{{ScalingProgress}}"></progress><br ng-show = "ScalingProgress >= 0 && ScalingProgress < 1"/>
+						<input type="button" class="btn btn-outline-success" value="Apply filter" ng-click="ApplyFilter()" ng-disabled = "Processing"/><br/><br/>
+						<div>
+							<canvas id = "OutputCanvas"></canvas>
+							<br/>
+						</div>
 					</div>
 				</div>
 			</div>
+			<div class = "col-sm-1"></div>
 		</div>
 	</div>
 	<br/><br/>
