@@ -27,8 +27,8 @@ class Filter {
                 Common.ScaledImage[destPixel + 0] = sample[0];
                 Common.ScaledImage[destPixel + 1] = sample[1];
                 Common.ScaledImage[destPixel + 2] = sample[2];
+                Common.ScaledImage[destPixel + 3] = sample[3];
                 destPixel += Channels;
-
             }
 
             row += Common.SizeX * Channels;
@@ -69,34 +69,34 @@ class Filter {
         var yfract = y - Math.floor(y);
     
         // 1st row
-        var p00 = Common.CLR(src, srcx, srcy, xint, yint, -1, -1);
-        var p10 = Common.CLR(src, srcx, srcy, xint, yint, 0, -1);
-        var p20 = Common.CLR(src, srcx, srcy, xint, yint, 1, -1);
-        var p30 = Common.CLR(src, srcx, srcy, xint, yint, 2, -1);
+        var p00 = Common.CLRA(src, srcx, srcy, xint, yint, -1, -1);
+        var p10 = Common.CLRA(src, srcx, srcy, xint, yint, 0, -1);
+        var p20 = Common.CLRA(src, srcx, srcy, xint, yint, 1, -1);
+        var p30 = Common.CLRA(src, srcx, srcy, xint, yint, 2, -1);
     
         // 2nd row
-        var p01 = Common.CLR(src, srcx, srcy, xint, yint, -1, 0);
-        var p11 = Common.CLR(src, srcx, srcy, xint, yint, 0, 0);
-        var p21 = Common.CLR(src, srcx, srcy, xint, yint, 1, 0);
-        var p31 = Common.CLR(src, srcx, srcy, xint, yint, 2, 0);
+        var p01 = Common.CLRA(src, srcx, srcy, xint, yint, -1, 0);
+        var p11 = Common.CLRA(src, srcx, srcy, xint, yint, 0, 0);
+        var p21 = Common.CLRA(src, srcx, srcy, xint, yint, 1, 0);
+        var p31 = Common.CLRA(src, srcx, srcy, xint, yint, 2, 0);
     
         // 3rd row
-        var p02 = Common.CLR(src, srcx, srcy, xint, yint, -1, 1);
-        var p12 = Common.CLR(src, srcx, srcy, xint, yint, 0, 1);
-        var p22 = Common.CLR(src, srcx, srcy, xint, yint, 1, 1);
-        var p32 = Common.CLR(src, srcx, srcy, xint, yint, 2, 1);
+        var p02 = Common.CLRA(src, srcx, srcy, xint, yint, -1, 1);
+        var p12 = Common.CLRA(src, srcx, srcy, xint, yint, 0, 1);
+        var p22 = Common.CLRA(src, srcx, srcy, xint, yint, 1, 1);
+        var p32 = Common.CLRA(src, srcx, srcy, xint, yint, 2, 1);
     
         // 4th row
-        var p03 = Common.CLR(src, srcx, srcy, xint, yint, -1, 2);
-        var p13 = Common.CLR(src, srcx, srcy, xint, yint, 0, 2);
-        var p23 = Common.CLR(src, srcx, srcy, xint, yint, 1, 2);
-        var p33 = Common.CLR(src, srcx, srcy, xint, yint, 2, 2);
+        var p03 = Common.CLRA(src, srcx, srcy, xint, yint, -1, 2);
+        var p13 = Common.CLRA(src, srcx, srcy, xint, yint, 0, 2);
+        var p23 = Common.CLRA(src, srcx, srcy, xint, yint, 1, 2);
+        var p33 = Common.CLRA(src, srcx, srcy, xint, yint, 2, 2);
     
         // interpolate bi-cubically!
         // Clamp the values since the curve can put the value below 0 or above 255
-        var ret = new Uint8ClampedArray(3);
+        var ret = new Uint8ClampedArray(4);
 
-        for (var i = 0; i < 3; ++i) {
+        for (var i = 0; i < 4; ++i) {
 
             var col0 = this.CubicHermite(this.getByte(p00, i), this.getByte(p10, i), this.getByte(p20, i), this.getByte(p30, i), xfract);
             var col1 = this.CubicHermite(this.getByte(p01, i), this.getByte(p11, i), this.getByte(p21, i), this.getByte(p31, i), xfract);
@@ -104,7 +104,14 @@ class Filter {
             var col3 = this.CubicHermite(this.getByte(p03, i), this.getByte(p13, i), this.getByte(p23, i), this.getByte(p33, i), xfract);
             var value = this.CubicHermite(col0, col1, col2, col3, yfract);
             
-            ret[2 - i] = value;
+            if (i < 3) {
+                
+                ret[2 - i] = value;
+            
+            } else {
+
+                ret[i] = value;
+            }
         }
 
         return ret;
