@@ -19,11 +19,12 @@ class Filter {
 
             for (var x = 0; x < Common.SizeX; x++) {
 
-                var rgb = this.ScaleImage(Input, x / Common.SizeX, positiony, srcx, srcy, Common.SizeX, Common.SizeY);
+                var argb = this.ScaleImage(Input, x / Common.SizeX, positiony, srcx, srcy, Common.SizeX, Common.SizeY);
 
-                Common.ScaledImage[(offset + x) * Channels] = Common.Red(rgb);
-                Common.ScaledImage[(offset + x) * Channels + 1] = Common.Green(rgb);
-                Common.ScaledImage[(offset + x) * Channels + 2] = Common.Blue(rgb);
+                Common.ScaledImage[(offset + x) * Channels] = Common.Red(argb);
+                Common.ScaledImage[(offset + x) * Channels + 1] = Common.Green(argb);
+                Common.ScaledImage[(offset + x) * Channels + 2] = Common.Blue(argb);
+                Common.ScaledImage[(offset + x) * Channels + 3] = Common.Alpha(argb);
             }
 
             current++;
@@ -39,7 +40,7 @@ class Filter {
 
     mix(x, y, a) {
 
-        return Interpolate.Interpolate2P1Q(x, y, a);
+        return Interpolate.Interpolate2P1QA(x, y, a);
     }
 
     fract(x) {
@@ -57,8 +58,9 @@ class Filter {
         var r = Common.Red(x) * y;
         var g = Common.Green(x) * y;
         var b = Common.Blue(x) * y;
+        var a = Common.Alpha(x) * y;
 
-        return Common.RGBINT(r, g, b);
+        return Common.ARGBINT(a, r, g, b);
     }
     
     Add(x, y, scale) {
@@ -66,8 +68,9 @@ class Filter {
         var r = (Common.Red(x) + Common.Red(y)) * scale;
         var g = (Common.Green(x) + Common.Green(y)) * scale;
         var b = (Common.Blue(x) + Common.Blue(y)) * scale;
+        var a = (Common.Alpha(x) + Common.Alpha(y)) * scale;
 
-        return Common.RGBINT(r, g, b);
+        return Common.ARGBINT(a, r, g, b);
     }
 
     length(a, b) {
@@ -102,15 +105,15 @@ class Filter {
         var positionx = parseInt(ppx * srcx);
         var positiony = parseInt(ppy * srcy);
 
-        var w0 = Common.CLR(image, srcx, srcy, positionx, positiony, -ox, -oy);
-        var w1 = Common.CLR(image, srcx, srcy, positionx, positiony, 0, -oy);
-        var w2 = Common.CLR(image, srcx, srcy, positionx, positiony, ox, -oy);
-        var w3 = Common.CLR(image, srcx, srcy, positionx, positiony, -ox, 0);
-        var w4 = Common.CLR(image, srcx, srcy, positionx, positiony, 0,  0);
-        var w5 = Common.CLR(image, srcx, srcy, positionx, positiony, ox, 0);
-        var w6 = Common.CLR(image, srcx, srcy, positionx, positiony, -ox, oy);
-        var w7 = Common.CLR(image, srcx, srcy, positionx, positiony, 0,  oy);
-        var w8 = Common.CLR(image, srcx, srcy, positionx, positiony, ox, oy);
+        var w0 = Common.CLRA(image, srcx, srcy, positionx, positiony, -ox, -oy);
+        var w1 = Common.CLRA(image, srcx, srcy, positionx, positiony, 0, -oy);
+        var w2 = Common.CLRA(image, srcx, srcy, positionx, positiony, ox, -oy);
+        var w3 = Common.CLRA(image, srcx, srcy, positionx, positiony, -ox, 0);
+        var w4 = Common.CLRA(image, srcx, srcy, positionx, positiony, 0,  0);
+        var w5 = Common.CLRA(image, srcx, srcy, positionx, positiony, ox, 0);
+        var w6 = Common.CLRA(image, srcx, srcy, positionx, positiony, -ox, oy);
+        var w7 = Common.CLRA(image, srcx, srcy, positionx, positiony, 0,  oy);
+        var w8 = Common.CLRA(image, srcx, srcy, positionx, positiony, ox, oy);
 
         var pattern = 0;
         
@@ -315,13 +318,13 @@ class Filter {
             return w4;
 
         /* We need more samples to "solve" this diagonal */
-        var x0 = Common.CLR(image, srcx, srcy, positionx, positiony, -ox * 2.0, -oy);
-        var x1 = Common.CLR(image, srcx, srcy, positionx, positiony, -ox, -oy * 2.0);
-        var x2 = Common.CLR(image, srcx, srcy, positionx, positiony, 0.0, -oy * 2.0);
-        var x3 = Common.CLR(image, srcx, srcy, positionx, positiony, ox, -oy * 2.0);
-        var x4 = Common.CLR(image, srcx, srcy, positionx, positiony, -ox * 2.0, -oy);
-        var x5 = Common.CLR(image, srcx, srcy, positionx, positiony, -ox * 2.0,  0.0);
-        var x6 = Common.CLR(image, srcx, srcy, positionx, positiony, -ox * 2.0,  oy);
+        var x0 = Common.CLRA(image, srcx, srcy, positionx, positiony, -ox * 2.0, -oy);
+        var x1 = Common.CLRA(image, srcx, srcy, positionx, positiony, -ox, -oy * 2.0);
+        var x2 = Common.CLRA(image, srcx, srcy, positionx, positiony, 0.0, -oy * 2.0);
+        var x3 = Common.CLRA(image, srcx, srcy, positionx, positiony, ox, -oy * 2.0);
+        var x4 = Common.CLRA(image, srcx, srcy, positionx, positiony, -ox * 2.0, -oy);
+        var x5 = Common.CLRA(image, srcx, srcy, positionx, positiony, -ox * 2.0,  0.0);
+        var x6 = Common.CLRA(image, srcx, srcy, positionx, positiony, -ox * 2.0,  oy);
 
         if (this.is_different(x0, w4)) pattern |= 1 << 8;
         if (this.is_different(x1, w4)) pattern |= 1 << 9;

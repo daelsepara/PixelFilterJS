@@ -85,6 +85,25 @@ class Common {
         return 0;
     }
 
+    static _CLRA(Input, srcx, srcy, x, y) {
+        
+        var Channels = 4;
+
+        if (y >= 0 && y < srcy && x >= 0 && x < srcx) {
+            
+            var index = (y * srcx + x) * Channels;
+
+            var r = Input[index];
+            var g = Input[index + 1];
+            var b = Input[index + 2];
+            var a = Input[index + 3];
+
+            return this.ARGBINT(a, r, g, b);
+        }
+
+        return 0;
+    }
+
     static CLR(Input, srcx, srcy, x, y, dx = 0, dy = 0) {
 
         var xx = parseInt(x + dx);
@@ -94,6 +113,17 @@ class Common {
         yy = Math.max(0, Math.min(srcy - 1, yy));
 
         return this._CLR(Input, srcx, srcy, xx, yy);
+    }
+
+    static CLRA(Input, srcx, srcy, x, y, dx = 0, dy = 0) {
+
+        var xx = parseInt(x + dx);
+        var yy = parseInt(y + dy);
+
+        xx = Math.max(0, Math.min(srcx - 1, xx));
+        yy = Math.max(0, Math.min(srcy - 1, yy));
+
+        return this._CLRA(Input, srcx, srcy, xx, yy);
     }
 
     static Alpha(rgb) {
@@ -407,6 +437,16 @@ class Interpolate {
         var b = parseInt(parseInt(Common.Blue(pixel1) * (1.0 - quantifier) + Common.Blue(pixel2) * quantifier));
     
         return Common.RGBINT(r, g, b);
+    }
+
+    static Interpolate2P1QA(pixel1, pixel2, quantifier) {
+
+        var r = parseInt(parseInt(Common.Red(pixel1) * (1.0 - quantifier) + Common.Red(pixel2) * quantifier));
+        var g = parseInt(parseInt(Common.Green(pixel1) * (1.0 - quantifier) + Common.Green(pixel2) * quantifier));
+        var b = parseInt(parseInt(Common.Blue(pixel1) * (1.0 - quantifier) + Common.Blue(pixel2) * quantifier));
+        var a = parseInt(parseInt(Common.Alpha(pixel1) * (1.0 - quantifier) + Common.Alpha(pixel2) * quantifier));
+    
+        return Common.ARGBINT(a, r, g, b);
     }
 
     static Interpolate2P2Q(pixel1, pixel2, quantifier1, quantifier2) {
