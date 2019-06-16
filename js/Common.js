@@ -244,6 +244,37 @@ class Common {
         this._Write4RGB(Output, sizex, sizey, x, y, Pixel, R, G, B);
     }
 
+    static _Write4RGBA(Output, sizex, sizey, x, y, Pixel, A, R, G, B) {
+
+        if (x >= 0 && x < sizex && y >= 0 && y < sizey) {
+
+            var Channels = 4;
+
+            var dx = x * this.ScaleX;
+            var dy = y * this.ScaleY;
+
+            dx += (Pixel == 2 || Pixel == 4) ? 1 : 0;
+            dy += (Pixel == 3 || Pixel == 4) ? 1 : 0;
+
+            var dst = (dy * sizex * this.ScaleX + dx) * Channels;
+
+            Output[dst] = this._Clip8(R);
+            Output[dst + 1] = this._Clip8(G);
+            Output[dst + 2] = this._Clip8(B);
+            Output[dst + 3] = this._Clip8(A);
+        }
+    }
+
+    static Write4RGBA(Output, sizex, sizey, x, y, Pixel, argb) {
+
+        var R = this.Red(argb);
+        var G = this.Green(argb);
+        var B = this.Blue(argb);
+        var A = this.Alpha(argb);
+
+        this._Write4RGBA(Output, sizex, sizey, x, y, Pixel, A, R, G, B);
+    }
+
     static _Write9RGB(Output, sizex, sizey, x, y, Pixel, R, G, B)
     {
         if (x >= 0 && x < sizex && y >= 0 && y < sizey) {
@@ -291,6 +322,57 @@ class Common {
         var B = parseInt(rgb & 0x0000FF);
 
         this._Write9RGB(Output, sizex, sizey, x, y, Pixel, R, G, B);
+    }
+
+    static _Write9RGBA(Output, sizex, sizey, x, y, Pixel, A, R, G, B)
+    {
+        if (x >= 0 && x < sizex && y >= 0 && y < sizey) {
+
+            var Channels = 4;
+
+            var deltax = 0;
+            var deltay = 0;
+
+            if (Pixel == 2 || Pixel == 5 || Pixel == 8) {
+
+                deltax = 1;
+            }
+
+            if (Pixel == 3 || Pixel == 6 || Pixel == 9) {
+                
+                deltax = 2;
+            }
+
+            if (Pixel == 4 || Pixel == 5 || Pixel == 6) {
+                
+                deltay = 1;
+            }
+
+            if (Pixel == 7 || Pixel == 8 || Pixel == 9) {
+
+                deltay = 2;
+            }
+
+            var dx = x * this.ScaleX + deltax;
+            var dy = y * this.ScaleY + deltay;
+
+            var dst = (dy * sizex * this.ScaleX + dx) * Channels;
+
+            Output[dst] = this._Clip8(R);
+            Output[dst + 1] = this._Clip8(G);
+            Output[dst + 2] = this._Clip8(B);
+            Output[dst + 3] = this._Clip8(A);
+        }
+    }
+
+    static Write9RGBA(Output, sizex, sizey, x, y, Pixel, argb) {
+
+        var R = this.Red(argb);
+        var G = this.Green(argb);
+        var B = this.Blue(argb);
+        var A = this.Alpha(argb);
+
+        this._Write9RGBA(Output, sizex, sizey, x, y, Pixel, A, R, G, B);
     }
 
     static _Write16RGB(Output, sizex, sizey, x, y, Pixel, R, G, B) {
@@ -357,6 +439,74 @@ class Common {
         var B = parseInt(rgb & 0x0000FF);
 
         this._Write16RGB(Output, sizex, sizey, x, y, Pixel, R, G, B);
+    }
+
+    static _Write16RGBA(Output, sizex, sizey, x, y, Pixel, A, R, G, B) {
+
+        if (x >= 0 && x < sizex && y >= 0 && y < sizey) {
+
+            var Channels = 4;
+
+            var deltax = 0;
+            var deltay = 0;
+
+            /*
+            01 02 03 04
+            05 06 07 08
+            09 10 11 12
+            13 14 15 16
+            */
+
+            if (Pixel == 2 || Pixel == 6 || Pixel == 10 || Pixel == 14) {
+
+                deltax = 1;
+            }
+
+            if (Pixel == 3 || Pixel == 7 || Pixel == 11 || Pixel == 15) {
+
+                deltax = 2;
+            }
+
+            if (Pixel == 4 || Pixel == 8 || Pixel == 12 || Pixel == 16) {
+
+                deltax = 3;
+            }
+
+            if (Pixel == 5 || Pixel == 6 || Pixel == 7 || Pixel == 8) {
+
+                deltay = 1;
+            }
+
+            if (Pixel == 9 || Pixel == 10 || Pixel == 11 || Pixel == 12) {
+
+                deltay = 2;
+            }
+
+            if (Pixel == 13 || Pixel == 14 || Pixel == 15 || Pixel == 16) {
+
+                deltay = 3;
+            }
+
+            var dx = x * this.ScaleX + deltax;
+            var dy = y * this.ScaleY + deltay;
+
+            var dst = (dy * sizex * this.ScaleX + dx) * Channels;
+
+            Output[dst] = this._Clip8(R);
+            Output[dst + 1] = this._Clip8(G);
+            Output[dst + 2] = this._Clip8(B);
+            Output[dst + 3] = this._Clip8(A);
+        }
+    }
+
+    static Write16RGBA(Output, sizex, sizey, x, y, Pixel, argb) {
+
+        var R = this.Red(argb);
+        var G = this.Green(argb);
+        var B = this.Blue(argb);
+        var A = this.Alpha(argb);
+
+        this._Write16RGBA(Output, sizex, sizey, x, y, Pixel, A, R, G, B);
     }
 
     static WriteMagnify(Input, Output, sizex, sizey, x, y) {
@@ -430,6 +580,16 @@ class Interpolate {
         return Common.RGBINT(r, g, b);
     }
 
+    static Interpolate2PA(pixel1, pixel2) {
+
+        var r = parseInt(parseInt(Common.Red(pixel1) + Common.Red(pixel2)) >> 1);
+        var g = parseInt(parseInt(Common.Green(pixel1) + Common.Green(pixel2)) >> 1);
+        var b = parseInt(parseInt(Common.Blue(pixel1) + Common.Blue(pixel2)) >> 1);
+        var a = parseInt(parseInt(Common.Alpha(pixel1) + Common.Alpha(pixel2)) >> 1);
+
+        return Common.ARGBINT(a, r, g, b);
+    }
+
     static Interpolate2P1Q(pixel1, pixel2, quantifier) {
 
         var r = parseInt(parseInt(Common.Red(pixel1) * (1.0 - quantifier) + Common.Red(pixel2) * quantifier));
@@ -462,12 +622,12 @@ class Interpolate {
 
     static Interpolate2P2QA(pixel1, pixel2, quantifier1, quantifier2) {
 
-        var total = (quantifier1 + quantifier2) >>> 0;
+        var total = (quantifier1 + quantifier2);
     
-        var r = parseInt(((Common.Red(pixel1) * quantifier1 + Common.Red(pixel2) * quantifier2) >>> 0) / total);
-        var g = parseInt(((Common.Green(pixel1) * quantifier1 + Common.Green(pixel2) * quantifier2) >>> 0) / total);
-        var b = parseInt(((Common.Blue(pixel1) * quantifier1 + Common.Blue(pixel2) * quantifier2) >>> 0) / total);
-        var a = parseInt(((Common.Alpha(pixel1) * quantifier1 + Common.Alpha(pixel2) * quantifier2) >>> 0)/ total);
+        var r = parseInt(((Common.Red(pixel1) * quantifier1 + Common.Red(pixel2) * quantifier2)) / total);
+        var g = parseInt(((Common.Green(pixel1) * quantifier1 + Common.Green(pixel2) * quantifier2)) / total);
+        var b = parseInt(((Common.Blue(pixel1) * quantifier1 + Common.Blue(pixel2) * quantifier2)) / total);
+        var a = parseInt(((Common.Alpha(pixel1) * quantifier1 + Common.Alpha(pixel2) * quantifier2)) / total);
     
         return Common.ARGBINT(a, r, g, b);
     }
