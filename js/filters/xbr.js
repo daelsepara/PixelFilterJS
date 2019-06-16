@@ -130,7 +130,7 @@ class Filter {
 
             current++;
 
-            notify({ScalingProgress: current / total });
+            notify({ScalingProgress: current / total});
         }
     }
 
