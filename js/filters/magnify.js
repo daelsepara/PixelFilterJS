@@ -7,10 +7,6 @@ class Filter {
 			
         Init.Init(srcx, srcy, scale, scale, threshold);
 
-        var P = Array(10);
-        
-        P.fill(0);
-
         var total = srcy;
         var current = 0;
         

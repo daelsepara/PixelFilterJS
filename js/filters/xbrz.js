@@ -414,7 +414,7 @@ class Alpha {
 
 	static Grad(m, n, dstPtr, col) {
 
-		dstPtr.SetPixel(Interpolate.Interpolate2P2QA(col, dstPtr.GetPixel(), m, n));
+		dstPtr.SetPixel(Interpolate.Interpolate2P2Q(col, dstPtr.GetPixel(), m, n));
 	}
 
 	static Blend(m, n, dstPtr, col) {

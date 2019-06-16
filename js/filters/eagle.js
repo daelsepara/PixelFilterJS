@@ -30,29 +30,29 @@ class Filter {
                 // 6 7 8    |7|8|9|
                 //          +-----+
                 
-                C[0] = Common.CLRA(Input, srcx, srcy, x, y, -1, -1);
-                C[1] = Common.CLRA(Input, srcx, srcy, x, y, 0, -1);
-                C[2] = Common.CLRA(Input, srcx, srcy, x, y, 1, -1);
-                C[3] = Common.CLRA(Input, srcx, srcy, x, y, -1, 0);
-                C[4] = Common.CLRA(Input, srcx, srcy, x, y, 0, 0);
-                C[5] = Common.CLRA(Input, srcx, srcy, x, y, 1, 0);
-                C[6] = Common.CLRA(Input, srcx, srcy, x, y, -1, 1);
-                C[7] = Common.CLRA(Input, srcx, srcy, x, y, 0, 1);
-                C[8] = Common.CLRA(Input, srcx, srcy, x, y, 1, 1);
+                C[0] = Common.CLR(Input, srcx, srcy, x, y, -1, -1);
+                C[1] = Common.CLR(Input, srcx, srcy, x, y, 0, -1);
+                C[2] = Common.CLR(Input, srcx, srcy, x, y, 1, -1);
+                C[3] = Common.CLR(Input, srcx, srcy, x, y, -1, 0);
+                C[4] = Common.CLR(Input, srcx, srcy, x, y, 0, 0);
+                C[5] = Common.CLR(Input, srcx, srcy, x, y, 1, 0);
+                C[6] = Common.CLR(Input, srcx, srcy, x, y, -1, 1);
+                C[7] = Common.CLR(Input, srcx, srcy, x, y, 0, 1);
+                C[8] = Common.CLR(Input, srcx, srcy, x, y, 1, 1);
 
                 switch(scale) {
                     
                     case 3:
                         
-                        P[1] = (Common.IsLike(C[0], C[1]) && Common.IsLike(C[0], C[3])) ? Interpolate.Interpolate3PA(C[0], C[1], C[3]) : C[4];
-                        P[2] = (Common.IsLike(C[0], C[1]) && Common.IsLike(C[0], C[3]) && Common.IsLike(C[2], C[1]) && Common.IsLike(C[2], C[5])) ? Interpolate.Interpolate2PA(Interpolate.Interpolate3PA(C[0], C[1], C[3]), Interpolate.Interpolate3PA(C[2], C[1], C[5])) : C[4];
-                        P[3] = (Common.IsLike(C[2], C[1]) && Common.IsLike(C[2], C[5])) ? Interpolate.Interpolate3PA(C[2], C[1], C[5]) : C[4];
-                        P[4] = (Common.IsLike(C[0], C[1]) && Common.IsLike(C[0], C[3]) && Common.IsLike(C[6], C[7]) && Common.IsLike(C[6], C[3])) ? Interpolate.Interpolate2PA(Interpolate.Interpolate3PA(C[0], C[1], C[3]), Interpolate.Interpolate3PA(C[6], C[3], C[7])) : C[4];
+                        P[1] = (Common.IsLike(C[0], C[1]) && Common.IsLike(C[0], C[3])) ? Interpolate.Interpolate3P(C[0], C[1], C[3]) : C[4];
+                        P[2] = (Common.IsLike(C[0], C[1]) && Common.IsLike(C[0], C[3]) && Common.IsLike(C[2], C[1]) && Common.IsLike(C[2], C[5])) ? Interpolate.Interpolate2P(Interpolate.Interpolate3P(C[0], C[1], C[3]), Interpolate.Interpolate3P(C[2], C[1], C[5])) : C[4];
+                        P[3] = (Common.IsLike(C[2], C[1]) && Common.IsLike(C[2], C[5])) ? Interpolate.Interpolate3P(C[2], C[1], C[5]) : C[4];
+                        P[4] = (Common.IsLike(C[0], C[1]) && Common.IsLike(C[0], C[3]) && Common.IsLike(C[6], C[7]) && Common.IsLike(C[6], C[3])) ? Interpolate.Interpolate2P(Interpolate.Interpolate3P(C[0], C[1], C[3]), Interpolate.Interpolate3P(C[6], C[3], C[7])) : C[4];
                         P[5] = C[4];
-                        P[6] = (Common.IsLike(C[2], C[1]) && Common.IsLike(C[2], C[5]) && Common.IsLike(C[8], C[5]) && Common.IsLike(C[8], C[7])) ? Interpolate.Interpolate2PA(Interpolate.Interpolate3PA(C[2], C[1], C[5]), Interpolate.Interpolate3PA(C[8], C[5], C[7])) : C[4];
-                        P[7] = (Common.IsLike(C[6], C[3]) && Common.IsLike(C[6], C[7])) ? Interpolate.Interpolate3PA(C[6], C[3], C[7]) : C[4];
-                        P[8] = (Common.IsLike(C[6], C[7]) && Common.IsLike(C[6], C[3]) && Common.IsLike(C[8], C[5]) && Common.IsLike(C[8], C[7])) ? Interpolate.Interpolate2PA(Interpolate.Interpolate3PA(C[6], C[7], C[3]), Interpolate.Interpolate3PA(C[8], C[5], C[7])) : C[4];
-                        P[9] = (Common.IsLike(C[8], C[5]) && Common.IsLike(C[8], C[7])) ? Interpolate.Interpolate3PA(C[8], C[5], C[7]) : C[4];
+                        P[6] = (Common.IsLike(C[2], C[1]) && Common.IsLike(C[2], C[5]) && Common.IsLike(C[8], C[5]) && Common.IsLike(C[8], C[7])) ? Interpolate.Interpolate2P(Interpolate.Interpolate3P(C[2], C[1], C[5]), Interpolate.Interpolate3P(C[8], C[5], C[7])) : C[4];
+                        P[7] = (Common.IsLike(C[6], C[3]) && Common.IsLike(C[6], C[7])) ? Interpolate.Interpolate3P(C[6], C[3], C[7]) : C[4];
+                        P[8] = (Common.IsLike(C[6], C[7]) && Common.IsLike(C[6], C[3]) && Common.IsLike(C[8], C[5]) && Common.IsLike(C[8], C[7])) ? Interpolate.Interpolate2P(Interpolate.Interpolate3P(C[6], C[7], C[3]), Interpolate.Interpolate3P(C[8], C[5], C[7])) : C[4];
+                        P[9] = (Common.IsLike(C[8], C[5]) && Common.IsLike(C[8], C[7])) ? Interpolate.Interpolate3P(C[8], C[5], C[7]) : C[4];
 
                         for (Pixel = 1; Pixel < 10; Pixel++) {
 
@@ -63,10 +63,10 @@ class Filter {
                         
                     default:
                     
-                        P[1] = (Common.IsLike(C[1], C[0]) && Common.IsLike(C[1], C[3])) ? Interpolate.Interpolate3PA(C[1], C[0], C[3]) : C[4];
-                        P[2] = (Common.IsLike(C[2], C[1]) && Common.IsLike(C[2], C[5])) ? Interpolate.Interpolate3PA(C[2], C[1], C[5]) : C[4];
-                        P[3] = (Common.IsLike(C[6], C[3]) && Common.IsLike(C[6], C[7])) ? Interpolate.Interpolate3PA(C[6], C[3], C[7]) : C[4];
-                        P[4] = (Common.IsLike(C[7], C[5]) && Common.IsLike(C[7], C[8])) ? Interpolate.Interpolate3PA(C[7], C[5], C[8]) : C[4];
+                        P[1] = (Common.IsLike(C[1], C[0]) && Common.IsLike(C[1], C[3])) ? Interpolate.Interpolate3P(C[1], C[0], C[3]) : C[4];
+                        P[2] = (Common.IsLike(C[2], C[1]) && Common.IsLike(C[2], C[5])) ? Interpolate.Interpolate3P(C[2], C[1], C[5]) : C[4];
+                        P[3] = (Common.IsLike(C[6], C[3]) && Common.IsLike(C[6], C[7])) ? Interpolate.Interpolate3P(C[6], C[3], C[7]) : C[4];
+                        P[4] = (Common.IsLike(C[7], C[5]) && Common.IsLike(C[7], C[8])) ? Interpolate.Interpolate3P(C[7], C[5], C[8]) : C[4];
 
                         for (Pixel = 1; Pixel < 5; Pixel++) {
 

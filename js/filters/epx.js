@@ -17,15 +17,15 @@ class Filter {
         for (var y = 0; y < srcy; y++) {
             for (var x = 0; x < srcx; x++) {
 
-                var c0 = Common.CLRA(Input, srcx, srcy, x, y, -1, -1);
-                var c1 = Common.CLRA(Input, srcx, srcy, x, y, 0, -1);
-                var c2 = Common.CLRA(Input, srcx, srcy, x, y, 1, -1);
-                var c3 = Common.CLRA(Input, srcx, srcy, x, y, -1, 0);
-                var c4 = Common.CLRA(Input, srcx, srcy, x, y, 0, 0);
-                var c5 = Common.CLRA(Input, srcx, srcy, x, y, 1, 0);
-                var c6 = Common.CLRA(Input, srcx, srcy, x, y, -1, 1);
-                var c7 = Common.CLRA(Input, srcx, srcy, x, y, 0, 1);
-                var c8 = Common.CLRA(Input, srcx, srcy, x, y, 1, 1);
+                var c0 = Common.CLR(Input, srcx, srcy, x, y, -1, -1);
+                var c1 = Common.CLR(Input, srcx, srcy, x, y, 0, -1);
+                var c2 = Common.CLR(Input, srcx, srcy, x, y, 1, -1);
+                var c3 = Common.CLR(Input, srcx, srcy, x, y, -1, 0);
+                var c4 = Common.CLR(Input, srcx, srcy, x, y, 0, 0);
+                var c5 = Common.CLR(Input, srcx, srcy, x, y, 1, 0);
+                var c6 = Common.CLR(Input, srcx, srcy, x, y, -1, 1);
+                var c7 = Common.CLR(Input, srcx, srcy, x, y, 0, 1);
+                var c8 = Common.CLR(Input, srcx, srcy, x, y, 1, 1);
 
                 switch(scale) {
 
@@ -61,52 +61,52 @@ class Filter {
                                 ) {
                                 
                                 if (eq13)
-                                    P[1] = Interpolate.Interpolate2PA(c1, c3);
+                                    P[1] = Interpolate.Interpolate2P(c1, c3);
                                 if (eq51)
-                                    P[3] = Interpolate.Interpolate2PA(c5, c1);
+                                    P[3] = Interpolate.Interpolate2P(c5, c1);
                                 if (eq37)
-                                    P[7] = Interpolate.Interpolate2PA(c3, c7);
+                                    P[7] = Interpolate.Interpolate2P(c3, c7);
                                 if (eq75)
-                                    P[9] = Interpolate.Interpolate2PA(c7, c5);
+                                    P[9] = Interpolate.Interpolate2P(c7, c5);
 
                                 if ((eq51 && neq40) && (eq13 && neq42))
-                                    P[2] = Interpolate.Interpolate3PA(c1, c3, c5);
+                                    P[2] = Interpolate.Interpolate3P(c1, c3, c5);
                                 else if (eq51 && neq40)
-                                    P[2] = Interpolate.Interpolate2PA(c1, c5);
+                                    P[2] = Interpolate.Interpolate2P(c1, c5);
                                 else if (eq13 && neq42)
-                                    P[2] = Interpolate.Interpolate2PA(c1, c3);
+                                    P[2] = Interpolate.Interpolate2P(c1, c3);
 
                                 if ((eq13 && neq46) && (eq37 && neq40))
-                                    P[4] = Interpolate.Interpolate3PA(c3, c1, c7);
+                                    P[4] = Interpolate.Interpolate3P(c3, c1, c7);
                                 else if (eq13 && neq46)
-                                    P[4] = Interpolate.Interpolate2PA(c3, c1);
+                                    P[4] = Interpolate.Interpolate2P(c3, c1);
                                 else if (eq37 && neq40)
-                                    P[4] = Interpolate.Interpolate2PA(c3, c7);
+                                    P[4] = Interpolate.Interpolate2P(c3, c7);
 
                                 if ((eq75 && neq42) && (eq51 && neq48))
-                                    P[6] = Interpolate.Interpolate3PA(c5, c1, c7);
+                                    P[6] = Interpolate.Interpolate3P(c5, c1, c7);
                                 else if (eq75 && neq42)
-                                    P[6] = Interpolate.Interpolate2PA(c5, c7);
+                                    P[6] = Interpolate.Interpolate2P(c5, c7);
                                 else if (eq51 && neq48)
-                                    P[6] = Interpolate.Interpolate2PA(c5, c1);
+                                    P[6] = Interpolate.Interpolate2P(c5, c1);
 
                                 if ((eq37 && neq48) && (eq75 && neq46))
-                                    P[8] = Interpolate.Interpolate3PA(c7, c3, c5);
+                                    P[8] = Interpolate.Interpolate3P(c7, c3, c5);
                                 else if (eq75 && neq46)
-                                    P[8] = Interpolate.Interpolate2PA(c7, c5);
+                                    P[8] = Interpolate.Interpolate2P(c7, c5);
                                 else if (eq37 && neq48)
-                                    P[8] = Interpolate.Interpolate2PA(c7, c3);
+                                    P[8] = Interpolate.Interpolate2P(c7, c3);
 
                             } else {
 
                                 if (eq13)
-                                    P[1] = Interpolate.Interpolate2PA(c1, c3);
+                                    P[1] = Interpolate.Interpolate2P(c1, c3);
                                 if (eq51)
-                                    P[3] = Interpolate.Interpolate2PA(c5, c1);
+                                    P[3] = Interpolate.Interpolate2P(c5, c1);
                                 if (eq37)
-                                    P[7] = Interpolate.Interpolate2PA(c3, c7);
+                                    P[7] = Interpolate.Interpolate2P(c3, c7);
                                 if (eq75)
-                                    P[9] = Interpolate.Interpolate2PA(c7, c5);
+                                    P[9] = Interpolate.Interpolate2P(c7, c5);
                             }
                         }
 

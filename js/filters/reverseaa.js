@@ -17,15 +17,15 @@ class Filter {
         for (var y = 0; y < srcy; y++) {
             for (var x = 0; x < srcx; x++) {
 
-                var b1 = Common.CLRA(Input, srcx, srcy, x, y, 0, -2);
-                var b = Common.CLRA(Input, srcx, srcy, x, y, 0, -1);
-                var d = Common.CLRA(Input, srcx, srcy, x, y, -1, 0);
-                var e = Common.CLRA(Input, srcx, srcy, x, y, 0, 0);
-                var f = Common.CLRA(Input, srcx, srcy, x, y, 1, 0);
-                var h = Common.CLRA(Input, srcx, srcy, x, y, 0, 1);
-                var h5 = Common.CLRA(Input, srcx, srcy, x, y, 0, 2);
-                var d0 = Common.CLRA(Input, srcx, srcy, x, y, -2, 0);
-                var f4 = Common.CLRA(Input, srcx, srcy, x, y, 2, 0);
+                var b1 = Common.CLR(Input, srcx, srcy, x, y, 0, -2);
+                var b = Common.CLR(Input, srcx, srcy, x, y, 0, -1);
+                var d = Common.CLR(Input, srcx, srcy, x, y, -1, 0);
+                var e = Common.CLR(Input, srcx, srcy, x, y, 0, 0);
+                var f = Common.CLR(Input, srcx, srcy, x, y, 1, 0);
+                var h = Common.CLR(Input, srcx, srcy, x, y, 0, 1);
+                var h5 = Common.CLR(Input, srcx, srcy, x, y, 0, 2);
+                var d0 = Common.CLR(Input, srcx, srcy, x, y, -2, 0);
+                var f4 = Common.CLR(Input, srcx, srcy, x, y, 2, 0);
 
                 var rr = 0, rg = 0, rb = 0, ra = 0;
                 var gr = 0, gg = 0, gb = 0, ga = 0;

@@ -49,31 +49,31 @@ class Filter {
                    G5 H5 I5       P13|P14|P15|P16
                 */
 
-                var a1 = Common.CLRA(Input, srcx, srcy, x, y, -1, -2);
-                var b1 = Common.CLRA(Input, srcx, srcy, x, y, 0, -2);
-                var c1 = Common.CLRA(Input, srcx, srcy, x, y, 1, -2);
+                var a1 = Common.CLR(Input, srcx, srcy, x, y, -1, -2);
+                var b1 = Common.CLR(Input, srcx, srcy, x, y, 0, -2);
+                var c1 = Common.CLR(Input, srcx, srcy, x, y, 1, -2);
 
-                var a0 = Common.CLRA(Input, srcx, srcy, x, y, -2, -1);
-                var pa = Common.CLRA(Input, srcx, srcy, x, y, -1, -1);
-                var pb = Common.CLRA(Input, srcx, srcy, x, y, 0, -1);
-                var pc = Common.CLRA(Input, srcx, srcy, x, y, 1, -1);
-                var c4 = Common.CLRA(Input, srcx, srcy, x, y, 2, -1);
+                var a0 = Common.CLR(Input, srcx, srcy, x, y, -2, -1);
+                var pa = Common.CLR(Input, srcx, srcy, x, y, -1, -1);
+                var pb = Common.CLR(Input, srcx, srcy, x, y, 0, -1);
+                var pc = Common.CLR(Input, srcx, srcy, x, y, 1, -1);
+                var c4 = Common.CLR(Input, srcx, srcy, x, y, 2, -1);
 
-                var d0 = Common.CLRA(Input, srcx, srcy, x, y, -2, 0);
-                var pd = Common.CLRA(Input, srcx, srcy, x, y, -1, 0);
-                var pe = Common.CLRA(Input, srcx, srcy, x, y, 0, 0);
-                var pf = Common.CLRA(Input, srcx, srcy, x, y, 1, 0);
-                var f4 = Common.CLRA(Input, srcx, srcy, x, y, 2, 0);
+                var d0 = Common.CLR(Input, srcx, srcy, x, y, -2, 0);
+                var pd = Common.CLR(Input, srcx, srcy, x, y, -1, 0);
+                var pe = Common.CLR(Input, srcx, srcy, x, y, 0, 0);
+                var pf = Common.CLR(Input, srcx, srcy, x, y, 1, 0);
+                var f4 = Common.CLR(Input, srcx, srcy, x, y, 2, 0);
 
-                var g0 = Common.CLRA(Input, srcx, srcy, x, y, -2, 1);
-                var pg = Common.CLRA(Input, srcx, srcy, x, y, -1, 1);
-                var ph = Common.CLRA(Input, srcx, srcy, x, y, 0, 1);
-                var pi = Common.CLRA(Input, srcx, srcy, x, y, 1, 1);
-                var i4 = Common.CLRA(Input, srcx, srcy, x, y, 2, 1);
+                var g0 = Common.CLR(Input, srcx, srcy, x, y, -2, 1);
+                var pg = Common.CLR(Input, srcx, srcy, x, y, -1, 1);
+                var ph = Common.CLR(Input, srcx, srcy, x, y, 0, 1);
+                var pi = Common.CLR(Input, srcx, srcy, x, y, 1, 1);
+                var i4 = Common.CLR(Input, srcx, srcy, x, y, 2, 1);
 
-                var g5 = Common.CLRA(Input, srcx, srcy, x, y, -1, 2);
-                var h5 = Common.CLRA(Input, srcx, srcy, x, y, 0, 2);
-                var i5 = Common.CLRA(Input, srcx, srcy, x, y, 1, 2);
+                var g5 = Common.CLR(Input, srcx, srcy, x, y, -1, 2);
+                var h5 = Common.CLR(Input, srcx, srcy, x, y, 0, 2);
+                var i5 = Common.CLR(Input, srcx, srcy, x, y, 1, 2);
                
                 switch(scale) {
 
@@ -162,29 +162,29 @@ class Filter {
     _AlphaBlend32W(dst, offset, src, blend) {
         
         if (blend)
-            dst[offset] = Interpolate.Interpolate2P2QA(dst[offset], src, 7, 1);
+            dst[offset] = Interpolate.Interpolate2P2Q(dst[offset], src, 7, 1);
     }
 
     _AlphaBlend64W(dst, offset, src, blend) {
         
         if (blend)
-            dst[offset] = Interpolate.Interpolate2P2QA(dst[offset], src, 3, 1);
+            dst[offset] = Interpolate.Interpolate2P2Q(dst[offset], src, 3, 1);
     }
 
     _AlphaBlend128W(dst, offset, src, blend) {
 
         if (blend)
-            dst[offset] = Interpolate.Interpolate2PA(dst[offset], src);
+            dst[offset] = Interpolate.Interpolate2P(dst[offset], src);
     }
     
     _AlphaBlend192W(dst, offset, src, blend) {
 
-        dst[offset] = blend ? Interpolate.Interpolate2P2QA(dst[offset], src, 1, 3) : src;
+        dst[offset] = blend ? Interpolate.Interpolate2P2Q(dst[offset], src, 1, 3) : src;
     }
     
     _AlphaBlend224W(dst, offset, src, blend) {
 
-        dst[offset] = blend ? Interpolate.Interpolate2P2QA(dst[offset], src, 1, 7) : src;
+        dst[offset] = blend ? Interpolate.Interpolate2P2Q(dst[offset], src, 1, 7) : src;
     }
     
     // region 2x

@@ -69,28 +69,28 @@ class Filter {
         var yfract = y - Math.floor(y);
     
         // 1st row
-        var p00 = Common.CLRA(src, srcx, srcy, xint, yint, -1, -1);
-        var p10 = Common.CLRA(src, srcx, srcy, xint, yint, 0, -1);
-        var p20 = Common.CLRA(src, srcx, srcy, xint, yint, 1, -1);
-        var p30 = Common.CLRA(src, srcx, srcy, xint, yint, 2, -1);
+        var p00 = Common.CLR(src, srcx, srcy, xint, yint, -1, -1);
+        var p10 = Common.CLR(src, srcx, srcy, xint, yint, 0, -1);
+        var p20 = Common.CLR(src, srcx, srcy, xint, yint, 1, -1);
+        var p30 = Common.CLR(src, srcx, srcy, xint, yint, 2, -1);
     
         // 2nd row
-        var p01 = Common.CLRA(src, srcx, srcy, xint, yint, -1, 0);
-        var p11 = Common.CLRA(src, srcx, srcy, xint, yint, 0, 0);
-        var p21 = Common.CLRA(src, srcx, srcy, xint, yint, 1, 0);
-        var p31 = Common.CLRA(src, srcx, srcy, xint, yint, 2, 0);
+        var p01 = Common.CLR(src, srcx, srcy, xint, yint, -1, 0);
+        var p11 = Common.CLR(src, srcx, srcy, xint, yint, 0, 0);
+        var p21 = Common.CLR(src, srcx, srcy, xint, yint, 1, 0);
+        var p31 = Common.CLR(src, srcx, srcy, xint, yint, 2, 0);
     
         // 3rd row
-        var p02 = Common.CLRA(src, srcx, srcy, xint, yint, -1, 1);
-        var p12 = Common.CLRA(src, srcx, srcy, xint, yint, 0, 1);
-        var p22 = Common.CLRA(src, srcx, srcy, xint, yint, 1, 1);
-        var p32 = Common.CLRA(src, srcx, srcy, xint, yint, 2, 1);
+        var p02 = Common.CLR(src, srcx, srcy, xint, yint, -1, 1);
+        var p12 = Common.CLR(src, srcx, srcy, xint, yint, 0, 1);
+        var p22 = Common.CLR(src, srcx, srcy, xint, yint, 1, 1);
+        var p32 = Common.CLR(src, srcx, srcy, xint, yint, 2, 1);
     
         // 4th row
-        var p03 = Common.CLRA(src, srcx, srcy, xint, yint, -1, 2);
-        var p13 = Common.CLRA(src, srcx, srcy, xint, yint, 0, 2);
-        var p23 = Common.CLRA(src, srcx, srcy, xint, yint, 1, 2);
-        var p33 = Common.CLRA(src, srcx, srcy, xint, yint, 2, 2);
+        var p03 = Common.CLR(src, srcx, srcy, xint, yint, -1, 2);
+        var p13 = Common.CLR(src, srcx, srcy, xint, yint, 0, 2);
+        var p23 = Common.CLR(src, srcx, srcy, xint, yint, 1, 2);
+        var p33 = Common.CLR(src, srcx, srcy, xint, yint, 2, 2);
     
         // interpolate bi-cubically!
         // Clamp the values since the curve can put the value below 0 or above 255

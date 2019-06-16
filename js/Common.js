@@ -78,24 +78,6 @@ class Common {
             var r = Input[index];
             var g = Input[index + 1];
             var b = Input[index + 2];
-
-            return parseInt((r << 16) + (g << 8) + b);
-        }
-
-        return 0;
-    }
-
-    static _CLRA(Input, srcx, srcy, x, y) {
-        
-        var Channels = 4;
-
-        if (y >= 0 && y < srcy && x >= 0 && x < srcx) {
-            
-            var index = (y * srcx + x) * Channels;
-
-            var r = Input[index];
-            var g = Input[index + 1];
-            var b = Input[index + 2];
             var a = Input[index + 3];
 
             return this.ARGBINT(a, r, g, b);
@@ -113,17 +95,6 @@ class Common {
         yy = Math.max(0, Math.min(srcy - 1, yy));
 
         return this._CLR(Input, srcx, srcy, xx, yy);
-    }
-
-    static CLRA(Input, srcx, srcy, x, y, dx = 0, dy = 0) {
-
-        var xx = parseInt(x + dx);
-        var yy = parseInt(y + dy);
-
-        xx = Math.max(0, Math.min(srcx - 1, xx));
-        yy = Math.max(0, Math.min(srcy - 1, yy));
-
-        return this._CLRA(Input, srcx, srcy, xx, yy);
     }
 
     static Alpha(rgb) {
@@ -214,36 +185,6 @@ class Common {
         return Math.max(0, Math.min(255, color));
     }
 
-    static _Write4RGB(Output, sizex, sizey, x, y, Pixel, R, G, B) {
-
-        if (x >= 0 && x < sizex && y >= 0 && y < sizey) {
-
-            var Channels = 4;
-
-            var dx = x * this.ScaleX;
-            var dy = y * this.ScaleY;
-
-            dx += (Pixel == 2 || Pixel == 4) ? 1 : 0;
-            dy += (Pixel == 3 || Pixel == 4) ? 1 : 0;
-
-            var dst = (dy * sizex * this.ScaleX + dx) * Channels;
-
-            Output[dst] = this._Clip8(R);
-            Output[dst + 1] = this._Clip8(G);
-            Output[dst + 2] = this._Clip8(B);
-            Output[dst + 3] = 255;
-        }
-    }
-
-    static Write4RGB(Output, sizex, sizey, x, y, Pixel, rgb) {
-
-        var R = parseInt(rgb >> 16);
-        var G = parseInt((rgb & 0x00FF00) >> 8);
-        var B = parseInt(rgb & 0x0000FF);
-
-        this._Write4RGB(Output, sizex, sizey, x, y, Pixel, R, G, B);
-    }
-
     static _Write4RGBA(Output, sizex, sizey, x, y, Pixel, A, R, G, B) {
 
         if (x >= 0 && x < sizex && y >= 0 && y < sizey) {
@@ -273,55 +214,6 @@ class Common {
         var A = this.Alpha(argb);
 
         this._Write4RGBA(Output, sizex, sizey, x, y, Pixel, A, R, G, B);
-    }
-
-    static _Write9RGB(Output, sizex, sizey, x, y, Pixel, R, G, B)
-    {
-        if (x >= 0 && x < sizex && y >= 0 && y < sizey) {
-
-            var Channels = 4;
-
-            var deltax = 0;
-            var deltay = 0;
-
-            if (Pixel == 2 || Pixel == 5 || Pixel == 8) {
-
-                deltax = 1;
-            }
-
-            if (Pixel == 3 || Pixel == 6 || Pixel == 9) {
-                
-                deltax = 2;
-            }
-
-            if (Pixel == 4 || Pixel == 5 || Pixel == 6) {
-                
-                deltay = 1;
-            }
-
-            if (Pixel == 7 || Pixel == 8 || Pixel == 9) {
-
-                deltay = 2;
-            }
-
-            var dx = x * this.ScaleX + deltax;
-            var dy = y * this.ScaleY + deltay;
-
-            var dst = (dy * sizex * this.ScaleX + dx) * Channels;
-
-            Output[dst] = this._Clip8(R);
-            Output[dst + 1] = this._Clip8(G);
-            Output[dst + 2] = this._Clip8(B);
-        }
-    }
-
-    static Write9RGB(Output, sizex, sizey, x, y, Pixel, rgb) {
-
-        var R = parseInt(rgb >> 16);
-        var G = parseInt((rgb & 0x00FF00) >> 8);
-        var B = parseInt(rgb & 0x0000FF);
-
-        this._Write9RGB(Output, sizex, sizey, x, y, Pixel, R, G, B);
     }
 
     static _Write9RGBA(Output, sizex, sizey, x, y, Pixel, A, R, G, B)
@@ -373,72 +265,6 @@ class Common {
         var A = this.Alpha(argb);
 
         this._Write9RGBA(Output, sizex, sizey, x, y, Pixel, A, R, G, B);
-    }
-
-    static _Write16RGB(Output, sizex, sizey, x, y, Pixel, R, G, B) {
-
-        if (x >= 0 && x < sizex && y >= 0 && y < sizey) {
-
-            var Channels = 4;
-
-            var deltax = 0;
-            var deltay = 0;
-
-            /*
-            01 02 03 04
-            05 06 07 08
-            09 10 11 12
-            13 14 15 16
-            */
-
-            if (Pixel == 2 || Pixel == 6 || Pixel == 10 || Pixel == 14) {
-
-                deltax = 1;
-            }
-
-            if (Pixel == 3 || Pixel == 7 || Pixel == 11 || Pixel == 15) {
-
-                deltax = 2;
-            }
-
-            if (Pixel == 4 || Pixel == 8 || Pixel == 12 || Pixel == 16) {
-
-                deltax = 3;
-            }
-
-            if (Pixel == 5 || Pixel == 6 || Pixel == 7 || Pixel == 8) {
-
-                deltay = 1;
-            }
-
-            if (Pixel == 9 || Pixel == 10 || Pixel == 11 || Pixel == 12) {
-
-                deltay = 2;
-            }
-
-            if (Pixel == 13 || Pixel == 14 || Pixel == 15 || Pixel == 16) {
-
-                deltay = 3;
-            }
-
-            var dx = x * this.ScaleX + deltax;
-            var dy = y * this.ScaleY + deltay;
-
-            var dst = (dy * sizex * this.ScaleX + dx) * Channels;
-
-            Output[dst] = this._Clip8(R);
-            Output[dst + 1] = this._Clip8(G);
-            Output[dst + 2] = this._Clip8(B);
-        }
-    }
-
-    static Write16RGB(Output, sizex, sizey, x, y, Pixel, rgb) {
-
-        var R = parseInt(rgb >> 16);
-        var G = parseInt((rgb & 0x00FF00) >> 8);
-        var B = parseInt(rgb & 0x0000FF);
-
-        this._Write16RGB(Output, sizex, sizey, x, y, Pixel, R, G, B);
     }
 
     static _Write16RGBA(Output, sizex, sizey, x, y, Pixel, A, R, G, B) {
@@ -526,7 +352,7 @@ class Common {
 
                 var index = (y * sizex + x) * Channels;
 
-                for (var Channel = 0; Channel < Channels - 1; Channel++) {
+                for (var Channel = 0; Channel < Channels; Channel++) {
 
                     Output[dst + Channel] = Input[index + Channel];
                 }
@@ -567,30 +393,12 @@ class Interpolate {
         var r = parseInt(parseInt(Common.Red(pixel1) + Common.Red(pixel2) + Common.Red(pixel3)) / 3);
         var g = parseInt(parseInt(Common.Green(pixel1) + Common.Green(pixel2) + Common.Green(pixel3)) / 3);
         var b = parseInt(parseInt(Common.Blue(pixel1) + Common.Blue(pixel2) + Common.Blue(pixel3)) / 3);
-
-        return Common.RGBINT(r, g, b);
-    }
-
-    static Interpolate3PA(pixel1, pixel2, pixel3) {
-
-        var r = parseInt(parseInt(Common.Red(pixel1) + Common.Red(pixel2) + Common.Red(pixel3)) / 3);
-        var g = parseInt(parseInt(Common.Green(pixel1) + Common.Green(pixel2) + Common.Green(pixel3)) / 3);
-        var b = parseInt(parseInt(Common.Blue(pixel1) + Common.Blue(pixel2) + Common.Blue(pixel3)) / 3);
         var a = parseInt(parseInt(Common.Alpha(pixel1) + Common.Alpha(pixel2) + Common.Alpha(pixel3)) / 3);
 
         return Common.ARGBINT(a, r, g, b);
     }
 
     static Interpolate2P(pixel1, pixel2) {
-
-        var r = parseInt(parseInt(Common.Red(pixel1) + Common.Red(pixel2)) >> 1);
-        var g = parseInt(parseInt(Common.Green(pixel1) + Common.Green(pixel2)) >> 1);
-        var b = parseInt(parseInt(Common.Blue(pixel1) + Common.Blue(pixel2)) >> 1);
-
-        return Common.RGBINT(r, g, b);
-    }
-
-    static Interpolate2PA(pixel1, pixel2) {
 
         var r = parseInt(parseInt(Common.Red(pixel1) + Common.Red(pixel2)) >> 1);
         var g = parseInt(parseInt(Common.Green(pixel1) + Common.Green(pixel2)) >> 1);
@@ -605,32 +413,12 @@ class Interpolate {
         var r = parseInt(parseInt(Common.Red(pixel1) * (1.0 - quantifier) + Common.Red(pixel2) * quantifier));
         var g = parseInt(parseInt(Common.Green(pixel1) * (1.0 - quantifier) + Common.Green(pixel2) * quantifier));
         var b = parseInt(parseInt(Common.Blue(pixel1) * (1.0 - quantifier) + Common.Blue(pixel2) * quantifier));
-    
-        return Common.RGBINT(r, g, b);
-    }
-
-    static Interpolate2P1QA(pixel1, pixel2, quantifier) {
-
-        var r = parseInt(parseInt(Common.Red(pixel1) * (1.0 - quantifier) + Common.Red(pixel2) * quantifier));
-        var g = parseInt(parseInt(Common.Green(pixel1) * (1.0 - quantifier) + Common.Green(pixel2) * quantifier));
-        var b = parseInt(parseInt(Common.Blue(pixel1) * (1.0 - quantifier) + Common.Blue(pixel2) * quantifier));
         var a = parseInt(parseInt(Common.Alpha(pixel1) * (1.0 - quantifier) + Common.Alpha(pixel2) * quantifier));
     
         return Common.ARGBINT(a, r, g, b);
     }
 
     static Interpolate2P2Q(pixel1, pixel2, quantifier1, quantifier2) {
-
-        var total = parseInt(quantifier1 + quantifier2);
-    
-        var r = parseInt(parseInt(Common.Red(pixel1) * quantifier1 + Common.Red(pixel2) * quantifier2) / total);
-        var g = parseInt(parseInt(Common.Green(pixel1) * quantifier1 + Common.Green(pixel2) * quantifier2) / total);
-        var b = parseInt(parseInt(Common.Blue(pixel1) * quantifier1 + Common.Blue(pixel2) * quantifier2) / total);
-    
-        return Common.RGBINT(r, g, b);
-    }
-
-    static Interpolate2P2QA(pixel1, pixel2, quantifier1, quantifier2) {
 
         var total = (quantifier1 + quantifier2);
     
@@ -643,17 +431,6 @@ class Interpolate {
     }
 
     static Interpolate3P3Q(pixel1, pixel2, pixel3, quantifier1, quantifier2, quantifier3) {
-
-        var total = parseInt(quantifier1 + quantifier2 + quantifier3);
-        
-        var r = parseInt((Common.Red(pixel1) * quantifier1 + Common.Red(pixel2) * quantifier2 + Common.Red(pixel3) * quantifier3) / total);
-        var g = parseInt((Common.Green(pixel1) * quantifier1 + Common.Green(pixel2) * quantifier2 + Common.Green(pixel3) * quantifier3) / total);
-        var b = parseInt((Common.Blue(pixel1) * quantifier1 + Common.Blue(pixel2) * quantifier2 + Common.Blue(pixel3) * quantifier3) / total);
-
-        return Common.RGBINT(r, g, b);
-    }
-
-    static Interpolate3P3QA(pixel1, pixel2, pixel3, quantifier1, quantifier2, quantifier3) {
         
         var total = parseInt(quantifier1 + quantifier2 + quantifier3);
         
@@ -670,32 +447,12 @@ class Interpolate {
         var r = parseInt((Common.Red(pixel1) + Common.Red(pixel2) + Common.Red(pixel3) + Common.Red(pixel4)) >> 2);
         var g = parseInt((Common.Green(pixel1) + Common.Green(pixel2) + Common.Green(pixel3) + Common.Green(pixel4)) >> 2);
         var b = parseInt((Common.Blue(pixel1) + Common.Blue(pixel2) + Common.Blue(pixel3) + Common.Blue(pixel4)) >> 2);
-
-        return Common.RGBINT(r, g, b);
-    }
-
-    static Interpolate4PA(pixel1, pixel2, pixel3, pixel4) {
-
-        var r = parseInt((Common.Red(pixel1) + Common.Red(pixel2) + Common.Red(pixel3) + Common.Red(pixel4)) >> 2);
-        var g = parseInt((Common.Green(pixel1) + Common.Green(pixel2) + Common.Green(pixel3) + Common.Green(pixel4)) >> 2);
-        var b = parseInt((Common.Blue(pixel1) + Common.Blue(pixel2) + Common.Blue(pixel3) + Common.Blue(pixel4)) >> 2);
         var a = parseInt((Common.Alpha(pixel1) + Common.Alpha(pixel2) + Common.Alpha(pixel3) + Common.Alpha(pixel4)) >> 2);
 
         return Common.ARGBINT(a, r, g, b);
     }
 
     static Interpolate4P4Q(pixel1, pixel2, pixel3, pixel4, quantifier1, quantifier2, quantifier3, quantifier4) {
-
-        var total = parseInt(quantifier1 + quantifier2 + quantifier3 + quantifier4);
-        
-        var r = parseInt((Common.Red(pixel1) * quantifier1 + Common.Red(pixel2) * quantifier2 + Common.Red(pixel3) * quantifier3 + Common.Red(pixel4) * quantifier4) / total);
-        var g = parseInt((Common.Green(pixel1) * quantifier1 + Common.Green(pixel2) * quantifier2 + Common.Green(pixel3) * quantifier3 + Common.Green(pixel4) * quantifier4) / total);
-        var b = parseInt((Common.Blue(pixel1) * quantifier1 + Common.Blue(pixel2) * quantifier2 + Common.Blue(pixel3) * quantifier3 + Common.Blue(pixel4) * quantifier4) / total);
-    
-        return Common.RGBINT(r, g, b);
-    }
-
-    static Interpolate4P4QA(pixel1, pixel2, pixel3, pixel4, quantifier1, quantifier2, quantifier3, quantifier4) {
 
         var total = parseInt(quantifier1 + quantifier2 + quantifier3 + quantifier4);
         
@@ -712,36 +469,12 @@ class Interpolate {
         return (this.Interpolate2P2Q(c1, c2, 3, 1));
     }
 
-    static MixpalA(c1, c2) {
-
-        return (this.Interpolate2P2QA(c1, c2, 3, 1));
-    }
-
     static Fix(n, min, max) {
 
         return Math.max(Math.min(n, max), min);
     }
 
     static Unmix(c1, c2) {
-
-        /* A variant of an unsharp mask, without the blur part. */
-
-        var ra = Common.Red(c1);
-        var ga = Common.Green(c1);
-        var ba = Common.Blue(c1);
-
-        var rb = Common.Red(c2);
-        var gb = Common.Green(c2);
-        var bb = Common.Blue(c2);
-
-        var r = ((this.Fix((ra + (ra - rb)), 0, 255) + rb) >> 1);
-        var g = ((this.Fix((ga + (ga - gb)), 0, 255) + gb) >> 1);
-        var b = ((this.Fix((ba + (ba - bb)), 0, 255) + bb) >> 1);
-
-        return Common.RGBINT(r, g, b);
-    }
-
-    static UnmixA(c1, c2) {
 
         /* A variant of an unsharp mask, without the blur part. */
 

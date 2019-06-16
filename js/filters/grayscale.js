@@ -12,7 +12,7 @@ class Filter {
         for (var y = 0; y < srcy; y++) {
             for (var x = 0; x < srcx; x++) {
 
-                var pixel = Common.CLRA(Input, srcx, srcy, x, y, 0, 0);
+                var pixel = Common.CLR(Input, srcx, srcy, x, y, 0, 0);
                 var gray = Common.Luminance(pixel);
 
                 var dst = (y * srcx + x) * Channels;
