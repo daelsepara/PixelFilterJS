@@ -150,7 +150,7 @@ class Common {
 
         var dwordC = rgb & 0xFFFFFF;
 
-        return parseInt((this.Red(dwordC) * 3 + this.Green(dwordC) * 3 + this.Blue(dwordC) * 2) >> 3);
+        return this._Clip8((this.Red(dwordC) * 3 + this.Green(dwordC) * 3 + this.Blue(dwordC) * 2) >> 3);
     }
 
     static Luminance(rgb) {

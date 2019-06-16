@@ -63,7 +63,7 @@ class Filter {
                         Common.Brightness(c8)
                     ];
 
-                    var avgBrightness = ((
+                    var avgBrightness = Common._Clip8((
                         brightness[0] +
                         brightness[1] +
                         brightness[2] +
