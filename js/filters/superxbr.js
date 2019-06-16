@@ -371,15 +371,17 @@ class Filter {
                 bi = this.clamp(Math.ceil(bf), 0, 255);
                 ai = this.clamp(Math.ceil(af), 0, 255);
                 
-                Common.ScaledImage[(y * outw + x) * Channels] = ri;
-                Common.ScaledImage[(y * outw + x) * Channels + 1] = gi; 
-                Common.ScaledImage[(y * outw + x) * Channels + 2] = bi;
-                Common.ScaledImage[(y * outw + x) * Channels + 3] = ai;
+                var dst = (y * outw + x) * Channels;
+
+                Common.ScaledImage[dst] = ri;
+                Common.ScaledImage[dst + 1] = gi; 
+                Common.ScaledImage[dst + 2] = bi;
+                Common.ScaledImage[dst + 3] = ai;
             }
 
             current++;
 
-            notify({ScalingProgress: current / total });
+            notify({ScalingProgress: current / total});
         }
     }
 }

@@ -690,6 +690,11 @@ class Interpolate {
         return (this.Interpolate2P2Q(c1, c2, 3, 1));
     }
 
+    static MixpalA(c1, c2) {
+
+        return (this.Interpolate2P2QA(c1, c2, 3, 1));
+    }
+
     static Fix(n, min, max) {
 
         return Math.max(Math.min(n, max), min);
@@ -711,7 +716,29 @@ class Interpolate {
         var g = ((this.Fix((ga + (ga - gb)), 0, 255) + gb) >> 1);
         var b = ((this.Fix((ba + (ba - bb)), 0, 255) + bb) >> 1);
 
-        return (Common._Clip8(r) << 16) + (Common._Clip8(g) << 8) + Common._Clip8(b);
+        return Common.RGBINT(r, g, b);
+    }
+
+    static UnmixA(c1, c2) {
+
+        /* A variant of an unsharp mask, without the blur part. */
+
+        var ra = Common.Red(c1);
+        var ga = Common.Green(c1);
+        var ba = Common.Blue(c1);
+        var aa = Common.Alpha(c1);
+
+        var rb = Common.Red(c2);
+        var gb = Common.Green(c2);
+        var bb = Common.Blue(c2);
+        var ab = Common.Alpha(c2);
+
+        var r = ((this.Fix((ra + (ra - rb)), 0, 255) + rb) >> 1);
+        var g = ((this.Fix((ga + (ga - gb)), 0, 255) + gb) >> 1);
+        var b = ((this.Fix((ba + (ba - bb)), 0, 255) + bb) >> 1);
+        var a = ((this.Fix((aa + (aa - ab)), 0, 255) + ab) >> 1);
+
+        return Common.ARGBINT(a, r, g, b);
     }
 }
 
