@@ -171,7 +171,7 @@ angular
 
 		$scope.ApplyAllFilters = function() {
 
-			function async(currentPath, filters, input, threshold) {
+			function async(currentPath, filters, input) {
 
 				importScripts(currentPath + 'js/Common.js');
 
@@ -193,7 +193,7 @@ angular
 					img = output;
 					srcx = Common.SizeX;
 					srcy = Common.SizeY;
-				});
+q				});
 
 				complete({output: output, width: Common.SizeX, height: Common.SizeY});
 			}
@@ -221,7 +221,7 @@ angular
 				var input = {data: imgData.data, width: img.width, height: img.height};
 				
 				// uses the native $q style notification: https://docs.angularjs.org/api/ng/service/$q
-				$scope.asyncFilter.run(currentPath, $scope.FilterQueue, input, $scope.Threshold).then(function(result) {
+				$scope.asyncFilter.run(currentPath, $scope.FilterQueue, input).then(function(result) {
 					
 					$scope.Processing = false;
 					
