@@ -193,7 +193,7 @@ angular
 					img = output;
 					srcx = Common.SizeX;
 					srcy = Common.SizeY;
-q				});
+				});
 
 				complete({output: output, width: Common.SizeX, height: Common.SizeY});
 			}
