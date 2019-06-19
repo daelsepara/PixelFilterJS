@@ -48,8 +48,8 @@
 							<h2 class = "text-warning">Filter Queue <span class = "text-secondary">({{FilterQueue.length}})</span></h2><br/>
 							<ul class="list-group">
 								<div class = "row">
-									<div class = "col-sm-3">
-										<li class="list-group-item" ng-repeat="filter in FilterQueue track by $index">{{filter.name}} ({{filter.parameter}}) <input type="button" class = "btn btn-outline-danger" value = " remove " ng-click="RemoveFilter($index)" ng-disabled = "Processing" style = "display: block; float: right;"/><br/><br/></li>
+									<div class = "col-sm-5">
+										<li class="list-group-item" ng-repeat="filter in FilterQueue track by $index">{{filter.name}} ({{filter.parameter}}) - Color Threshold: {{filter.threshold ? 'Yes' : 'No'}} <input type="button" class = "btn btn-outline-danger" value = " remove " ng-click="RemoveFilter($index)" ng-disabled = "Processing" style = "display: block; float: right;"/><br/><br/></li>
 									</div>
 								</div>
 							</ul>

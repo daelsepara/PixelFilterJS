@@ -149,7 +149,7 @@ angular
 
 			if (!$scope.Processing && $scope.FilterChosen.length > 0 && parseInt($scope.Parameter) > 0) {
 
-				$scope.FilterQueue.push({name: $scope.FilterChosen, parameter: parseInt($scope.Parameter)});
+				$scope.FilterQueue.push({name: $scope.FilterChosen, parameter: parseInt($scope.Parameter), threshold: $scope.Threshold});
 			}
 		}
 
@@ -186,7 +186,7 @@ angular
 					
 					var operation = new Filter();
 					
-					operation.Apply(img, srcx, srcy, filter.parameter, threshold);
+					operation.Apply(img, srcx, srcy, filter.parameter, filter.threshold);
 
 					output = Common.ScaledImage;
 
