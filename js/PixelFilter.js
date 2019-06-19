@@ -193,8 +193,6 @@ angular
 					img = output;
 					srcx = Common.SizeX;
 					srcy = Common.SizeY;
-					
-					delete operation;
 				});
 
 				complete({output: output, width: Common.SizeX, height: Common.SizeY});
