@@ -1,5 +1,5 @@
 // Bilinear+ with Gamma adjustment
-class Filter {
+var Filter = class {
 
     Apply(Input, srcx, srcy, scale, threshold) {
 

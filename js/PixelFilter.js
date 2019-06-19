@@ -12,6 +12,7 @@ angular
 		$scope.Parameters = [];
 		$scope.ScalingProgress = 0;
 		$scope.Threshold = true;
+		$scope.FilterQueue = [];
 
 		$scope.Filters = [
 			{name: '2xsai', parameters: [2], description: 'Derek Liauw Kie Fa\'s 2XSaI'},
@@ -118,6 +119,111 @@ angular
 				
 				// uses the native $q style notification: https://docs.angularjs.org/api/ng/service/$q
 				$scope.asyncFilter.run(currentPath, parameter, input, $scope.Threshold).then(function(result) {
+					
+					$scope.Processing = false;
+					
+					// promise is resolved.
+					var c = document.getElementById('OutputCanvas');
+					c.width = result.width;
+					c.height = result.height;
+
+					var newImg = new ImageData(result.width, result.height);
+					newImg.data.set(result.output);
+
+					var ctx = c.getContext('2d');
+					ctx.putImageData(newImg, 0, 0);
+
+				}, null, function(progress) {
+					
+					// promise has a notification
+					$scope.ScalingProgress = progress.ScalingProgress;
+
+				}).catch(function(oError) {
+					
+					$scope.asyncFilter = null;
+				});
+			}
+		}
+
+		$scope.AddFilter = function() {
+
+			if (!$scope.Processing && $scope.FilterChosen.length > 0 && parseInt($scope.Parameter) > 0) {
+
+				$scope.FilterQueue.push({name: $scope.FilterChosen, parameter: parseInt($scope.Parameter)});
+			}
+		}
+
+		$scope.RemoveFilter = function(idx) {
+
+			if ($scope.FilterQueue.length > 0 && idx >= 0 && idx < $scope.FilterQueue.length) {
+
+				$scope.FilterQueue.splice(idx, 1);
+			}
+		}
+
+		$scope.ClearFilters = function() {
+
+			if ($scope.FilterQueue.length > 0) {
+
+				$scope.FilterQueue = [];
+			}
+		}
+
+		$scope.ApplyAllFilters = function() {
+
+			function async(currentPath, filters, input, threshold) {
+
+				importScripts(currentPath + 'js/Common.js');
+
+				var output;
+				var img = input.data;
+				var srcx = input.width;
+				var srcy = input.height;
+
+				filters.forEach(function(filter) {
+
+					importScripts(currentPath + 'js/filters/' + filter.name + '.js');
+					
+					var operation = new Filter();
+					
+					operation.Apply(img, srcx, srcy, filter.parameter, threshold);
+
+					output = Common.ScaledImage;
+
+					img = output;
+					srcx = Common.SizeX;
+					srcy = Common.SizeY;
+					
+					delete operation;
+				});
+
+				complete({output: output, width: Common.SizeX, height: Common.SizeY});
+			}
+
+			var img = document.getElementById('InputImage');
+
+			if (!$scope.Processing && img.width > 0 && img.height > 0 && $scope.FilterQueue.length > 0) {
+				
+				// extract image data
+				var canvas = document.createElement('canvas');
+				var context = canvas.getContext('2d');
+				canvas.width = img.width;
+				canvas.height = img.height;
+				context.drawImage(img, 0, 0 );
+			
+				var imgData = context.getImageData(0, 0, img.width, img.height);
+	
+				var currentPath = document.URL;
+
+				$scope.Processing = true;
+				
+				// mark this worker as one that supports async notifications
+				$scope.asyncFilter = Webworker.create(async, { async: true });
+
+				var input = {data: imgData.data, width: img.width, height: img.height};
+				
+				// uses the native $q style notification: https://docs.angularjs.org/api/ng/service/$q
+				$scope.asyncFilter.run(currentPath, $scope.FilterQueue, input, $scope.Threshold).then(function(result) {
 					
 					$scope.Processing = false;
 					

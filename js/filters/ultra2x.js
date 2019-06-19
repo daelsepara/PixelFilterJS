@@ -1,5 +1,5 @@
 // FNES' Ultra 2x Scaling
-class Filter {
+var Filter = class {
 
     Apply(Input, srcx, srcy, scale, threshold) {
 

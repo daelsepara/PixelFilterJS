@@ -1,5 +1,5 @@
 // Christoph Feck's (christoph@maxiom.de) Reverse Anti-Alias filter
-class Filter {
+var Filter = class {
 
     Apply(Input, srcx, srcy, scale, threshold) {
 

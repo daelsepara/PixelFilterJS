@@ -1,5 +1,5 @@
 // DES filters from FNES
-class Filter {
+var Filter = class {
 
     Apply(Input, srcx, srcy, scale, threshold) {
 

@@ -1,5 +1,5 @@
 // EPX/Scale 2/3X - Eric\'s Pixel eXpander / Advance Mame Scale 2/3X
-class Filter {
+var Filter = class {
 
     Apply(Input, srcx, srcy, scale, threshold) {
 

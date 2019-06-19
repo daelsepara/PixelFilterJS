@@ -1,5 +1,5 @@
 // nX Pixel duplication
-class Filter {
+var Filter  = class {
 
     Apply(Input, srcx, srcy, scale, threshold) {
 

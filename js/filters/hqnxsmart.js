@@ -1,5 +1,5 @@
 // Maxim Stepin's High Quality nX Magnification (Smart Filter)
-class Filter {
+var Filter = class {
 
     Apply(Input, srcx, srcy, scale, threshold) {
 

@@ -1,5 +1,5 @@
 // Eagle nX Family of Filters
-class Filter {
+var Filter = class {
 
     Apply(Input, srcx, srcy, scale, threshold) {
 

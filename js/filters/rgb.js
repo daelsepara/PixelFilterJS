@@ -1,5 +1,5 @@
 // Dot-Matrix Printer Effect
-class Filter {
+var Filter = class {
 
     Apply(Input, srcx, srcy, scale, threshold) {
 

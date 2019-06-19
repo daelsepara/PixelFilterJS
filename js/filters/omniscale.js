@@ -1,5 +1,5 @@
 // Lior Halphon's Omniscale (Modified: Uses Maxim Stepin's Color comparison routine)
-class Filter {
+var Filter = class {
 
     Apply(Input, srcx, srcy, scale, threshold) {
 

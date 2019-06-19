@@ -1,5 +1,5 @@
 // SNES9x's EPX (variant C) modified by Hawkynt to support thresholds
-class Filter {
+var Filter = class {
 
     Apply(Input, srcx, srcy, scale, threshold) {
 

@@ -1,5 +1,5 @@
 // Kuwahara Filter (nxn window)
-class Filter {
+var Filter = class {
 
     varmin(varr, srcx, srcy, min, dstx, dsty) {
 

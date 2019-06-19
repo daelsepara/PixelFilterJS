@@ -1,5 +1,5 @@
 // Derek Liauw Kie Fa's 2XSaI
-class Filter {
+var Filter = class {
 
     Apply(Input, srcx, srcy, scale, threshold) {
 

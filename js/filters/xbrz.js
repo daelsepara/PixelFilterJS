@@ -1,5 +1,5 @@
 // Zenju's XBRz nX family of filters
-class ScaleSize {
+var ScaleSize = class {
 
 	constructor(scaler) {
 
@@ -8,7 +8,7 @@ class ScaleSize {
 	}
 }
 
-class ImagePointer {
+var ImagePointer = class {
 
 	constructor(imageData) {
 
@@ -32,7 +32,7 @@ class ImagePointer {
 	}
 }
 
-class BlendType {
+var BlendType = class {
 
 	// These blend types must fit into 2 bits.
 	static get BlendNone() {
@@ -51,7 +51,7 @@ class BlendType {
 	}
 }
 
-class BlendResult {
+var BlendResult = class {
 
 	constructor() {
 
@@ -70,7 +70,7 @@ class BlendResult {
 	}
 }
 
-class ScalerCfg {
+var ScalerCfg = class {
 
 	// These are the default values:
 	constructor() {
@@ -82,7 +82,7 @@ class ScalerCfg {
 	}
 }
 
-class Tuple {
+var Tuple = class {
 
 	constructor(i, j) {
 
@@ -91,7 +91,7 @@ class Tuple {
 	}
 }
 
-class Constants {
+var Constants = class {
 
 	static get Configuration() {
 
@@ -129,7 +129,7 @@ class Constants {
 	}
 }
 
-class Utility {
+var Utility = class {
 
 	static getByte(val, N) {
 
@@ -142,7 +142,7 @@ class Utility {
 	}
 }
 
-class ColorDistanceARGB {
+var ColorDistanceARGB = class {
 
 	static val(i, luminanceWeight) {
 
@@ -219,7 +219,7 @@ class ColorDistanceARGB {
 	}
 }
 
-class IColorDist {
+var IColorDist = class {
 
 	_ColorDist(pix1, pix2, luminanceWeight) {
 
@@ -232,7 +232,7 @@ class IColorDist {
 	}
 }
 
-class IColorEq {
+var IColorEq = class {
 
 	constructor(a) {
 
@@ -245,7 +245,7 @@ class IColorEq {
 	}
 }
 
-class Kernel_3X3 {
+var Kernel_3X3 = class {
 
 	constructor() {
 
@@ -254,7 +254,7 @@ class Kernel_3X3 {
 	}
 }
 
-class Kernel_4X4 {
+var Kernel_4X4 = class {
 
 	constructor() {
 
@@ -290,7 +290,7 @@ input kernel area naming convention:
 -----------------
 */
 
-class RotationDegree {
+var RotationDegree = class {
 
 	static get Rot0() {
 
@@ -313,7 +313,7 @@ class RotationDegree {
 	}
 }
 
-class Rot {
+var Rot = class {
 
 	static get _() {
 
@@ -359,7 +359,7 @@ class Rot {
 	}
 }
 
-class BlendInfo {
+var BlendInfo = class {
 
 	static GetTopL(b) {
 
@@ -410,7 +410,7 @@ class BlendInfo {
 	}
 }
 
-class Alpha {
+var Alpha = class {
 
 	static Grad(m, n, dstPtr, col) {
 
@@ -453,7 +453,7 @@ class Alpha {
 	}
 }
 
-class OutputMatrix {
+var OutputMatrix = class {
 
 	constructor(scale, output, outWidth) {
 
@@ -479,7 +479,7 @@ class OutputMatrix {
 	}
 }
 
-class Scaler_2X {
+var Scaler_2X = class {
 
 	constructor() {
 
@@ -522,7 +522,7 @@ class Scaler_2X {
 	}
 }
 
-class Scaler_3X {
+var Scaler_3X = class {
 
 	constructor() {
 
@@ -575,7 +575,7 @@ class Scaler_3X {
 	}
 }
 
-class Scaler_4X {
+var Scaler_4X = class {
 
 	constructor() {
 
@@ -635,7 +635,7 @@ class Scaler_4X {
 	}
 }
 
-class Scaler_5X {
+var Scaler_5X = class {
 
 	constructor() {
 
@@ -710,7 +710,7 @@ class Scaler_5X {
 	}
 }
 
-class Scaler_6X {
+var Scaler_6X = class {
 
 	constructor() {
 
@@ -795,7 +795,7 @@ class Scaler_6X {
 	}
 }
 
-class Filter {
+var Filter = class {
 
 	constructor() {
 

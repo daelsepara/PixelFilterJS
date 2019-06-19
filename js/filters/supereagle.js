@@ -1,5 +1,5 @@
 // Kreed's SuperEagle modified by Hawkynt to allow thresholds
-class Filter {
+var Filter = class {
 
     Apply(Input, srcx, srcy, scale, threshold) {
 

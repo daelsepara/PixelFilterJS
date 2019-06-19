@@ -1,5 +1,5 @@
 //  Hyllian's Super-XBR modified from https://github.com/hansonw/super-xbr
-class Filter {
+var Filter = class {
 
     df(a, b) {
 

@@ -1,5 +1,5 @@
 // Bicubic - see: https://blog.demofox.org/2015/08/15/resizing-images-with-bicubic-interpolation/
-class Filter {
+var Filter = class {
 
     Apply(Input, srcx, srcy, scale, threshold) {
 

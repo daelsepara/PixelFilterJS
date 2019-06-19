@@ -1,5 +1,5 @@
 // XBRnX family of filters by Hyllian
-class Filter {
+var Filter = class {
 
     Apply(Input, srcx, srcy, scale) {
 

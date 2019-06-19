@@ -1,5 +1,5 @@
 // AdvanceMame scaling using interpolation
-class Filter {
+var Filter = class {
 
     Apply(Input, srcx, srcy, scale, threshold) {
 

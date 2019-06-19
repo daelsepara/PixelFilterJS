@@ -1,5 +1,5 @@
 // TV-like effect using interlacing and gamma reduction
-class Filter {
+var Filter = class {
 
     Apply(Input, srcx, srcy, scale, threshold) {
 

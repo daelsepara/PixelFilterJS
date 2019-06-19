@@ -43,7 +43,19 @@
 						</select>
 						<br ng-show = "ScalingProgress > 0 && ScalingProgress <= 1"/>
 						<progress class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" ng-show = "ScalingProgress > 0 && ScalingProgress < 1" value="{{ScalingProgress}}"></progress><br ng-show = "ScalingProgress >= 0 && ScalingProgress < 1"/>
-						<input type="button" class="btn btn-outline-success" value="Apply filter" ng-click="ApplyFilter()" ng-disabled = "Processing"/><br/><br/>
+						<input type="button" class="btn btn-outline-success" value="Apply filter" ng-click="ApplyFilter()" ng-disabled = "Processing"/> <input type="button" class="btn btn-outline-primary" value="Add filter" ng-click="AddFilter()" ng-disabled = "Processing"/><br/><br/>
+						<div ng-show = "FilterQueue.length > 0">
+							<h2 class = "text-warning">Filter Queue <span class = "text-secondary">({{FilterQueue.length}})</span></h2><br/>
+							<ul class="list-group">
+								<div class = "row">
+									<div class = "col-sm-3">
+										<li class="list-group-item" ng-repeat="filter in FilterQueue track by $index">{{filter.name}} ({{filter.parameter}}) <input type="button" class = "btn btn-outline-danger" value = " remove " ng-click="RemoveFilter($index)" ng-disabled = "Processing" style = "display: block; float: right;"/><br/><br/></li>
+									</div>
+								</div>
+							</ul>
+							<br/>
+							<input type="button" class="btn btn-outline-danger" value="Clear All Filters" ng-click="ClearFilters()" ng-disabled = "Processing"/> <input type="button" class="btn btn-outline-warning" value="Apply All Filters" ng-click="ApplyAllFilters()" ng-disabled = "Processing"/><br/><br/>
+						</div>
 						<div>
 							<canvas id = "OutputCanvas"></canvas>
 							<br/>
