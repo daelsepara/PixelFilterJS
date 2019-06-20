@@ -1,5 +1,10 @@
 var Filter = class {
 
+    SwapDimensions() {
+
+        Common._SizeX = Common._SizeX ^ Common._SizeY ^ (Common._SizeY = Common._SizeX);
+    }
+
     Apply(Input, srcx, srcy, rotate, threshold) {
 
         const Channels = 4;
@@ -22,7 +27,7 @@ var Filter = class {
             
                 Rotate.Rotate270(Common.ScaledImage, Input, srcx, srcy);
 
-                Common._SizeX = Common._SizeX ^ Common._SizeY ^ (Common._SizeY = Common._SizeX); 
+                this.SwapDimensions();
         
                 break;
                 
@@ -30,7 +35,7 @@ var Filter = class {
             
                 Rotate.Rotate90(Common.ScaledImage, Input, srcx, srcy);
 
-                Common._SizeX = Common._SizeX ^ Common._SizeY ^ (Common._SizeY = Common._SizeX); 
+                this.SwapDimensions();
                 
                 break;
         }
