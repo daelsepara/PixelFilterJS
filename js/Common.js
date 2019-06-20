@@ -69,7 +69,7 @@ class Common {
 
     static _CLR(Input, srcx, srcy, x, y) {
         
-        var Channels = 4;
+        const Channels = 4;
 
         if (y >= 0 && y < srcy && x >= 0 && x < srcx) {
             
@@ -189,7 +189,7 @@ class Common {
 
         if (x >= 0 && x < sizex && y >= 0 && y < sizey) {
 
-            var Channels = 4;
+            const Channels = 4;
 
             var dx = x * this.ScaleX;
             var dy = y * this.ScaleY;
@@ -220,7 +220,7 @@ class Common {
     {
         if (x >= 0 && x < sizex && y >= 0 && y < sizey) {
 
-            var Channels = 4;
+            const Channels = 4;
 
             var deltax = 0;
             var deltay = 0;
@@ -271,7 +271,7 @@ class Common {
 
         if (x >= 0 && x < sizex && y >= 0 && y < sizey) {
 
-            var Channels = 4;
+            const Channels = 4;
 
             var deltax = 0;
             var deltay = 0;
@@ -337,7 +337,7 @@ class Common {
 
     static WriteMagnify(Input, Output, sizex, sizey, x, y) {
 
-        var Channels = 4;
+        const Channels = 4;
 
         var x0 = x * this.ScaleX;
         var y0 = y * this.ScaleY;
@@ -502,9 +502,9 @@ class Flip {
 
     static FlipUD(src, sizex, sizey) {
         
-        var Channels = 4;
+        const Channels = 4;
         
-        if (src.size() > 0) {
+        if (src.length > 0) {
 
             for (var y = 0; y < sizey / 2; y++) {
                 for (var x = 0; x < sizex; x++) {
@@ -525,9 +525,9 @@ class Flip {
 
     static FlipLR(src, sizex, sizey) {
 
-        var Channels = 4;
+        const Channels = 4;
 
-        if (src.size() > 0) {
+        if (src.length > 0) {
 
             for (var y = 0; y < sizey; y++) {
                 for (var x = 0; x < sizex / 2; x++) {
@@ -551,10 +551,9 @@ class Rotate {
 
     static Transpose(dst, src, srcx, srcy) {
 
-        var Channels = 4;
+        const Channels = 4;
 
         for (var y = 0; y < srcy; y++) {
-
             for (var x = 0; x < srcx; x++) {
                 for (var Channel = 0; Channel < Channels; Channel++) {
                     
@@ -573,7 +572,7 @@ class Rotate {
             
     static Rotate180(dst, src, srcx, srcy) {
 
-        var Channels = 4;
+        const Channels = 4;
         
         Common.Copy(dst, src, srcx * srcy * Channels);
 
@@ -699,7 +698,7 @@ class Init {
 
     static Buffer(Length, c) {
 
-        var Channels = 4;
+        const Channels = 4;
 
         var buffer = new Uint8ClampedArray(Length * Channels);
 
