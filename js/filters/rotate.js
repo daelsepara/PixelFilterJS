@@ -9,13 +9,13 @@ var Filter = class {
 
         const Channels = 4;
 
-		rotate = Math.max(1, Math.min(3, rotate));
+	rotate = Math.max(1, Math.min(3, rotate));
 
-		Init.Init(srcx, srcy, 1, 1, threshold);
+	Init.Init(srcx, srcy, 1, 1, threshold);
 
         Common.Copy(Common.ScaledImage, Input, srcx * srcy * Channels);
 
-		switch(rotate) {
+	switch(rotate) {
 
             case 2:
                 
