@@ -4,11 +4,11 @@ var Filter = class {
     Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = 2;
-			
+
         Init.Init(srcx, srcy, scale, scale, threshold);
 
         var P = Array(5);
-        
+
         P.fill(0);
 
         var total = srcy;
@@ -35,7 +35,7 @@ var Filter = class {
 
             current++;
 
-            notify({ScalingProgress: current / total});
+            notify({ ScalingProgress: current / total });
         }
     }
 }

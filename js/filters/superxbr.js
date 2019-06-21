@@ -7,14 +7,14 @@ var Filter = class {
     }
 
     clamp(x, floor, ceil) {
-        
+
         return Interpolate.Fix(x, floor, ceil);
     }
 
     matrix4() {
 
         // Surprisingly, using Uint8Arrays ends up being slower.
-        return [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+        return [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
     }
 
     /*
@@ -44,9 +44,9 @@ var Filter = class {
     2   2 |  4  0
     */
 
-   diagonal_edge(mat, wp) {
+    diagonal_edge(mat, wp) {
 
-        var dw1 = wp[0]*(this.df(mat[0][2], mat[1][1]) + this.df(mat[1][1], mat[2][0]) +
+        var dw1 = wp[0] * (this.df(mat[0][2], mat[1][1]) + this.df(mat[1][1], mat[2][0]) +
             this.df(mat[1][3], mat[2][2]) + this.df(mat[2][2], mat[3][1])) +
             wp[1] * (this.df(mat[0][3], mat[1][2]) + this.df(mat[2][1], mat[3][0])) +
             wp[2] * (this.df(mat[0][3], mat[2][1]) + this.df(mat[1][2], mat[3][0])) +
@@ -54,7 +54,7 @@ var Filter = class {
             wp[4] * (this.df(mat[0][2], mat[2][0]) + this.df(mat[1][3], mat[3][1])) +
             wp[5] * (this.df(mat[0][1], mat[1][0]) + this.df(mat[2][3], mat[3][2]));
 
-        var dw2 = wp[0]*(this.df(mat[0][1], mat[1][2]) + this.df(mat[1][2], mat[2][3]) +
+        var dw2 = wp[0] * (this.df(mat[0][1], mat[1][2]) + this.df(mat[1][2], mat[2][3]) +
             this.df(mat[1][0], mat[2][1]) + this.df(mat[2][1], mat[3][2])) +
             wp[1] * (this.df(mat[0][0], mat[1][1]) + this.df(mat[2][2], mat[3][3])) +
             wp[2] * (this.df(mat[0][0], mat[2][2]) + this.df(mat[1][1], mat[3][3])) +
@@ -64,14 +64,14 @@ var Filter = class {
 
         return (dw1 - dw2);
     }
-    
+
     Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = 2;
 
         const Channels = 4;
         var Channel, sample, csx, csy, sx, sy, x, y, cx, cy;
-			
+
         Init.Init(srcx, srcy, scale, scale, threshold);
 
         var wgt1 = 0.129633;
@@ -101,22 +101,22 @@ var Filter = class {
             for (x = 0; x < outw; ++x) {
 
                 cx = parseInt(x / scale), cy = parseInt(y / scale); // central pixels on original images
-                
+
                 // sample supporting pixels in original image
                 for (sx = -1; sx <= 2; ++sx) {
                     for (sy = -1; sy <= 2; ++sy) {
-                        
+
                         // clamp pixel locations
                         csy = this.clamp(sy + cy, 0, srcy - 1);
                         csx = this.clamp(sx + cx, 0, srcx - 1);
                         // sample & add weighted components
                         sample = (csy * srcx + csx) * Channels;
-                        
+
                         r[sx + 1][sy + 1] = Input[sample];
                         g[sx + 1][sy + 1] = Input[sample + 1];
                         b[sx + 1][sy + 1] = Input[sample + 2];
                         a[sx + 1][sy + 1] = Input[sample + 3];
-                        Y[sx + 1][sy + 1] = (0.2126*r[sx + 1][sy + 1] + 0.7152*g[sx + 1][sy + 1] + 0.0722*b[sx + 1][sy + 1]);
+                        Y[sx + 1][sy + 1] = (0.2126 * r[sx + 1][sy + 1] + 0.7152 * g[sx + 1][sy + 1] + 0.0722 * b[sx + 1][sy + 1]);
                     }
                 }
 
@@ -128,22 +128,22 @@ var Filter = class {
                 max_g_sample = Math.max(g[1][1], g[2][1], g[1][2], g[2][2]);
                 max_b_sample = Math.max(b[1][1], b[2][1], b[1][2], b[2][2]);
                 max_a_sample = Math.max(a[1][1], a[2][1], a[1][2], a[2][2]);
-                
+
                 d_edge = this.diagonal_edge(Y, wp);
 
                 if (d_edge <= 0) {
-                    
-                    rf = w1*(r[0][3] + r[3][0]) + w2*(r[1][2] + r[2][1]);
-                    gf = w1*(g[0][3] + g[3][0]) + w2*(g[1][2] + g[2][1]);
-                    bf = w1*(b[0][3] + b[3][0]) + w2*(b[1][2] + b[2][1]);
-                    af = w1*(a[0][3] + a[3][0]) + w2*(a[1][2] + a[2][1]);
-            
+
+                    rf = w1 * (r[0][3] + r[3][0]) + w2 * (r[1][2] + r[2][1]);
+                    gf = w1 * (g[0][3] + g[3][0]) + w2 * (g[1][2] + g[2][1]);
+                    bf = w1 * (b[0][3] + b[3][0]) + w2 * (b[1][2] + b[2][1]);
+                    af = w1 * (a[0][3] + a[3][0]) + w2 * (a[1][2] + a[2][1]);
+
                 } else {
 
-                    rf = w1*(r[0][0] + r[3][3]) + w2*(r[1][1] + r[2][2]);
-                    gf = w1*(g[0][0] + g[3][3]) + w2*(g[1][1] + g[2][2]);
-                    bf = w1*(b[0][0] + b[3][3]) + w2*(b[1][1] + b[2][2]);
-                    af = w1*(a[0][0] + a[3][3]) + w2*(a[1][1] + a[2][2]);
+                    rf = w1 * (r[0][0] + r[3][3]) + w2 * (r[1][1] + r[2][2]);
+                    gf = w1 * (g[0][0] + g[3][3]) + w2 * (g[1][1] + g[2][2]);
+                    bf = w1 * (b[0][0] + b[3][3]) + w2 * (b[1][1] + b[2][2]);
+                    af = w1 * (a[0][0] + a[3][3]) + w2 * (a[1][1] + a[2][2]);
                 }
 
                 // anti-ringing, clamp.
@@ -157,15 +157,15 @@ var Filter = class {
                 ai = this.clamp(Math.ceil(af), 0, 255);
 
                 for (Channel = 0; Channel < Channels; Channel++) {
-                    
-                    Common.ScaledImage[(y * outw + x) * Channels + Channel] = Common.ScaledImage[(y * outw + x + 1) * Channels + Channel] =  Common.ScaledImage[((y + 1) * outw + x) * Channels + Channel] = Input[(cy * srcx + cx) * Channels + Channel];
+
+                    Common.ScaledImage[(y * outw + x) * Channels + Channel] = Common.ScaledImage[(y * outw + x + 1) * Channels + Channel] = Common.ScaledImage[((y + 1) * outw + x) * Channels + Channel] = Input[(cy * srcx + cx) * Channels + Channel];
                 }
 
                 Common.ScaledImage[((y + 1) * outw + x + 1) * Channels] = ri;
-                Common.ScaledImage[((y + 1) * outw + x + 1) * Channels + 1] = gi; 
+                Common.ScaledImage[((y + 1) * outw + x + 1) * Channels + 1] = gi;
                 Common.ScaledImage[((y + 1) * outw + x + 1) * Channels + 2] = bi;
                 Common.ScaledImage[((y + 1) * outw + x + 1) * Channels + 3] = ai;
-                
+
                 ++x;
             }
 
@@ -173,9 +173,9 @@ var Filter = class {
 
             current += 2;
 
-            notify({ScalingProgress: current / total });
+            notify({ ScalingProgress: current / total });
         }
-        
+
         // Second Pass
         wp[0] = 2.0;
         wp[1] = 0.0;
@@ -186,7 +186,7 @@ var Filter = class {
 
         for (y = 0; y < outh; ++y) {
             for (x = 0; x < outw; ++x) {
-                
+
                 // sample supporting pixels in original image
                 for (sx = -1; sx <= 2; ++sx) {
                     for (sy = -1; sy <= 2; ++sy) {
@@ -194,7 +194,7 @@ var Filter = class {
                         // clamp pixel locations
                         csy = this.clamp(sx - sy + y, 0, scale * srcy - 1);
                         csx = this.clamp(sx + sy + x, 0, scale * srcx - 1);
-                        
+
                         // sample & add weighted components
                         sample = (csy * outw + csx) * Channels;
 
@@ -202,7 +202,7 @@ var Filter = class {
                         g[sx + 1][sy + 1] = Common.ScaledImage[sample + 1];
                         b[sx + 1][sy + 1] = Common.ScaledImage[sample + 2];
                         a[sx + 1][sy + 1] = Common.ScaledImage[sample + 3];
-                        Y[sx + 1][sy + 1] = (0.2126*r[sx + 1][sy + 1] + 0.7152*g[sx + 1][sy + 1] + 0.0722*b[sx + 1][sy + 1]);
+                        Y[sx + 1][sy + 1] = (0.2126 * r[sx + 1][sy + 1] + 0.7152 * g[sx + 1][sy + 1] + 0.0722 * b[sx + 1][sy + 1]);
                     }
                 }
 
@@ -214,22 +214,22 @@ var Filter = class {
                 max_g_sample = Math.max(g[1][1], g[2][1], g[1][2], g[2][2]);
                 max_b_sample = Math.max(b[1][1], b[2][1], b[1][2], b[2][2]);
                 max_a_sample = Math.max(a[1][1], a[2][1], a[1][2], a[2][2]);
-                
+
                 d_edge = this.diagonal_edge(Y, wp);
 
                 if (d_edge <= 0) {
-    
-                    rf = w3*(r[0][3] + r[3][0]) + w4*(r[1][2] + r[2][1]);
-                    gf = w3*(g[0][3] + g[3][0]) + w4*(g[1][2] + g[2][1]);
-                    bf = w3*(b[0][3] + b[3][0]) + w4*(b[1][2] + b[2][1]);
-                    af = w3*(a[0][3] + a[3][0]) + w4*(a[1][2] + a[2][1]);
-                
+
+                    rf = w3 * (r[0][3] + r[3][0]) + w4 * (r[1][2] + r[2][1]);
+                    gf = w3 * (g[0][3] + g[3][0]) + w4 * (g[1][2] + g[2][1]);
+                    bf = w3 * (b[0][3] + b[3][0]) + w4 * (b[1][2] + b[2][1]);
+                    af = w3 * (a[0][3] + a[3][0]) + w4 * (a[1][2] + a[2][1]);
+
                 } else {
 
-                    rf = w3*(r[0][0] + r[3][3]) + w4*(r[1][1] + r[2][2]);
-                    gf = w3*(g[0][0] + g[3][3]) + w4*(g[1][1] + g[2][2]);
-                    bf = w3*(b[0][0] + b[3][3]) + w4*(b[1][1] + b[2][2]);
-                    af = w3*(a[0][0] + a[3][3]) + w4*(a[1][1] + a[2][2]);
+                    rf = w3 * (r[0][0] + r[3][3]) + w4 * (r[1][1] + r[2][2]);
+                    gf = w3 * (g[0][0] + g[3][3]) + w4 * (g[1][1] + g[2][2]);
+                    bf = w3 * (b[0][0] + b[3][3]) + w4 * (b[1][1] + b[2][2]);
+                    af = w3 * (a[0][0] + a[3][3]) + w4 * (a[1][1] + a[2][2]);
                 }
 
                 // anti-ringing, clamp.
@@ -243,7 +243,7 @@ var Filter = class {
                 ai = this.clamp(Math.ceil(af), 0, 255);
 
                 Common.ScaledImage[(y * outw + x + 1) * Channels] = ri;
-                Common.ScaledImage[(y * outw + x + 1) * Channels + 1] = gi; 
+                Common.ScaledImage[(y * outw + x + 1) * Channels + 1] = gi;
                 Common.ScaledImage[(y * outw + x + 1) * Channels + 2] = bi;
                 Common.ScaledImage[(y * outw + x + 1) * Channels + 3] = ai;
 
@@ -253,15 +253,15 @@ var Filter = class {
                         // clamp pixel locations
                         csy = this.clamp(sx - sy + 1 + y, 0, scale * srcy - 1);
                         csx = this.clamp(sx + sy - 1 + x, 0, scale * srcx - 1);
-                        
+
                         // sample & add weighted components
                         sample = (csy * outw + csx) * Channels;
-                        
+
                         r[sx + 1][sy + 1] = Common.ScaledImage[sample];
                         g[sx + 1][sy + 1] = Common.ScaledImage[sample + 1];
                         b[sx + 1][sy + 1] = Common.ScaledImage[sample + 2];
                         a[sx + 1][sy + 1] = Common.ScaledImage[sample + 3];
-                        Y[sx + 1][sy + 1] = (0.2126*r[sx + 1][sy + 1] + 0.7152*g[sx + 1][sy + 1] + 0.0722*b[sx + 1][sy + 1]);
+                        Y[sx + 1][sy + 1] = (0.2126 * r[sx + 1][sy + 1] + 0.7152 * g[sx + 1][sy + 1] + 0.0722 * b[sx + 1][sy + 1]);
                     }
                 }
 
@@ -269,17 +269,17 @@ var Filter = class {
 
                 if (d_edge <= 0) {
 
-                    rf = w3*(r[0][3] + r[3][0]) + w4*(r[1][2] + r[2][1]);
-                    gf = w3*(g[0][3] + g[3][0]) + w4*(g[1][2] + g[2][1]);
-                    bf = w3*(b[0][3] + b[3][0]) + w4*(b[1][2] + b[2][1]);
-                    af = w3*(a[0][3] + a[3][0]) + w4*(a[1][2] + a[2][1]);
+                    rf = w3 * (r[0][3] + r[3][0]) + w4 * (r[1][2] + r[2][1]);
+                    gf = w3 * (g[0][3] + g[3][0]) + w4 * (g[1][2] + g[2][1]);
+                    bf = w3 * (b[0][3] + b[3][0]) + w4 * (b[1][2] + b[2][1]);
+                    af = w3 * (a[0][3] + a[3][0]) + w4 * (a[1][2] + a[2][1]);
 
                 } else {
 
-                    rf = w3*(r[0][0] + r[3][3]) + w4*(r[1][1] + r[2][2]);
-                    gf = w3*(g[0][0] + g[3][3]) + w4*(g[1][1] + g[2][2]);
-                    bf = w3*(b[0][0] + b[3][3]) + w4*(b[1][1] + b[2][2]);
-                    af = w3*(a[0][0] + a[3][3]) + w4*(a[1][1] + a[2][2]);
+                    rf = w3 * (r[0][0] + r[3][3]) + w4 * (r[1][1] + r[2][2]);
+                    gf = w3 * (g[0][0] + g[3][3]) + w4 * (g[1][1] + g[2][2]);
+                    bf = w3 * (b[0][0] + b[3][3]) + w4 * (b[1][1] + b[2][2]);
+                    af = w3 * (a[0][0] + a[3][3]) + w4 * (a[1][1] + a[2][2]);
                 }
 
                 // anti-ringing, clamp.
@@ -293,7 +293,7 @@ var Filter = class {
                 ai = this.clamp(Math.ceil(af), 0, 255);
 
                 Common.ScaledImage[((y + 1) * outw + x) * Channels] = ri;
-                Common.ScaledImage[((y + 1) * outw + x) * Channels + 1] = gi; 
+                Common.ScaledImage[((y + 1) * outw + x) * Channels + 1] = gi;
                 Common.ScaledImage[((y + 1) * outw + x) * Channels + 2] = bi;
                 Common.ScaledImage[((y + 1) * outw + x) * Channels + 3] = ai;
 
@@ -304,22 +304,22 @@ var Filter = class {
 
             current += 2;
 
-            notify({ScalingProgress: current / total });
+            notify({ ScalingProgress: current / total });
         }
 
         // Third Pass
-        wp[0] =  2.0;
-        wp[1] =  1.0;
+        wp[0] = 2.0;
+        wp[1] = 1.0;
         wp[2] = -1.0;
-        wp[3] =  4.0;
+        wp[3] = 4.0;
         wp[4] = -1.0;
-        wp[5] =  1.0;
+        wp[5] = 1.0;
 
         for (y = outh - 1; y >= 0; --y) {
             for (x = outw - 1; x >= 0; --x) {
                 for (sx = -2; sx <= 1; ++sx) {
                     for (sy = -2; sy <= 1; ++sy) {
-                        
+
                         // clamp pixel locations
                         csy = this.clamp(sy + y, 0, scale * srcy - 1);
                         csx = this.clamp(sx + x, 0, scale * srcx - 1);
@@ -331,7 +331,7 @@ var Filter = class {
                         g[sx + 2][sy + 2] = Common.ScaledImage[sample + 1];
                         b[sx + 2][sy + 2] = Common.ScaledImage[sample + 2];
                         a[sx + 2][sy + 2] = Common.ScaledImage[sample + 3];
-                        Y[sx + 2][sy + 2] = (0.2126*r[sx + 2][sy + 2] + 0.7152*g[sx + 2][sy + 2] + 0.0722*b[sx + 2][sy + 2]);
+                        Y[sx + 2][sy + 2] = (0.2126 * r[sx + 2][sy + 2] + 0.7152 * g[sx + 2][sy + 2] + 0.0722 * b[sx + 2][sy + 2]);
                     }
                 }
 
@@ -343,22 +343,22 @@ var Filter = class {
                 max_g_sample = Math.max(g[1][1], g[2][1], g[1][2], g[2][2]);
                 max_b_sample = Math.max(b[1][1], b[2][1], b[1][2], b[2][2]);
                 max_a_sample = Math.max(a[1][1], a[2][1], a[1][2], a[2][2]);
-                
+
                 d_edge = this.diagonal_edge(Y, wp);
 
                 if (d_edge <= 0) {
 
-                    rf = w1*(r[0][3] + r[3][0]) + w2*(r[1][2] + r[2][1]);
-                    gf = w1*(g[0][3] + g[3][0]) + w2*(g[1][2] + g[2][1]);
-                    bf = w1*(b[0][3] + b[3][0]) + w2*(b[1][2] + b[2][1]);
-                    af = w1*(a[0][3] + a[3][0]) + w2*(a[1][2] + a[2][1]);
+                    rf = w1 * (r[0][3] + r[3][0]) + w2 * (r[1][2] + r[2][1]);
+                    gf = w1 * (g[0][3] + g[3][0]) + w2 * (g[1][2] + g[2][1]);
+                    bf = w1 * (b[0][3] + b[3][0]) + w2 * (b[1][2] + b[2][1]);
+                    af = w1 * (a[0][3] + a[3][0]) + w2 * (a[1][2] + a[2][1]);
 
                 } else {
 
-                    rf = w1*(r[0][0] + r[3][3]) + w2*(r[1][1] + r[2][2]);
-                    gf = w1*(g[0][0] + g[3][3]) + w2*(g[1][1] + g[2][2]);
-                    bf = w1*(b[0][0] + b[3][3]) + w2*(b[1][1] + b[2][2]);
-                    af = w1*(a[0][0] + a[3][3]) + w2*(a[1][1] + a[2][2]);
+                    rf = w1 * (r[0][0] + r[3][3]) + w2 * (r[1][1] + r[2][2]);
+                    gf = w1 * (g[0][0] + g[3][3]) + w2 * (g[1][1] + g[2][2]);
+                    bf = w1 * (b[0][0] + b[3][3]) + w2 * (b[1][1] + b[2][2]);
+                    af = w1 * (a[0][0] + a[3][3]) + w2 * (a[1][1] + a[2][2]);
                 }
 
                 // anti-ringing, clamp.
@@ -370,18 +370,18 @@ var Filter = class {
                 gi = this.clamp(Math.ceil(gf), 0, 255);
                 bi = this.clamp(Math.ceil(bf), 0, 255);
                 ai = this.clamp(Math.ceil(af), 0, 255);
-                
+
                 var dst = (y * outw + x) * Channels;
 
                 Common.ScaledImage[dst] = ri;
-                Common.ScaledImage[dst + 1] = gi; 
+                Common.ScaledImage[dst + 1] = gi;
                 Common.ScaledImage[dst + 2] = bi;
                 Common.ScaledImage[dst + 3] = ai;
             }
 
             current++;
 
-            notify({ScalingProgress: current / total});
+            notify({ ScalingProgress: current / total });
         }
     }
 }

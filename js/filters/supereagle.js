@@ -4,11 +4,11 @@ var Filter = class {
     Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = 2;
-			
+
         Init.Init(srcx, srcy, scale, scale, threshold);
 
         var P = Array(5);
-        
+
         P.fill(0);
 
         var total = srcy;
@@ -35,7 +35,7 @@ var Filter = class {
                 if (Common.IsLike(c4, c8)) {
 
                     var c48 = Interpolate.Interpolate2P(c4, c8);
-                    
+
                     if (Common.IsLike(c7, c5)) {
 
                         var c57 = Interpolate.Interpolate2P(c5, c7);
@@ -52,18 +52,18 @@ var Filter = class {
                             P[2] = c57;
                             P[4] = Interpolate.Interpolate2P(c48, c57);
                             P[1] = Interpolate.Interpolate2P(c48, c57);
-                        
+
                         } else if (conc2D < 0) {
 
                             P[3] = Interpolate.Interpolate2P(c48, c57);
                             P[2] = Interpolate.Interpolate2P(c48, c57);
-                        
+
                         } else {
 
                             P[3] = c57;
                             P[2] = c57;
                         }
-                    
+
                     } else {
 
                         if (Common.IsLike(c48, c1) && Common.IsLike(c48, d5))
@@ -84,11 +84,11 @@ var Filter = class {
                         else
                             P[3] = Interpolate.Interpolate2P(c48, c7);
                     }
-                
+
                 } else {
 
                     if (Common.IsLike(c7, c5)) {
-                        
+
                         var c57 = Interpolate.Interpolate2P(c5, c7);
                         P[2] = c57;
                         P[3] = c57;
@@ -110,7 +110,7 @@ var Filter = class {
                             P[4] = Interpolate.Interpolate2P2Q(Interpolate.Interpolate2P(c57, d1), c8, 3, 1);
                         else
                             P[4] = Interpolate.Interpolate2P(c57, c8);
-                    
+
                     } else {
 
                         P[4] = Interpolate.Interpolate3P3Q(c8, c7, c5, 6, 1, 1);
@@ -128,7 +128,7 @@ var Filter = class {
 
             current++;
 
-            notify({ScalingProgress: current / total});
+            notify({ ScalingProgress: current / total });
         }
     }
 }

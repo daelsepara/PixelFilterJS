@@ -6,7 +6,7 @@ var Filter = class {
         win = Math.max(3, win);
 
         Init.Init(srcx, srcy, scale, scale, threshold);
-        
+
         this.Resize(Input, srcx, srcy, win, Common.ScaledImage, Common.SizeX, Common.SizeY);
     }
 
@@ -15,7 +15,7 @@ var Filter = class {
         x = (x * Math.PI);
 
         if (x < 0.01 && x > -0.01)
-            return 1.0 + x * x *(-1.0 / 6.0 + x * x / 120.0);
+            return 1.0 + x * x * (-1.0 / 6.0 + x * x / 120.0);
 
         return Math.sin(x) / x;
     }
@@ -85,7 +85,7 @@ var Filter = class {
 
                 current++;
 
-                notify({ScalingProgress: current / total});
+                notify({ ScalingProgress: current / total });
             }
         }
     }

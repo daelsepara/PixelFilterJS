@@ -4,11 +4,11 @@ var Filter = class {
     Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = 2;
-			
+
         Init.Init(srcx, srcy, scale, scale, threshold);
 
         var P = Array(5);
-        
+
         P.fill(0);
 
         var total = srcy;
@@ -44,9 +44,9 @@ var Filter = class {
                     var eq37 = Common.IsLike(c3, c7) && (neq46 || neq42 || Common.IsNotLike(c3, c0) || Common.IsNotLike(c7, c8));
                     var eq75 = Common.IsLike(c7, c5) && (neq48 || neq40 || Common.IsNotLike(c7, c6) || Common.IsNotLike(c5, c2));
                     var eq51 = Common.IsLike(c5, c1) && (neq42 || neq46 || Common.IsNotLike(c5, c8) || Common.IsNotLike(c1, c0));
-                    
+
                     if ((!neq40) || (!neq41) || (!neq42) || (!neq43) || (!neq45) || (!neq46) || (!neq47) || (!neq48)) {
-                        
+
                         var c3A;
 
                         if ((eq13 && neq46) && (eq37 && neq40))
@@ -128,10 +128,10 @@ var Filter = class {
                     Common.Write4RGBA(Common.ScaledImage, srcx, srcy, x, y, Pixel, P[Pixel]);
                 }
             }
-            
+
             current++;
 
-            notify({ScalingProgress: current / total});
+            notify({ ScalingProgress: current / total });
         }
     }
 }

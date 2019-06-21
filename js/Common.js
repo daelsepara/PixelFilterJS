@@ -5,29 +5,29 @@ class Common {
 
         return this.hasOwnProperty('_Threshold') ? this._Threshold : false;
     }
-    
-    static set Threshold(v) { 
-        
-        this._Threshold = v; 
+
+    static set Threshold(v) {
+
+        this._Threshold = v;
     }
 
     static get ScaleX() {
 
         return this.hasOwnProperty('_ScaleX') ? this._ScaleX : parseInt(0);
     }
-    
-    static set ScaleX(v) { 
-        
-        this._ScaleX = parseInt(v); 
+
+    static set ScaleX(v) {
+
+        this._ScaleX = parseInt(v);
     }
 
     static get ScaleY() {
 
         return this.hasOwnProperty('_ScaleY') ? this._ScaleY : parseInt(0);
     }
-    
-    static set ScaleY(v) { 
-        
+
+    static set ScaleY(v) {
+
         this._ScaleY = parseInt(v);
     }
 
@@ -35,30 +35,30 @@ class Common {
 
         return this.hasOwnProperty('_SizeX') ? this._SizeX : parseInt(0);
     }
-    
-    static set SizeX(v) { 
-        
-        this._SizeX = parseInt(v); 
+
+    static set SizeX(v) {
+
+        this._SizeX = parseInt(v);
     }
 
     static get SizeY() {
 
         return this.hasOwnProperty('_SizeY') ? this._SizeY : parseInt(0);
     }
-    
-    static set SizeY(v) { 
-        
-        this._SizeY = parseInt(v); 
+
+    static set SizeY(v) {
+
+        this._SizeY = parseInt(v);
     }
 
     static get ScaledImage() {
 
         return this.hasOwnProperty('_ScaledImage') ? this._ScaledImage : [];
     }
-    
-    static set ScaledImage(v) { 
-        
-        this._ScaledImage = v; 
+
+    static set ScaledImage(v) {
+
+        this._ScaledImage = v;
     }
 
     static Copy(dst, src, Length) {
@@ -68,11 +68,11 @@ class Common {
     }
 
     static _CLR(Input, srcx, srcy, x, y) {
-        
+
         const Channels = 4;
 
         if (y >= 0 && y < srcy && x >= 0 && x < srcx) {
-            
+
             var index = (y * srcx + x) * Channels;
 
             var r = Input[index];
@@ -216,8 +216,7 @@ class Common {
         this._Write4RGBA(Output, sizex, sizey, x, y, Pixel, A, R, G, B);
     }
 
-    static _Write9RGBA(Output, sizex, sizey, x, y, Pixel, A, R, G, B)
-    {
+    static _Write9RGBA(Output, sizex, sizey, x, y, Pixel, A, R, G, B) {
         if (x >= 0 && x < sizex && y >= 0 && y < sizey) {
 
             const Channels = 4;
@@ -231,12 +230,12 @@ class Common {
             }
 
             if (Pixel == 3 || Pixel == 6 || Pixel == 9) {
-                
+
                 deltax = 2;
             }
 
             if (Pixel == 4 || Pixel == 5 || Pixel == 6) {
-                
+
                 deltay = 1;
             }
 
@@ -367,7 +366,7 @@ class Common {
 
     static ARGBINT(a, r, g, b) {
 
-        return ((((((a) >>> 0) << 24) >>> 0) | (((r) << 16)  + ((g) << 8) + ((b)))) >>> 0);
+        return ((((((a) >>> 0) << 24) >>> 0) | (((r) << 16) + ((g) << 8) + ((b)))) >>> 0);
     }
 
     static Truncate(color) {
@@ -414,26 +413,26 @@ class Interpolate {
         var g = parseInt(parseInt(Common.Green(pixel1) * (1.0 - quantifier) + Common.Green(pixel2) * quantifier));
         var b = parseInt(parseInt(Common.Blue(pixel1) * (1.0 - quantifier) + Common.Blue(pixel2) * quantifier));
         var a = parseInt(parseInt(Common.Alpha(pixel1) * (1.0 - quantifier) + Common.Alpha(pixel2) * quantifier));
-    
+
         return Common.ARGBINT(a, r, g, b);
     }
 
     static Interpolate2P2Q(pixel1, pixel2, quantifier1, quantifier2) {
 
         var total = (quantifier1 + quantifier2);
-    
+
         var r = parseInt(((Common.Red(pixel1) * quantifier1 + Common.Red(pixel2) * quantifier2)) / total);
         var g = parseInt(((Common.Green(pixel1) * quantifier1 + Common.Green(pixel2) * quantifier2)) / total);
         var b = parseInt(((Common.Blue(pixel1) * quantifier1 + Common.Blue(pixel2) * quantifier2)) / total);
         var a = parseInt(((Common.Alpha(pixel1) * quantifier1 + Common.Alpha(pixel2) * quantifier2)) / total);
-    
+
         return Common.ARGBINT(a, r, g, b);
     }
 
     static Interpolate3P3Q(pixel1, pixel2, pixel3, quantifier1, quantifier2, quantifier3) {
-        
+
         var total = parseInt(quantifier1 + quantifier2 + quantifier3);
-        
+
         var r = parseInt((Common.Red(pixel1) * quantifier1 + Common.Red(pixel2) * quantifier2 + Common.Red(pixel3) * quantifier3) / total);
         var g = parseInt((Common.Green(pixel1) * quantifier1 + Common.Green(pixel2) * quantifier2 + Common.Green(pixel3) * quantifier3) / total);
         var b = parseInt((Common.Blue(pixel1) * quantifier1 + Common.Blue(pixel2) * quantifier2 + Common.Blue(pixel3) * quantifier3) / total);
@@ -455,12 +454,12 @@ class Interpolate {
     static Interpolate4P4Q(pixel1, pixel2, pixel3, pixel4, quantifier1, quantifier2, quantifier3, quantifier4) {
 
         var total = parseInt(quantifier1 + quantifier2 + quantifier3 + quantifier4);
-        
+
         var r = parseInt((Common.Red(pixel1) * quantifier1 + Common.Red(pixel2) * quantifier2 + Common.Red(pixel3) * quantifier3 + Common.Red(pixel4) * quantifier4) / total);
         var g = parseInt((Common.Green(pixel1) * quantifier1 + Common.Green(pixel2) * quantifier2 + Common.Green(pixel3) * quantifier3 + Common.Green(pixel4) * quantifier4) / total);
         var b = parseInt((Common.Blue(pixel1) * quantifier1 + Common.Blue(pixel2) * quantifier2 + Common.Blue(pixel3) * quantifier3 + Common.Blue(pixel4) * quantifier4) / total);
         var a = parseInt((Common.Alpha(pixel1) * quantifier1 + Common.Alpha(pixel2) * quantifier2 + Common.Alpha(pixel3) * quantifier3 + Common.Alpha(pixel4) * quantifier4) / total);
-    
+
         return Common.ARGBINT(a, r, g, b);
     }
 
@@ -501,9 +500,9 @@ class Interpolate {
 class Flip {
 
     static FlipUD(src, sizex, sizey) {
-        
+
         const Channels = 4;
-        
+
         if (src.length > 0) {
 
             for (var y = 0; y < sizey / 2; y++) {
@@ -534,7 +533,7 @@ class Flip {
 
                     var index = (y * sizex + x) * Channels;
                     var rev = (y * sizex + (sizex - x - 1)) * Channels;
-    
+
                     for (var Channel = 0; Channel < Channels; Channel++) {
 
                         var temp = src[index + Channel];
@@ -556,7 +555,7 @@ class Rotate {
         for (var y = 0; y < srcy; y++) {
             for (var x = 0; x < srcx; x++) {
                 for (var Channel = 0; Channel < Channels; Channel++) {
-                    
+
                     dst[(x * srcy + y) * Channels + Channel] = src[(y * srcx + x) * Channels + Channel];
                 }
             }
@@ -569,11 +568,11 @@ class Rotate {
 
         Flip.FlipUD(dst, srcy, srcx);
     }
-            
+
     static Rotate180(dst, src, srcx, srcy) {
 
         const Channels = 4;
-        
+
         Common.Copy(dst, src, srcx * srcy * Channels);
 
         Flip.FlipUD(dst, srcx, srcy);
@@ -584,7 +583,7 @@ class Rotate {
     static Rotate270(dst, src, srcx, srcy) {
 
         Flip.FlipUD(src, srcx, srcy);
-        
+
         this.Transpose(dst, src, srcx, srcy);
     }
 }
@@ -592,25 +591,25 @@ class Rotate {
 class Kreed {
 
     static Conc2D(c00, c01, c10, c11) {
-        
+
         var result = 0;
-    
+
         var acAreAlike = Common.IsLike(c00, c10);
-        
+
         var x = acAreAlike ? 1 : 0;
         var y = (Common.IsLike(c01, c10) && !(acAreAlike)) ? 1 : 0;
-    
+
         var adAreAlike = Common.IsLike(c00, c11);
-        
+
         x += adAreAlike ? 1 : 0;
         y += (Common.IsLike(c01, c11) && !(adAreAlike)) ? 1 : 0;
-    
+
         if (x <= 1)
             result++;
 
         if (y <= 1)
             result--;
-    
+
         return (result);
     }
 }
@@ -621,12 +620,12 @@ class ReverseAA {
 
         return parseInt(Math.min(max, Math.max(v, min)));
     }
-    
+
     static FullClamp(value) {
-        
+
         return Common._Clip8(value);
     }
-    
+
     static _ReverseAntiAlias(b1, b, d, e, f, h, h5, d0, f4) {
 
         var n1 = b1;
@@ -638,19 +637,19 @@ class ReverseAA {
         var bb = s - n2;
         var cc = n3 - s;
         var dd = n4 - n3;
-    
+
         var tilt = (7 * (bb + cc) - 3 * (aa + dd)) / 16;
-    
+
         var m = (s < 128) ? 2 * s : 2 * (255 - s);
-    
+
         m = Math.min(m, 2 * Math.abs(bb));
         m = Math.min(m, 2 * Math.abs(cc));
-    
+
         tilt = this.Clamp(tilt, -m, m);
-    
+
         var s1 = s + tilt / 2;
         var s0 = s1 - tilt;
-    
+
         n1 = d0;
         n2 = d;
         s = s0;
@@ -660,36 +659,36 @@ class ReverseAA {
         bb = s - n2;
         cc = n3 - s;
         dd = n4 - n3;
-    
+
         tilt = (7 * (bb + cc) - 3 * (aa + dd)) / 16;
-    
+
         m = (s < 128) ? 2 * s : 2 * (255 - s);
-    
+
         m = Math.min(m, 2 * Math.abs(bb));
         m = Math.min(m, 2 * Math.abs(cc));
-    
+
         tilt = this.Clamp(tilt, -m, m);
-    
+
         var e1 = s + tilt / 2;
         var e0 = e1 - tilt;
-    
+
         s = s1;
         bb = s - n2;
         cc = n3 - s;
-    
+
         tilt = (7 * (bb + cc) - 3 * (aa + dd)) / 16;
-    
+
         m = (s < 128) ? 2 * s : 2 * (255 - s);
-    
+
         m = Math.min(m, 2 * Math.abs(bb));
         m = Math.min(m, 2 * Math.abs(cc));
-    
+
         tilt = this.Clamp(tilt, -m, m);
-    
+
         var e3 = s + tilt / 2;
         var e2 = e3 - tilt;
-    
-        return {rd: this.FullClamp(e0), gn: this.FullClamp(e1), bl: this.FullClamp(e2), alpha: this.FullClamp(e3)};
+
+        return { rd: this.FullClamp(e0), gn: this.FullClamp(e1), bl: this.FullClamp(e2), alpha: this.FullClamp(e3) };
     }
 }
 
@@ -714,12 +713,12 @@ class Init {
 
         return buffer;
     }
-    
+
     static New(x, y) {
 
         return this.Buffer(x * y, 0);
     }
-    
+
     static Init(srcx, srcy, FilterScaleX, FilterScaleY, ComparisonThreshold) {
 
         Common.ScaleX = FilterScaleX;

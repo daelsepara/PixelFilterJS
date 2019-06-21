@@ -4,11 +4,11 @@ var Filter = class {
     Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = Math.max(2, Math.min(3, scale));
-			
+
         Init.Init(srcx, srcy, scale, scale, threshold);
 
         var P = Array(10);
-        
+
         P.fill(0);
 
         var total = srcy;
@@ -27,14 +27,14 @@ var Filter = class {
                 var c7 = Common.CLR(Input, srcx, srcy, x, y, 0, 1);
                 var c8 = Common.CLR(Input, srcx, srcy, x, y, 1, 1);
 
-                switch(scale) {
+                switch (scale) {
 
                     case 3:
 
                         P[1] = P[2] = P[3] = P[4] = P[5] = P[6] = P[7] = P[8] = P[9] = c4;
 
                         if (Common.IsNotLike(c3, c5) && Common.IsNotLike(c7, c1)) {
-								
+
                             var neq40 = Common.IsNotLike(c4, c0);
                             var neq41 = Common.IsNotLike(c4, c1);
                             var neq42 = Common.IsNotLike(c4, c2);
@@ -48,7 +48,7 @@ var Filter = class {
                             var eq37 = Common.IsLike(c3, c7) && (neq46 || neq42 || Common.IsNotLike(c3, c0) || Common.IsNotLike(c7, c8));
                             var eq75 = Common.IsLike(c7, c5) && (neq48 || neq40 || Common.IsNotLike(c7, c6) || Common.IsNotLike(c5, c2));
                             var eq51 = Common.IsLike(c5, c1) && (neq42 || neq46 || Common.IsNotLike(c5, c8) || Common.IsNotLike(c1, c0));
-                            
+
                             if (
                                 (!neq40) ||
                                 (!neq41) ||
@@ -58,8 +58,8 @@ var Filter = class {
                                 (!neq46) ||
                                 (!neq47) ||
                                 (!neq48)
-                                ) {
-                                
+                            ) {
+
                                 if (eq13)
                                     P[1] = Interpolate.Interpolate2P(c1, c3);
                                 if (eq51)
@@ -118,7 +118,7 @@ var Filter = class {
                         break;
 
                     default: // x2
-                        
+
                         P[1] = Common.IsLike(c3, c1) && Common.IsNotLike(c3, c7) && Common.IsNotLike(c1, c5) ? c1 : c4;
                         P[2] = Common.IsLike(c1, c5) && Common.IsNotLike(c1, c3) && Common.IsNotLike(c5, c7) ? c5 : c4;
                         P[3] = Common.IsLike(c7, c3) && Common.IsNotLike(c7, c5) && Common.IsNotLike(c3, c1) ? c3 : c4;
@@ -128,14 +128,14 @@ var Filter = class {
 
                             Common.Write4RGBA(Common.ScaledImage, srcx, srcy, x, y, i, P[i]);
                         }
-                        
+
                         break;
                 }
             }
 
             current++;
 
-            notify({ScalingProgress: current / total});
+            notify({ ScalingProgress: current / total });
         }
     }
 }

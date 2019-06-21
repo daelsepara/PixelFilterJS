@@ -1,15 +1,15 @@
 // nX Pixel duplication
-var Filter  = class {
+var Filter = class {
 
     Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = Math.max(1, scale);
-			
+
         Init.Init(srcx, srcy, scale, scale, threshold);
 
         var total = srcy;
         var current = 0;
-        
+
         for (var y = 0; y < srcy; y++) {
             for (var x = 0; x < srcx; x++) {
 
@@ -18,7 +18,7 @@ var Filter  = class {
 
             current++;
 
-            notify({ScalingProgress: current / total});
+            notify({ ScalingProgress: current / total });
         }
     }
 }

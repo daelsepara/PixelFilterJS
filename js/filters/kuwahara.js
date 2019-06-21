@@ -1,34 +1,34 @@
 // Kuwahara Filter (nxn window)
 var Filter = class {
 
-    varmin(varr, srcx, srcy, min, dstx, dsty) {
+	varmin(varr, srcx, srcy, min, dstx, dsty) {
 
 		if (varr < min) {
 
 			min = varr;
 			dstx = srcx;
 			dsty = srcy;
-        }
-        
-        return {min: min, dstx: dstx, dsty: dsty};
-    }
-    
-    Kuwahara(Input, srcx, srcy, win) {
+		}
+
+		return { min: min, dstx: dstx, dsty: dsty };
+	}
+
+	Kuwahara(Input, srcx, srcy, win) {
 
 		var Channels = 4;
-		
+
 		var pad = (win + 1) / 2;
 		var ofs = (win - 1) / 2;
 		var fx = srcx + ofs;
 		var fy = srcy + ofs;
-		
+
 		var fxy = fx * fy;
 		var mean = new Array(fxy);
 		var variance = new Array(fxy);
-		
+
 		var sum, varr;
-        var n;
-        var ys, xs;
+		var n;
+		var ys, xs;
 
 		var total = 2 * srcy + ofs;
 		var current = 0;
@@ -60,7 +60,7 @@ var Filter = class {
 
 			current++;
 
-            notify({ScalingProgress: current / total });
+			notify({ ScalingProgress: current / total });
 		}
 
 		var xc = 0, yc = 0;
@@ -79,19 +79,19 @@ var Filter = class {
 				var xo = x + ofs;
 				var yx1 = y * fx + x;
 				var yx2 = yo * fx + x;
-				
-                result = this.varmin(variance[yx1], x, y, min, xc, yc);
-                min = result.min, xc = result.dstx, yc = result.dsty;
-                
-                result = this.varmin(variance[yx2], x, yo, min, xc, yc);
-                min = result.min, xc = result.dstx, yc = result.dsty;
 
-                result = this.varmin(variance[yx1 + ofs], xo, y, min, xc, yc);
-                min = result.min, xc = result.dstx, yc = result.dsty;
+				result = this.varmin(variance[yx1], x, y, min, xc, yc);
+				min = result.min, xc = result.dstx, yc = result.dsty;
 
-                result = this.varmin(variance[yx2 + ofs], xo, yo, min, xc, yc);
-                min = result.min, xc = result.dstx, yc = result.dsty;
-                
+				result = this.varmin(variance[yx2], x, yo, min, xc, yc);
+				min = result.min, xc = result.dstx, yc = result.dsty;
+
+				result = this.varmin(variance[yx1 + ofs], xo, y, min, xc, yc);
+				min = result.min, xc = result.dstx, yc = result.dsty;
+
+				result = this.varmin(variance[yx2 + ofs], xo, yo, min, xc, yc);
+				min = result.min, xc = result.dstx, yc = result.dsty;
+
 				var dst = (yy + x) * Channels;
 
 				// YUV to RGB (ITU-R) see https://en.wikipedia.org/wiki/YUV
@@ -111,16 +111,16 @@ var Filter = class {
 
 			current++;
 
-            notify({ScalingProgress: current / total });
+			notify({ ScalingProgress: current / total });
 		}
 	}
 
-    Apply(Input, srcx, srcy, win, threshold) {
+	Apply(Input, srcx, srcy, win, threshold) {
 
-        win = Math.max(3, win);
-        
-        Init.Init(srcx, srcy, 1, 1, threshold);
+		win = Math.max(3, win);
 
-        this.Kuwahara(Input, srcx, srcy, win);
-    }
+		Init.Init(srcx, srcy, 1, 1, threshold);
+
+		this.Kuwahara(Input, srcx, srcy, win);
+	}
 }

@@ -4,7 +4,7 @@ var Filter = class {
     Apply(Input, srcx, srcy, scale, threshold) {
 
         scale = 1;
-			
+
         Init.Init(srcx, srcy, scale, scale, threshold);
 
         var Channels = 4;

@@ -425,7 +425,7 @@ var Alpha = class {
 
 		} else {
 
-			var calcColor = function(colFront, colBack) {
+			var calcColor = function (colFront, colBack) {
 
 				return (colFront * weightFront + colBack * weightBack) / weightSum;
 			}
@@ -999,17 +999,17 @@ var Filter = class {
 
 		if ((BlendInfo.GetBottomR(blend)) >= BlendType.BlendNormal) {
 
-			var eq = function(pix1, pix2) {
+			var eq = function (pix1, pix2) {
 
 				return scalePixelColorEq._(pix1, pix2);
 			}
 
-			var dist = function(pix1, pix2) {
+			var dist = function (pix1, pix2) {
 
 				return scalePixelColorDist._(pix1, pix2);
 			}
 
-			var doLineBlend = function() {
+			var doLineBlend = function () {
 
 				if (BlendInfo.GetBottomR(blend) >= BlendType.BlendDominant)
 					return true;
@@ -1206,7 +1206,7 @@ var Filter = class {
 				//evaluate the four corners on bottom-right of current pixel
 				//blend_xy for current (x, y) position
 				var blendXy = 0;
-				
+
 				{
 					blendResult = new BlendResult();
 
@@ -1281,7 +1281,7 @@ var Filter = class {
 
 			current++;
 
-            notify({ScalingProgress: current / total});
+			notify({ ScalingProgress: current / total });
 		}
 	}
 }
