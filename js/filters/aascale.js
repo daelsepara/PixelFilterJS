@@ -6,7 +6,7 @@ var Filter = class {
 
         var Channels = 4;
 
-        scale = Math.max(0.5, Math.min(4, scale));
+        scale = Math.max(2, Math.min(4, scale));
 
         Init.Init(srcx, srcy, scale, scale, threshold);
 
