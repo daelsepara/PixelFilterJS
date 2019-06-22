@@ -34,16 +34,6 @@ var Filter = class {
         }
     }
 
-    equal(a, b) {
-
-        return Common.IsLike(a, b);
-    }
-
-    inequal(a, b) {
-
-        return Common.IsNotLike(a, b);
-    }
-
     fract(x) {
 
         return x - Math.floor(x);
