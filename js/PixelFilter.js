@@ -46,6 +46,7 @@ angular
 			{ name: 'reverseaanr', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Christoph Feck\'s (christoph@maxiom.de) Reverse Anti-Alias filter (No-ring)' },
 			{ name: 'rgb', parameters: [1, 2, 3, 4], description: 'Dot-Matrix Printer Effect' },
 			{ name: 'rotate', parameters: [1, 2, 3], description: 'Rotate 90, 180, 270 degress' },
+			{ name: 'sabr3', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Joshua Street\'s Sabr filter v3.0' },
 			{ name: 'super2x', parameters: [2], description: 'FNES\' Super 2x Scaling' },
 			{ name: 'supereagle', parameters: [2], description: 'Kreed\'s SuperEagle modified by Hawkynt to allow thresholds' },
 			{ name: 'supersai', parameters: [2], description: 'Kreed\'s SuperSaI' },

@@ -130,7 +130,7 @@ var Filter = class {
 
         var texture = Common.CLR(image, srcx, srcy, parseInt(ppx * srcx), parseInt(ppy * srcy), 0, 0);
 
-        return this.mix(texture, this.scale2x(image, ppx, ppy, srcx, srcy), 0.25);
+        return this.mix(texture, this.scale2x(image, ppx, ppy, srcx, srcy), 0.5);
     }
 
     aascale4x(image, ppx, ppy, srcx, srcy) {
@@ -182,6 +182,6 @@ var Filter = class {
             }
         }
 
-        return this.mix(R, E, 0.25);
+        return this.mix(R, E, 0.5);
     }
 }

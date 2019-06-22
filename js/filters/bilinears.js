@@ -47,9 +47,9 @@ var Filter = class {
     smoothstep(a, b, x) {
 
         // clamp
-        x = Interpolate.Fix(x, a, b);
+        x = Interpolate.Fix((x - a) / (b - a), 0.0, 1.0);
 
-        return 3.0 * x * x - 2.0 * x * x * x;
+        return x * x * (3.0 - 2.0 * x);
     }
 
     scale(image, ppx, ppy, srcx, srcy) {
