@@ -43,6 +43,7 @@ angular
 			{ name: 'omniscale', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Lior Halphon\'s Omniscale (Modified)' },
 			{ name: 'resizedda', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: '2D Digital Differential Analyzer (DDA)' },
 			{ name: 'reverseaa', parameters: [2], description: 'Christoph Feck\'s (christoph@maxiom.de) Reverse Anti-Alias filter' },
+			{ name: 'reverseaanr', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Christoph Feck\'s (christoph@maxiom.de) Reverse Anti-Alias filter (No-ring)' },
 			{ name: 'rgb', parameters: [1, 2, 3, 4], description: 'Dot-Matrix Printer Effect' },
 			{ name: 'rotate', parameters: [1, 2, 3], description: 'Rotate 90, 180, 270 degress' },
 			{ name: 'super2x', parameters: [2], description: 'FNES\' Super 2x Scaling' },
