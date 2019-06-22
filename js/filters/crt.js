@@ -90,7 +90,7 @@ var Filter = class {
         var positiony = parseInt(ppy * srcy);
 
         var center = Common.CLR(image, srcx, srcy, positionx, positiony, 0, 0);
-        var left = Common.CLR(image, srcx, srcy, positionx, positiony, 1, 0);
+        var left = Common.CLR(image, srcx, srcy, positionx, positiony, -1, 0);
         var right = Common.CLR(image, srcx, srcy, positionx, positiony, 1, 0);
 
         /* Vertical blurring */
