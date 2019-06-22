@@ -46,11 +46,8 @@ var Filter = class {
 
     smoothstep(a, b, x) {
 
-        if (x <= a)
-            return a;
-
-        if (x >= b)
-            return b;
+        // clamp
+        x = Interpolate.Fix(x, a, b);
 
         return 3.0 * x * x - 2.0 * x * x * x;
     }
