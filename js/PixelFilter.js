@@ -22,6 +22,7 @@ angular
 			{ name: 'bicubic', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Bicubic interpolation' },
 			{ name: 'bilinear+', parameters: [2], description: 'Bilinear+' },
 			{ name: 'bilinear++', parameters: [2], description: 'Bilinear+ with gamma adjustment' },
+			{ name: 'bilinears', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Smooth Bilinear' },
 			{ name: 'bresenham', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Scaler based on Bresenham\'s line algorithm' },
 			{ name: 'crt', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'CRT scaler (used in SameBoy emulator)' },
 			{ name: 'des', parameters: [1, 2], description: 'DES filters from FNES' },
