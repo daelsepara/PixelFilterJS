@@ -21,6 +21,7 @@ angular
 			{ name: 'bicubic', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Bicubic interpolation' },
 			{ name: 'bilinear+', parameters: [2], description: 'Bilinear+' },
 			{ name: 'bilinear++', parameters: [2], description: 'Bilinear+ with gamma adjustment' },
+			{ name: 'bresenham', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Scaler based on Bresenham\'s line algorithm' },
 			{ name: 'des', parameters: [1, 2], description: 'DES filters from FNES' },
 			{ name: 'eagle', parameters: [2, 3], description: 'Eagle nX Family of Filters' },
 			{ name: 'epx', parameters: [2, 3], description: 'EPX/Scale 2/3X - Eric\'s Pixel eXpander / Advance Mame Scale 2/3X' },
