@@ -38,6 +38,7 @@ angular
 			{ name: 'kuwahara', parameters: [3, 5, 7, 9, 11, 13, 15], description: 'Kuwahara Filter (nxn window)' },
 			{ name: 'lanczos', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Lanczos (window size = 3) Resampling' },
 			{ name: 'lcd', parameters: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'LCD scaler (used in SameBoy emulator)' },
+			{ name: 'lcdh', parameters: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'LCD scaler (used in SameBoy emulator), horizontal scanlines' },
 			{ name: 'lqnx', parameters: [2, 3, 4], description: 'LQ nX scaler' },
 			{ name: 'magnify', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'nX Pixel Duplication' },
 			{ name: 'nearest', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Nearest-neighbor scaling' },
