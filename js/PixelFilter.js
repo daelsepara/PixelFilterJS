@@ -43,6 +43,7 @@ angular
 			{ name: 'nearest', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Nearest-neighbor scaling' },
 			{ name: 'neon', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Neon shader' },
 			{ name: 'omniscale', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Lior Halphon\'s Omniscale (Modified)' },
+			{ name: 'phosphor', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Phosphor shader' },
 			{ name: 'resizedda', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: '2D Digital Differential Analyzer (DDA)' },
 			{ name: 'reverseaa', parameters: [2], description: 'Christoph Feck\'s (christoph@maxiom.de) Reverse Anti-Alias filter' },
 			{ name: 'reverseaanr', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Christoph Feck\'s (christoph@maxiom.de) Reverse Anti-Alias filter (No-ring)' },
