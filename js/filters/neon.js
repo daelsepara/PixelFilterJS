@@ -126,9 +126,9 @@ var Filter = class {
 
         var ret = this.fAdd(this.fMulC(this.fAdd(this.fAdd(res, mid_horiz), mid_vert), 0.28), this.fMulC(this.fAbs(this.fDiff(res, this.fLerp(mid_horiz, mid_vert, 0.5))), 4.7));
 
-        var r = ret[0] % 255;
-        var g = ret[1] % 255;
-        var b = ret[2] % 255;
+        var r = Common._Clip8(ret[0]);
+        var g = Common._Clip8(ret[1]);
+        var b = Common._Clip8(ret[2]);
         var a = Common.Alpha(c11);
 
         return Common.ARGBINT(a, r, g, b);
