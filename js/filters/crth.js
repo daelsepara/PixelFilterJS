@@ -10,17 +10,6 @@ var Filter = class {
 
         Init.Init(srcx, srcy, scale, scale, threshold);
 
-        var temp;
-
-        temp = new Uint8ClampedArray(srcx * srcy * Channels);
-        Common.Copy(temp, Input, srcx * srcy * Channels);
-
-        Rotate.Rotate90(Input, temp, srcx, srcy);
-        srcx = srcx ^ srcy ^ (srcy = srcx);
-        this.SwapDimensions();
-
-        temp = Init.New(Common.SizeX, Common.SizeY);
-
         var total = Common.SizeY;
         var current = 0;
 
@@ -33,24 +22,16 @@ var Filter = class {
 
                 var argb = this.scale(Input, x / Common.SizeX, positiony, srcx, srcy);
 
-                temp[(offset + x) * Channels] = Common.Red(argb);
-                temp[(offset + x) * Channels + 1] = Common.Green(argb);
-                temp[(offset + x) * Channels + 2] = Common.Blue(argb);
-                temp[(offset + x) * Channels + 3] = Common.Alpha(argb);
+                Common.ScaledImage[(offset + x) * Channels] = Common.Red(argb);
+                Common.ScaledImage[(offset + x) * Channels + 1] = Common.Green(argb);
+                Common.ScaledImage[(offset + x) * Channels + 2] = Common.Blue(argb);
+                Common.ScaledImage[(offset + x) * Channels + 3] = Common.Alpha(argb);
             }
 
             current++;
 
             notify({ ScalingProgress: current / total });
         }
-
-        Rotate.Rotate270(Common.ScaledImage, temp, Common.SizeX, Common.SizeY);
-        this.SwapDimensions();
-    }
-    
-    SwapDimensions() {
-
-        Common.SizeX = Common.SizeX ^ Common.SizeY ^ (Common.SizeY = Common.SizeX);
     }
 
     fract(x) {
@@ -109,149 +90,149 @@ var Filter = class {
         var positiony = parseInt(ppy * srcy);
 
         var center = Common.CLR(image, srcx, srcy, positionx, positiony, 0, 0);
-        var left = Common.CLR(image, srcx, srcy, positionx, positiony, -1, 0);
-        var right = Common.CLR(image, srcx, srcy, positionx, positiony, 1, 0);
+        var up = Common.CLR(image, srcx, srcy, positionx, positiony, 0, -1);
+        var down = Common.CLR(image, srcx, srcy, positionx, positiony, 0, 1);
 
         /* Vertical blurring */
-        if (posy < 1.0 / 6.0) {
+        if (posx < 1.0 / 6.0) {
 
-            center = this.mix(center, Common.CLR(image, srcx, srcy, positionx, positiony, 0, -1), 0.5 - sub_posy / 2.0);
-            left = this.mix(left, Common.CLR(image, srcx, srcy, positionx, positiony, -1, -1), 0.5 - sub_posy / 2.0);
-            right = this.mix(right, Common.CLR(image, srcx, srcy, positionx, positiony, 1, -1), 0.5 - sub_posy / 2.0);
+            center = this.mix(center, Common.CLR(image, srcx, srcy, positionx, positiony, -1, 0), 0.5 - sub_posx / 2.0);
+            up = this.mix(up, Common.CLR(image, srcx, srcy, positionx, positiony, -1, -1), 0.5 - sub_posx / 2.0);
+            down = this.mix(down, Common.CLR(image, srcx, srcy, positionx, positiony, -1, 1), 0.5 - sub_posx / 2.0);
 
-        } else if (posy > 5.0 / 6.0) {
+        } else if (posx > 5.0 / 6.0) {
 
-            center = this.mix(center, Common.CLR(image, srcx, srcy, positionx, positiony, 0, 1), sub_posy / 2.0);
-            left = this.mix(left, Common.CLR(image, srcx, srcy, positionx, positiony, -1, 1), sub_posy / 2.0);
-            right = this.mix(right, Common.CLR(image, srcx, srcy, positionx, positiony, 1, 1), sub_posy / 2.0);
+            center = this.mix(center, Common.CLR(image, srcx, srcy, positionx, positiony, 1, 0), sub_posx / 2.0);
+            up = this.mix(up, Common.CLR(image, srcx, srcy, positionx, positiony, 1, -1), sub_posx / 2.0);
+            down = this.mix(down, Common.CLR(image, srcx, srcy, positionx, positiony, 1, 1), sub_posx / 2.0);
         }
 
         /* Scanlines */
         var scanline_multiplier;
 
-        if (posy < 0.5) {
+        if (posx < 0.5) {
 
-            scanline_multiplier = (posy * 2) * SCANLINE_DEPTH + (1 - SCANLINE_DEPTH);
+            scanline_multiplier = (posx * 2) * SCANLINE_DEPTH + (1 - SCANLINE_DEPTH);
 
         } else {
 
-            scanline_multiplier = ((1 - posy) * 2) * SCANLINE_DEPTH + (1 - SCANLINE_DEPTH);
+            scanline_multiplier = ((1 - posx) * 2) * SCANLINE_DEPTH + (1 - SCANLINE_DEPTH);
         }
 
         this.Mul(center, scanline_multiplier);
-        this.Mul(left, scanline_multiplier);
-        this.Mul(right, scanline_multiplier);
+        this.Mul(up, scanline_multiplier);
+        this.Mul(down, scanline_multiplier);
 
         /* Vertical seperator for shadow masks */
-        var odd = (ppx * srcx) & 1;
+        var odd = (ppy * srcy) & 1;
 
         var gradient_position;
 
         if (odd) {
 
-            posy += 0.5;
-            posy = this.fract(posy);
+            posx += 0.5;
+            posx = this.fract(posx);
         }
 
-        if (posy < 1.0 / 3.0) {
+        if (posx < 1.0 / 3.0) {
 
-            gradient_position = posy * 3.0;
-
-            this.Mul(center, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-            this.Mul(left, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-            this.Mul(right, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-
-        } else if (posy > 2.0 / 3.0) {
-
-            gradient_position = (1 - posy) * 3.0;
+            gradient_position = posx * 3.0;
 
             this.Mul(center, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-            this.Mul(left, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-            this.Mul(right, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
+            this.Mul(up, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
+            this.Mul(down, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
+
+        } else if (posx > 2.0 / 3.0) {
+
+            gradient_position = (1 - posx) * 3.0;
+
+            this.Mul(center, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
+            this.Mul(up, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
+            this.Mul(down, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
         }
 
         /* Blur the edges of the separators of adjacent columns */
-        if (posx < 1.0 / 6.0 || posx > 5.0 / 6.0) {
+        if (posy < 1.0 / 6.0 || posy > 5.0 / 6.0) {
 
-            posy += 0.5;
-            posy = this.fract(posy);
+            posx += 0.5;
+            posx = this.fract(posx);
 
-            if (posy < 1.0 / 3.0) {
+            if (posx < 1.0 / 3.0) {
 
-                gradient_position = posy * 3.0;
+                gradient_position = posx * 3.0;
 
-                if (posx < 0.5) {
+                if (posy < 0.5) {
 
-                    gradient_position = 1 - (1 - gradient_position) * (1 - (posx) * 6.0);
-
-                } else {
-
-                    gradient_position = 1 - (1 - gradient_position) * (1 - (1 - posx) * 6.0);
-                }
-
-                this.Mul(center, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-                this.Mul(left, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-                this.Mul(right, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-
-            } else if (posy > 2.0 / 3.0) {
-
-                gradient_position = (1 - posy) * 3.0;
-
-                if (posx < 0.5) {
-
-                    gradient_position = 1 - (1 - gradient_position) * (1 - (posx) * 6.0);
+                    gradient_position = 1 - (1 - gradient_position) * (1 - (posy) * 6.0);
 
                 } else {
 
-                    gradient_position = 1 - (1 - gradient_position) * (1 - (1 - posx) * 6.0);
+                    gradient_position = 1 - (1 - gradient_position) * (1 - (1 - posy) * 6.0);
                 }
 
                 this.Mul(center, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-                this.Mul(left, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-                this.Mul(right, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
+                this.Mul(up, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
+                this.Mul(down, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
+
+            } else if (posx > 2.0 / 3.0) {
+
+                gradient_position = (1 - posx) * 3.0;
+
+                if (posy < 0.5) {
+
+                    gradient_position = 1 - (1 - gradient_position) * (1 - (posy) * 6.0);
+
+                } else {
+
+                    gradient_position = 1 - (1 - gradient_position) * (1 - (1 - posy) * 6.0);
+                }
+
+                this.Mul(center, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
+                this.Mul(up, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
+                this.Mul(down, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
             }
         }
 
         /* Subpixel blurring, like LCD filter*/
-        var midleft = this.mix(left, center, 0.5);
-        var midright = this.mix(right, center, 0.5);
+        var midup = this.mix(up, center, 0.5);
+        var middown = this.mix(down, center, 0.5);
 
         var ret;
 
         var cr = Common.Red(center);
         var cg = Common.Green(center);
         var cb = Common.Blue(center);
-        var mlb = Common.Blue(midleft);
-        var mrr = Common.Red(midright);
-        var mrg = Common.Green(midright);
-        var lb = Common.Blue(left);
-        var rr = Common.Red(right);
-        var rg = Common.Green(right);
+        var mub = Common.Blue(midup);
+        var mdr = Common.Red(middown);
+        var mdg = Common.Green(middown);
+        var ub = Common.Blue(up);
+        var dr = Common.Red(down);
+        var dg = Common.Green(down);
         var alpha = Common.Alpha(center);
 
-        if (posx < 1.0 / 6.0) {
+        if (posy < 1.0 / 6.0) {
 
-            ret = this.mix(Common.ARGBINT(alpha, COLOR_HIGH * cr, COLOR_LOW * cg, COLOR_HIGH * lb), Common.ARGBINT(alpha, COLOR_HIGH * cr, COLOR_LOW * cg, COLOR_LOW * lb), sub_posx);
+            ret = this.mix(Common.ARGBINT(alpha, COLOR_HIGH * cr, COLOR_LOW * cg, COLOR_HIGH * ub), Common.ARGBINT(alpha, COLOR_HIGH * cr, COLOR_LOW * cg, COLOR_LOW * ub), sub_posy);
 
-        } else if (posx < 2.0 / 6.0) {
+        } else if (posy < 2.0 / 6.0) {
 
-            ret = this.mix(Common.ARGBINT(alpha, COLOR_HIGH * cr, COLOR_LOW * cg, COLOR_LOW * lb), Common.ARGBINT(alpha, COLOR_HIGH * cr, COLOR_HIGH * cg, COLOR_LOW * mlb), sub_posx);
+            ret = this.mix(Common.ARGBINT(alpha, COLOR_HIGH * cr, COLOR_LOW * cg, COLOR_LOW * ub), Common.ARGBINT(alpha, COLOR_HIGH * cr, COLOR_HIGH * cg, COLOR_LOW * mub), sub_posy);
 
-        } else if (posx < 3.0 / 6.0) {
+        } else if (posy < 3.0 / 6.0) {
 
-            ret = this.mix(Common.ARGBINT(alpha, COLOR_HIGH * cr, COLOR_HIGH * cg, COLOR_LOW * mlb), Common.ARGBINT(alpha, COLOR_LOW * mrr, COLOR_HIGH * cg, COLOR_LOW * cb), sub_posx);
+            ret = this.mix(Common.ARGBINT(alpha, COLOR_HIGH * cr, COLOR_HIGH * cg, COLOR_LOW * mub), Common.ARGBINT(alpha, COLOR_LOW * mdr, COLOR_HIGH * cg, COLOR_LOW * cb), sub_posy);
 
-        } else if (posx < 4.0 / 6.0) {
+        } else if (posy < 4.0 / 6.0) {
 
-            ret = this.mix(Common.ARGBINT(alpha, COLOR_LOW * mrr, COLOR_HIGH * cg, COLOR_LOW * cb), Common.ARGBINT(alpha, COLOR_LOW * rr, COLOR_HIGH * cg, COLOR_HIGH * cb), sub_posx);
+            ret = this.mix(Common.ARGBINT(alpha, COLOR_LOW * mdr, COLOR_HIGH * cg, COLOR_LOW * cb), Common.ARGBINT(alpha, COLOR_LOW * dr, COLOR_HIGH * cg, COLOR_HIGH * cb), sub_posy);
 
-        } else if (posx < 5.0 / 6.0) {
+        } else if (posy < 5.0 / 6.0) {
 
-            ret = this.mix(Common.ARGBINT(alpha, COLOR_LOW * rr, COLOR_HIGH * cg, COLOR_HIGH * cb), Common.ARGBINT(alpha, COLOR_LOW * rr, COLOR_LOW * mrg, COLOR_HIGH * cb), sub_posx);
+            ret = this.mix(Common.ARGBINT(alpha, COLOR_LOW * dr, COLOR_HIGH * cg, COLOR_HIGH * cb), Common.ARGBINT(alpha, COLOR_LOW * dr, COLOR_LOW * mdg, COLOR_HIGH * cb), sub_posy);
 
         } else {
 
-            ret = this.mix(Common.ARGBINT(alpha, COLOR_LOW * rr, COLOR_LOW * mrg, COLOR_HIGH * cb), Common.ARGBINT(alpha, COLOR_HIGH * rr, COLOR_LOW * rg, COLOR_HIGH * cb), sub_posx);
+            ret = this.mix(Common.ARGBINT(alpha, COLOR_LOW * dr, COLOR_LOW * mdg, COLOR_HIGH * cb), Common.ARGBINT(alpha, COLOR_HIGH * dr, COLOR_LOW * dg, COLOR_HIGH * cb), sub_posy);
         }
 
         /* Anti alias the curve */
