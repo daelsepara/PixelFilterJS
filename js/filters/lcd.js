@@ -6,7 +6,7 @@ var Filter = class {
 
         var Channels = 4;
 
-        scale = 2;
+        scale = Math.max(1, scale);
 
         Init.Init(srcx, srcy, scale, scale, threshold);
 
@@ -124,11 +124,11 @@ var Filter = class {
 
         } else if (posx < 5.0 / 6.0) {
 
-            ret = this.mix(alpha, Common.ARGBINT(COLOR_LOW * rr, COLOR_HIGH * cg, COLOR_HIGH * cb), Common.ARGBINT(alpha, COLOR_LOW * rr, COLOR_LOW * mrg, COLOR_HIGH * cb), sub_posx);
+            ret = this.mix(Common.ARGBINT(alpha, COLOR_LOW * rr, COLOR_HIGH * cg, COLOR_HIGH * cb), Common.ARGBINT(alpha, COLOR_LOW * rr, COLOR_LOW * mrg, COLOR_HIGH * cb), sub_posx);
 
         } else {
 
-            ret = this.mix(alpha, Common.ARGBINT(COLOR_LOW * rr, COLOR_LOW * mrg, COLOR_HIGH * cb), Common.ARGBINT(alpha, COLOR_HIGH * rr, COLOR_LOW * rg, COLOR_HIGH * cb), sub_posx);
+            ret = this.mix(Common.ARGBINT(alpha, COLOR_LOW * rr, COLOR_LOW * mrg, COLOR_HIGH * cb), Common.ARGBINT(alpha, COLOR_HIGH * rr, COLOR_LOW * rg, COLOR_HIGH * cb), sub_posx);
         }
 
         return ret;

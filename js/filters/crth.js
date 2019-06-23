@@ -58,7 +58,7 @@ var Filter = class {
 
         const COLOR_LOW = 0.7;
         const COLOR_HIGH = 1.0;
-        const VERTICAL_BORDER_DEPTH = 0.6;
+        const HORIZONTAL_BORDER_DEPTH = 0.6;
         const SCANLINE_DEPTH = 0.3;
         const CURVENESS = 0.3;
 
@@ -138,17 +138,17 @@ var Filter = class {
 
             gradient_position = posx * 3.0;
 
-            this.Mul(center, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-            this.Mul(up, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-            this.Mul(down, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
+            this.Mul(center, gradient_position * HORIZONTAL_BORDER_DEPTH + (1 - HORIZONTAL_BORDER_DEPTH));
+            this.Mul(up, gradient_position * HORIZONTAL_BORDER_DEPTH + (1 - HORIZONTAL_BORDER_DEPTH));
+            this.Mul(down, gradient_position * HORIZONTAL_BORDER_DEPTH + (1 - HORIZONTAL_BORDER_DEPTH));
 
         } else if (posx > 2.0 / 3.0) {
 
             gradient_position = (1 - posx) * 3.0;
 
-            this.Mul(center, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-            this.Mul(up, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-            this.Mul(down, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
+            this.Mul(center, gradient_position * HORIZONTAL_BORDER_DEPTH + (1 - HORIZONTAL_BORDER_DEPTH));
+            this.Mul(up, gradient_position * HORIZONTAL_BORDER_DEPTH + (1 - HORIZONTAL_BORDER_DEPTH));
+            this.Mul(down, gradient_position * HORIZONTAL_BORDER_DEPTH + (1 - HORIZONTAL_BORDER_DEPTH));
         }
 
         /* Blur the edges of the separators of adjacent columns */
@@ -170,9 +170,9 @@ var Filter = class {
                     gradient_position = 1 - (1 - gradient_position) * (1 - (1 - posy) * 6.0);
                 }
 
-                this.Mul(center, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-                this.Mul(up, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-                this.Mul(down, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
+                this.Mul(center, gradient_position * HORIZONTAL_BORDER_DEPTH + (1 - HORIZONTAL_BORDER_DEPTH));
+                this.Mul(up, gradient_position * HORIZONTAL_BORDER_DEPTH + (1 - HORIZONTAL_BORDER_DEPTH));
+                this.Mul(down, gradient_position * HORIZONTAL_BORDER_DEPTH + (1 - HORIZONTAL_BORDER_DEPTH));
 
             } else if (posx > 2.0 / 3.0) {
 
@@ -187,9 +187,9 @@ var Filter = class {
                     gradient_position = 1 - (1 - gradient_position) * (1 - (1 - posy) * 6.0);
                 }
 
-                this.Mul(center, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-                this.Mul(up, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
-                this.Mul(down, gradient_position * VERTICAL_BORDER_DEPTH + (1 - VERTICAL_BORDER_DEPTH));
+                this.Mul(center, gradient_position * HORIZONTAL_BORDER_DEPTH + (1 - HORIZONTAL_BORDER_DEPTH));
+                this.Mul(up, gradient_position * HORIZONTAL_BORDER_DEPTH + (1 - HORIZONTAL_BORDER_DEPTH));
+                this.Mul(down, gradient_position * HORIZONTAL_BORDER_DEPTH + (1 - HORIZONTAL_BORDER_DEPTH));
             }
         }
 
