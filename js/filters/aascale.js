@@ -136,11 +136,11 @@ var Filter = class {
         // D E F
         // G H I
 
-        var B = this.aascale2x(image, ppx, ppy + oy, srcx, srcy, scale_factor);
+        var B = this.aascale2x(image, ppx, ppy - oy, srcx, srcy, scale_factor);
         var D = this.aascale2x(image, ppx - ox, ppy, srcx, srcy, scale_factor);
         var E = this.aascale2x(image, ppx, ppy, srcx, srcy, scale_factor);
         var F = this.aascale2x(image, ppx + ox, ppy, srcx, srcy, scale_factor);
-        var H = this.aascale2x(image, ppx, ppy - oy, srcx, srcy, scale_factor);
+        var H = this.aascale2x(image, ppx, ppy + oy, srcx, srcy, scale_factor);
 
         var R;
 
