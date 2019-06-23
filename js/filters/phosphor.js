@@ -37,23 +37,6 @@ var Filter = class {
         }
     }
 
-    fract(x) {
-
-        return x - Math.floor(x);
-    }
-
-    fDiff(x, y) {
-
-        var dst = new Array(3);
-
-        for (var i = 0; i < 3; i++) {
-
-            dst[i] = x[i] - y[i];
-        }
-
-        return dst;
-    }
-
     fAdd(x, y) {
 
         var dst = new Array(3);
@@ -62,16 +45,6 @@ var Filter = class {
 
             dst[i] = x[i] + y[i];
         }
-
-        return dst;
-    }
-
-    fAbs(x) {
-
-        var dst = new Array(3);
-
-        for (var i = 0; i < 3; i++)
-            dst[i] = Math.abs(x[i]);
 
         return dst;
     }
@@ -121,16 +94,6 @@ var Filter = class {
 
             dst[i] = Interpolate.Fix((x[i] - a) / (b - a), 0.0, 1.0);
         }
-
-        return dst;
-    }
-
-    fLerp(x, y, a) {
-
-        var dst = new Array(3);
-
-        for (var i = 0; i < 3; i++)
-            dst[i] = x[i] * (1 - a) + y[i] * a;
 
         return dst;
     }
