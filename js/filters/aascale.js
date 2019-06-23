@@ -26,13 +26,13 @@ var Filter = class {
 
                     case 4:
 
-                        argb = this.aascale4x(Input, x / Common.SizeX, positiony, srcx, srcy);
+                        argb = this.aascale4x(Input, x / Common.SizeX, positiony, srcx, srcy, scale);
 
                         break;
 
                     default:
 
-                        argb = this.aascale2x(Input, x / Common.SizeX, positiony, srcx, srcy);
+                        argb = this.aascale2x(Input, x / Common.SizeX, positiony, srcx, srcy, scale);
 
                         break;
                 }
@@ -69,35 +69,27 @@ var Filter = class {
         return Interpolate.Interpolate2P1Q(a, b, c);
     }
 
-    scale2x(image, ppx, ppy, srcx, srcy) {
+    scale2x(image, ppx, ppy, srcx, srcy, scale_factor) {
 
         // o = offset, the width of a pixel
-        var ox = 1.0 / srcx;
-        var oy = 1.0 / srcy;
+        var ox = 1.0 / (scale_factor * srcx);
+        var oy = 1.0 / (scale_factor * srcy);
 
         var px = this.fract(ppx * srcx);
         var py = this.fract(ppy * srcy);
-
-        // convert texture coordinates to image coordinates
-        ox = parseInt(ox * srcx);
-        oy = parseInt(oy * srcy);
-
-        var positionx = parseInt(ppx * srcx);
-        var positiony = parseInt(ppy * srcy);
 
         // texel arrangement
         // A B C
         // D E F
         // G H I
 
-        var B = Common.CLR(image, srcx, srcy, positionx, positiony, 0, oy);
-        var D = Common.CLR(image, srcx, srcy, positionx, positiony, -ox, 0);
-        var E = Common.CLR(image, srcx, srcy, positionx, positiony, 0, 0);
-        var F = Common.CLR(image, srcx, srcy, positionx, positiony, ox, 0);
-        var H = Common.CLR(image, srcx, srcy, positionx, positiony, 0, -oy);
+        var B = Common.CLR(image, srcx, srcy, parseInt((ppx) * srcx), parseInt((ppy - oy) * srcy), 0, 0);
+        var D = Common.CLR(image, srcx, srcy, parseInt((ppx - ox) * srcx), parseInt((ppy) * srcy), 0, 0);
+        var E = Common.CLR(image, srcx, srcy, parseInt((ppx) * srcx),  parseInt((ppy) * srcy), 0, 0);
+        var F = Common.CLR(image, srcx, srcy, parseInt((ppx + ox) * srcx),  parseInt((ppy) * srcy), 0, 0);
+        var H = Common.CLR(image, srcx, srcy, parseInt((ppx) * srcx),  parseInt((ppy + oy) * srcy), 0, 0);
 
         // p = the position within a pixel [0...1]
-
         if (px > .5) {
 
             if (py > .5) {
@@ -126,29 +118,29 @@ var Filter = class {
         }
     }
 
-    aascale2x(image, ppx, ppy, srcx, srcy) {
+    aascale2x(image, ppx, ppy, srcx, srcy, scale_factor) {
 
         var texture = Common.CLR(image, srcx, srcy, parseInt(ppx * srcx), parseInt(ppy * srcy), 0, 0);
 
-        return this.mix(texture, this.scale2x(image, ppx, ppy, srcx, srcy), 0.5);
+        return this.mix(texture, this.scale2x(image, ppx, ppy, srcx, srcy, scale_factor), 0.5);
     }
 
-    aascale4x(image, ppx, ppy, srcx, srcy) {
+    aascale4x(image, ppx, ppy, srcx, srcy, scale_factor) {
 
         // o = offset, the width of a pixel
-        var ox = 1.0 / srcx;
-        var oy = 1.0 / srcy;
+        var ox = 1.0 / (scale_factor * srcx);
+        var oy = 1.0 / (scale_factor * srcy);
 
         // texel arrangement
         // A B C
         // D E F
         // G H I
 
-        var B = this.aascale2x(image, ppx, ppy + oy, srcx, srcy);
-        var D = this.aascale2x(image, ppx - ox, ppy, srcx, srcy);
-        var E = this.aascale2x(image, ppx, ppy, srcx, srcy);
-        var F = this.aascale2x(image, ppx + ox, ppy, srcx, srcy);
-        var H = this.aascale2x(image, ppx, ppy - oy, srcx, srcy);
+        var B = this.aascale2x(image, ppx, ppy + oy, srcx, srcy, scale_factor);
+        var D = this.aascale2x(image, ppx - ox, ppy, srcx, srcy, scale_factor);
+        var E = this.aascale2x(image, ppx, ppy, srcx, srcy, scale_factor);
+        var F = this.aascale2x(image, ppx + ox, ppy, srcx, srcy, scale_factor);
+        var H = this.aascale2x(image, ppx, ppy - oy, srcx, srcy, scale_factor);
 
         var R;
 
