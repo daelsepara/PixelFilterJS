@@ -27,6 +27,7 @@ angular
 			{ name: 'crt', parameters: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'CRT scaler (used in SameBoy emulator)' },
 			{ name: 'crth', parameters: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'CRT scaler (used in SameBoy emulator), horizontal scanlines' },
 			{ name: 'des', parameters: [1, 2], description: 'DES filters from FNES' },
+			{ name: 'dotmask', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Dot mask filter (CRT-style)' },
 			{ name: 'eagle', parameters: [2, 3], description: 'Eagle nX Family of Filters' },
 			{ name: 'epx', parameters: [2, 3], description: 'EPX/Scale 2/3X - Eric\'s Pixel eXpander / Advance Mame Scale 2/3X' },
 			{ name: 'epxb', parameters: [2], description: 'SNES9x\'s EPX (variant B) modified by Hawkynt to support thresholds' },
@@ -60,7 +61,7 @@ angular
 			{ name: 'ultra2x', parameters: [2], description: 'FNES\' Ultra 2x Scaling' },
 			{ name: 'xbr', parameters: [2, 3, 4], description: 'XBRnX family of filters by Hyllian' },
 			{ name: 'xbrz', parameters: [2, 3, 4, 5, 6], description: 'Zenju\'s XBRz nX family of filters' },
-			{ name: 'zfastcrt', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Zfast-CRT' }
+			{ name: 'zfastcrt', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Greg Hogan\'s zfast-crt' }
 		];
 
 		$scope.LoadInputImage = function () {

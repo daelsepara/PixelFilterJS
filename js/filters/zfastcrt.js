@@ -1,4 +1,4 @@
-// ZFAST-CRT
+// Greg Hogan's zfast-crt
 // see: https://github.com/libretro/common-shaders/blob/master/crt/shaders/zfast_crt.cg
 /*
     zfast_crt_standard - A simple, fast CRT shader.
@@ -39,7 +39,7 @@ var Filter = class {
 
             for (var x = 0; x < Common.SizeX; x++) {
 
-                var argb = this.scale(Input, x / Common.SizeX, positiony, srcx, srcy, Common.SizeX, Common.SizeY);
+                var argb = this.scale(Input, x / Common.SizeX, positiony, srcx, srcy);
 
                 Common.ScaledImage[(offset + x) * Channels] = Common.Red(argb);
                 Common.ScaledImage[(offset + x) * Channels + 1] = Common.Green(argb);
@@ -51,11 +51,6 @@ var Filter = class {
 
             notify({ ScalingProgress: current / total });
         }
-    }
-
-    fract(x) {
-
-        return x - Math.floor(x);
     }
 
     mix(a, b, c) {
