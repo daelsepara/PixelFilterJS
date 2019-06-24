@@ -37,6 +37,15 @@ var Filter = class {
         }
     }
 
+    get INPUT_GAMMA() { return 2.4; }
+    get OUTPUT_GAMMA() { return 2.2; }
+    get COLOR_BOOST() { return 1.45; }
+
+    float3(a) {
+
+        return [Common.Red(a) / 255, Common.Green(a) / 255, Common.Blue(a) / 255];
+    }
+
     fAdd(x, y) {
 
         var dst = new Array(3);
@@ -57,11 +66,6 @@ var Filter = class {
             dst[i] = Math.pow(x[i], p[i]);
 
         return dst;
-    }
-
-    float3(a) {
-
-        return [Common.Red(a) / 255, Common.Green(a) / 255, Common.Blue(a) / 255];
     }
 
     fMul(x, y) {
@@ -97,10 +101,6 @@ var Filter = class {
 
         return dst;
     }
-
-    get INPUT_GAMMA() { return 2.4; }
-    get OUTPUT_GAMMA() { return 2.2; }
-    get COLOR_BOOST() { return 1.45; }
 
     GAMMA_IN(color) {
 

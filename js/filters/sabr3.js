@@ -59,6 +59,26 @@ var Filter = class {
         }
     }
 
+    get Ai() { return [1.0, -1.0, -1.0, 1.0]; }
+    get B45() { return [1.0, 1.0, -1.0, -1.0]; }
+    get C45() { return [1.5, 0.5, -0.5, 0.5]; }
+    get B30() { return [0.5, 2.0, -0.5, -2.0]; }
+    get C30() { return [1.0, 1.0, -0.5, 0.0]; }
+    get B60() { return [2.0, 0.5, -2.0, -0.5]; }
+    get C60() { return [2.0, 0.0, -1.0, 0.5]; }
+    get lum() { return [0.21, 0.72, 0.07]; }
+    get threshold() { return [0.32, 0.32, 0.32, 0.32]; }
+    get M45() { return [0.4, 0.4, 0.4, 0.4]; }
+    get M30() { return [0.2, 0.4, 0.2, 0.4]; }
+    get M60() { return this.M30; }
+    get Mshift() { return [0.2, 0.2, 0.2, 0.2]; }
+    get coef() { return 2.0; }
+
+    float4(a) {
+
+        return [Common.Alpha(a), Common.Red(a), Common.Green(a), Common.Blue(a)];
+    }
+
     fract(x) {
 
         return x - Math.floor(x);
@@ -120,22 +140,6 @@ var Filter = class {
         return dst;
     }
 
-    get Ai() { return [1.0, -1.0, -1.0, 1.0]; }
-    get B45() { return [1.0, 1.0, -1.0, -1.0]; }
-    get C45() { return [1.5, 0.5, -0.5, 0.5]; }
-    get B30() { return [0.5, 2.0, -0.5, -2.0]; }
-    get C30() { return [1.0, 1.0, -0.5, 0.0]; }
-    get B60() { return [2.0, 0.5, -2.0, -0.5]; }
-    get C60() { return [2.0, 0.0, -1.0, 0.5]; }
-    get lum() { return [0.21, 0.72, 0.07]; }
-    get threshold() { return [0.32, 0.32, 0.32, 0.32]; }
-    get M45() { return [0.4, 0.4, 0.4, 0.4]; }
-    get M30() { return [0.2, 0.4, 0.2, 0.4]; }
-    get M60() { return this.M30; }
-    get Mshift() { return [0.2, 0.2, 0.2, 0.2]; }
-
-    get coef() { return 2.0; }
-
     dot(x, y) {
 
         var sum = 0.0;
@@ -145,11 +149,6 @@ var Filter = class {
             sum += x[i + 1] * y[i + 1];
 
         return sum;
-    }
-
-    float4(a) {
-
-        return [Common.Alpha(a), Common.Red(a), Common.Green(a), Common.Blue(a)];
     }
 
     lum_to(v0, v1, v2, v3) {

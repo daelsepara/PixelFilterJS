@@ -1,5 +1,5 @@
 // Hyllian - Retro Shader - 2013
-// see:https://github.com/libretro/common-shaders/blob/master/retro/shaders/retro-v2.cg
+// see: https://github.com/libretro/common-shaders/blob/master/retro/shaders/retro-v2.cg
 /*
    Hyllian - Retro Shader - 2013
 
@@ -56,6 +56,14 @@ var Filter = class {
         }
     }
 
+    // This value must be between 0.0 (totally black) and 1.0 (nearest neighbor)
+    get RETRO_PIXEL_SIZE() { return 0.84; }
+
+    float3(a) {
+
+        return [Common.Red(a) / 255, Common.Green(a) / 255, Common.Blue(a) / 255];
+    }
+
     fract(x) {
 
         return x - Math.floor(x);
@@ -79,19 +87,6 @@ var Filter = class {
             dst[i] = x[i] * (1 - a) + y[i] * a;
 
         return dst;
-    }
-
-    fmod(a, m) {
-
-        return a - m * Math.floor(a / m);
-    }
-
-    // This value must be between 0.0 (totally black) and 1.0 (nearest neighbor)
-    get RETRO_PIXEL_SIZE() { return 0.84; }
-
-    float3(a) {
-
-        return [Common.Red(a) / 255, Common.Green(a) / 255, Common.Blue(a) / 255];
     }
 
     fMul(x, y) {

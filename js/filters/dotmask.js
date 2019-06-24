@@ -44,6 +44,23 @@ var Filter = class {
         }
     }
 
+    // CGWG Dot Mask Strength
+    get DOTMASK_STRENGTH() { return 0.3; }
+
+    // Lottes maskDark
+    get maskDark() { return 0.5; }
+
+    // Lottes maskLight
+    get maskLight() { return 1.5; }
+
+    // shadowMask
+    get shadowMask() { return 3; }
+
+    float3(a) {
+
+        return [Common.Red(a) / 255, Common.Green(a) / 255, Common.Blue(a) / 255];
+    }
+
     fract(x) {
 
         return x - Math.floor(x);
@@ -72,23 +89,6 @@ var Filter = class {
     fmod(a, m) {
 
         return a - m * Math.floor(a / m);
-    }
-
-    // CGWG Dot Mask Strength
-    get DOTMASK_STRENGTH() { return 0.3; }
-
-    // Lottes maskDark
-    get maskDark() { return 0.5; }
-
-    // Lottes maskLight
-    get maskLight() { return 1.5; }
-
-    // shadowMask
-    get shadowMask() { return 3; }
-
-    float3(a) {
-
-        return [Common.Red(a) / 255, Common.Green(a) / 255, Common.Blue(a) / 255];
     }
 
     fMul(x, y) {

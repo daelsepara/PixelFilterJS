@@ -53,21 +53,6 @@ var Filter = class {
         }
     }
 
-    mix(a, b, c) {
-
-        return a * (1 - c) + b * c;
-    }
-
-    Mul(x, y) {
-
-        var r = Common.Red(x) * y;
-        var g = Common.Green(x) * y;
-        var b = Common.Blue(x) * y;
-        var a = Common.Alpha(x) * y;
-
-        return Common.ARGBINT(a, r, g, b);
-    }
-
     // Blur Amount X-Axis
     get BLURSCALEX() { return 0.45; }
 
@@ -85,6 +70,21 @@ var Filter = class {
 
     // Mask/Scanline Fade
     get MASK_FADE() { return 0.8; }
+
+    mix(a, b, c) {
+
+        return a * (1 - c) + b * c;
+    }
+
+    Mul(x, y) {
+
+        var r = Common.Red(x) * y;
+        var g = Common.Green(x) * y;
+        var b = Common.Blue(x) * y;
+        var a = Common.Alpha(x) * y;
+
+        return Common.ARGBINT(a, r, g, b);
+    }
 
     dot(colour, floats) {
 

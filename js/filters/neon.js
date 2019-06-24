@@ -37,6 +37,11 @@ var Filter = class {
         }
     }
 
+    float3(a) {
+
+        return [Common.Red(a), Common.Green(a), Common.Blue(a)];
+    }
+
     fract(x) {
 
         return x - Math.floor(x);
@@ -74,11 +79,6 @@ var Filter = class {
             dst[i] = Math.abs(x[i]);
 
         return dst;
-    }
-
-    float3(a) {
-
-        return [Common.Red(a), Common.Green(a), Common.Blue(a)];
     }
 
     fMulC(a, scale) {
