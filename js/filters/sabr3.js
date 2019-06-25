@@ -45,7 +45,7 @@ var Filter = class {
 
             for (var x = 0; x < Common.SizeX; x++) {
 
-                var argb = this.scale(Input, x / Common.SizeX, positiony, srcx, srcy);
+                var argb = this.scale(Input, x / Common.SizeX, positiony, srcx, srcy, scale);
 
                 Common.ScaledImage[(offset + x) * Channels] = Common.Red(argb);
                 Common.ScaledImage[(offset + x) * Channels + 1] = Common.Green(argb);
@@ -66,17 +66,17 @@ var Filter = class {
     get C30() { return [1.0, 1.0, -0.5, 0.0]; }
     get B60() { return [2.0, 0.5, -2.0, -0.5]; }
     get C60() { return [2.0, 0.0, -1.0, 0.5]; }
-    get lum() { return [0.21, 0.72, 0.07]; }
+    get lum() { return [0.299, 0.587, 0.114]; }
     get threshold() { return [0.32, 0.32, 0.32, 0.32]; }
     get M45() { return [0.4, 0.4, 0.4, 0.4]; }
     get M30() { return [0.2, 0.4, 0.2, 0.4]; }
-    get M60() { return this.M30; }
+    get M60() { return [0.4, 0.2, 0.4, 0.2]; }
     get Mshift() { return [0.2, 0.2, 0.2, 0.2]; }
     get coef() { return 2.0; }
 
     float4(a) {
 
-        return [Common.Alpha(a), Common.Red(a), Common.Green(a), Common.Blue(a)];
+        return [Common.Red(a) / 255, Common.Green(a) / 255, Common.Blue(a) / 255, Common.Alpha(a) / 255];
     }
 
     fract(x) {
@@ -130,30 +130,20 @@ var Filter = class {
         return dst;
     }
 
-    fAbs(x) {
-
-        var dst = new Array(4);
-
-        for (var i = 0; i < 4; i++)
-            dst[i] = Math.abs(x[i]);
-
-        return dst;
-    }
-
     dot(x, y) {
 
         var sum = 0.0;
 
         // do not include alpha channel
         for (var i = 0; i < 3; i++)
-            sum += x[i + 1] * y[i + 1];
+            sum += x[i] * y[i];
 
         return sum;
     }
 
     lum_to(v0, v1, v2, v3) {
 
-        return [this.dot(this.lum, this.float4(v0)), this.dot(this.lum, this.float4(v1)), this.dot(this.lum, this.float4(v2)), this.dot(this.lum, this.float4(v3))];
+        return [this.dot(this.lum, v0), this.dot(this.lum, v1), this.dot(this.lum, v2), this.dot(this.lum, v3)];
     }
 
     lum_df(A, B) {
@@ -183,7 +173,7 @@ var Filter = class {
         var dst = new Array(4);
 
         for (var i = 0; i < 4; i++)
-            dst[i] = A[i] != B[i];
+            dst[i] = (A[i] != B[i]);
 
         return dst;
     }
@@ -213,7 +203,7 @@ var Filter = class {
         var dst = new Array(4);
 
         for (var i = 0; i < 4; i++)
-            dst[i] = A[i] <= B[i];
+            dst[i] = (A[i] <= B[i]);
 
         return dst;
     }
@@ -223,7 +213,7 @@ var Filter = class {
         var dst = new Array(4);
 
         for (var i = 0; i < 4; i++)
-            dst[i] = A[i] < B[i];
+            dst[i] = (A[i] < B[i]);
 
         return dst;
     }
@@ -255,18 +245,21 @@ var Filter = class {
 
     c_df(c1, c2) {
 
-        var dst = this.fAbs(this.fDiff(c1, c2));
+        var sum = 0.0;
 
         // do not include alpha channel
-        return dst[1] + dst[2] + dst[3];
+        for (var i = 0; i < 3; i++)
+            sum += Math.abs(c1[i] - c2[i]);
+
+        return sum;
     }
 
     smoothstep(a, b, x) {
 
         // clamp
-        x = Interpolate.Fix((x - a) / (b - a), 0.0, 1.0);
+        var t = Interpolate.Fix((x - a) / (b - a), 0.0, 1.0);
 
-        return x * x * (3.0 - 2.0 * x);
+        return t * t * (3.0 - 2.0 * t);
     }
 
     fSmoothstep(a, b, x) {
@@ -306,21 +299,24 @@ var Filter = class {
 
     fLerp(x, y, a) {
 
-        var dst = new Array(4);
+        var dst = new Array(3);
 
-        for (var i = 0; i < 4; i++)
-            dst[i] = x[i] * (1 - a) + y[i] * a;
+        for (var i = 0; i < 3; i++)
+            dst[i] = x[i] + a * (y[i] - x[i]);
 
         return dst;
     }
 
-    scale(image, ppx, ppy, srcx, srcy) {
+    scale(image, ppx, ppy, srcx, srcy, scale) {
 
         var fpx = this.fract(ppx * srcx);
         var fpy = this.fract(ppy * srcy);
 
-        var positionx = parseInt(ppx * srcx);
-        var positiony = parseInt(ppy * srcy);
+        var x = 1 / (scale * srcx);
+        var y = 1 / (scale * srcy);
+
+        var positionx = ppx * 1.00000000001;
+        var positiony = ppy;
 
         /*
             A1 B1 C1
@@ -346,33 +342,33 @@ var Filter = class {
         */
 
         // Store mask values
-        var P1 = Common.CLR(image, srcx, srcy, positionx, positiony, -1, -2);
-        var P2 = Common.CLR(image, srcx, srcy, positionx, positiony, 0, -2);
-        var P3 = Common.CLR(image, srcx, srcy, positionx, positiony, 1, -2);
+        var P1 = this.float4(Common.CLR(image, srcx, srcy, (positionx - x) * srcx, (positiony - 2.0 * y) * srcy, 0, 0));
+        var P2 = this.float4(Common.CLR(image, srcx, srcy, (positionx) * srcx, (positiony - 2.0 * y) * srcy, 0, 0));
+        var P3 = this.float4(Common.CLR(image, srcx, srcy, (positionx + x) * srcx, (positiony - 2.0 * y) * srcy, 0, 0));
 
-        var P6 = Common.CLR(image, srcx, srcy, positionx, positiony, -1, -1);
-        var P7 = Common.CLR(image, srcx, srcy, positionx, positiony, 0, -1);
-        var P8 = Common.CLR(image, srcx, srcy, positionx, positiony, 1, -1);
+        var P6 = this.float4(Common.CLR(image, srcx, srcy, (positionx - x) * srcx, (positiony - y) * srcy, 0, 0));
+        var P7 = this.float4(Common.CLR(image, srcx, srcy, (positionx) * srcx, (positiony - y) * srcy, 0, 0));
+        var P8 = this.float4(Common.CLR(image, srcx, srcy, (positionx + x) * srcx, (positiony - y) * srcy, 0, 0));
 
-        var P11 = Common.CLR(image, srcx, srcy, positionx, positiony, -1, 0);
-        var P12 = Common.CLR(image, srcx, srcy, positionx, positiony, 0, 0);
-        var P13 = Common.CLR(image, srcx, srcy, positionx, positiony, 1, 0);
+        var P11 = this.float4(Common.CLR(image, srcx, srcy, (positionx - x) * srcx, (positiony) * srcy, 0, 0));
+        var P12 = this.float4(Common.CLR(image, srcx, srcy, (positionx) * srcx, (positiony) * srcy, 0, 0));
+        var P13 = this.float4(Common.CLR(image, srcx, srcy, (positionx + x) * srcx, (positiony) * srcy, 0, 0));
 
-        var P16 = Common.CLR(image, srcx, srcy, positionx, positiony, -1, 1);
-        var P17 = Common.CLR(image, srcx, srcy, positionx, positiony, 0, 1);
-        var P18 = Common.CLR(image, srcx, srcy, positionx, positiony, 1, 1);
+        var P16 = this.float4(Common.CLR(image, srcx, srcy, (positionx - x) * srcx, (positiony + y) * srcy, 0, 0));
+        var P17 = this.float4(Common.CLR(image, srcx, srcy, (positionx) * srcx, (positiony + y) * srcy, 0, 0));
+        var P18 = this.float4(Common.CLR(image, srcx, srcy, (positionx + x) * srcx, (positiony + y) * srcy, 0, 0));
 
-        var P5 = Common.CLR(image, srcx, srcy, positionx, positiony, -2, -1);
-        var P10 = Common.CLR(image, srcx, srcy, positionx, positiony, -2, 0);
-        var P15 = Common.CLR(image, srcx, srcy, positionx, positiony, -2, 1);
+        var P21 = this.float4(Common.CLR(image, srcx, srcy, (positionx - x) * srcx, (positiony + 2.0 * y) * srcy, 0, 0));
+        var P22 = this.float4(Common.CLR(image, srcx, srcy, (positionx) * srcx, (positiony + 2.0 * y) * srcy, 0, 0));
+        var P23 = this.float4(Common.CLR(image, srcx, srcy, (positionx + x) * srcx, (positiony + 2.0 * y) * srcy, 0, 0));
 
-        var P9 = Common.CLR(image, srcx, srcy, positionx, positiony, 2, -1);
-        var P14 = Common.CLR(image, srcx, srcy, positionx, positiony, 2, 0);
-        var P19 = Common.CLR(image, srcx, srcy, positionx, positiony, 2, 1);
+        var P5 = this.float4(Common.CLR(image, srcx, srcy, (positionx - 2.0 * x) * srcx, (positiony - y) * srcy, 0, 0));
+        var P10 = this.float4(Common.CLR(image, srcx, srcy, (positionx - 2.0 * x) * srcx, (positiony) * srcy, 0, 0));
+        var P15 = this.float4(Common.CLR(image, srcx, srcy, (positionx - 2.0 * x) * srcx, (positiony + y) * srcy, 0, 0));
 
-        var P21 = Common.CLR(image, srcx, srcy, positionx, positiony, -1, 2);
-        var P22 = Common.CLR(image, srcx, srcy, positionx, positiony, 0, 2);
-        var P23 = Common.CLR(image, srcx, srcy, positionx, positiony, 1, 2);
+        var P9 = this.float4(Common.CLR(image, srcx, srcy, (positionx - 2.0 * x) * srcx, (positiony - y) * srcy, 0, 0));
+        var P14 = this.float4(Common.CLR(image, srcx, srcy, (positionx - 2.0 * x) * srcx, (positiony) * srcy, 0, 0));
+        var P19 = this.float4(Common.CLR(image, srcx, srcy, (positionx - 2.0 * x) * srcx, (positiony + y) * srcy, 0, 0));
 
         var p7 = this.lum_to(P7, P11, P17, P13);
         var p8 = this.lum_to(P8, P6, P16, P18);
@@ -425,26 +421,26 @@ var Filter = class {
 
         var mac = this.fAdd(this.fAdd(this.fAdd(this.fAdd(this.fMul(final36, this.fMax(ma30, ma60)), this.fMul(final30, ma30)), this.fMul(final60, ma60)), this.fMul(final45, ma45)), this.fMul(finalrn, marn));
 
-        var res1 = this.float4(P12);
+        var res1 = P12;
 
-        res1 = this.fLerp(res1, this.fLerp(this.float4(P13), this.float4(P17), px[1]), mac[1]);
-        res1 = this.fLerp(res1, this.fLerp(this.float4(P7), this.float4(P13), px[2]), mac[2]);
-        res1 = this.fLerp(res1, this.fLerp(this.float4(P11), this.float4(P7), px[3]), mac[3]);
-        res1 = this.fLerp(res1, this.fLerp(this.float4(P17), this.float4(P11), px[0]), mac[0]);
+        res1 = this.fLerp(res1, this.fLerp(P13, P17, px[0]), mac[0]);
+        res1 = this.fLerp(res1, this.fLerp(P7, P13, px[1]), mac[1]);
+        res1 = this.fLerp(res1, this.fLerp(P11, P7, px[2]), mac[2]);
+        res1 = this.fLerp(res1, this.fLerp(P17, P11, px[3]), mac[3]);
 
-        var res2 = this.float4(P12);
+        var res2 = P12;
 
-        res2 = this.fLerp(res2, this.fLerp(this.float4(P17), this.float4(P11), px[0]), mac[0]);
-        res2 = this.fLerp(res2, this.fLerp(this.float4(P11), this.float4(P7), px[3]), mac[3]);
-        res2 = this.fLerp(res2, this.fLerp(this.float4(P7), this.float4(P13), px[2]), mac[2]);
-        res2 = this.fLerp(res2, this.fLerp(this.float4(P13), this.float4(P17), px[1]), mac[1]);
+        res2 = this.fLerp(res2, this.fLerp(P17, P11, px[3]), mac[3]);
+        res2 = this.fLerp(res2, this.fLerp(P11, P7, px[2]), mac[2]);
+        res2 = this.fLerp(res2, this.fLerp(P7, P13, px[1]), mac[1]);
+        res2 = this.fLerp(res2, this.fLerp(P13, P17, px[0]), mac[0]);
 
-        var ret = (this.fLerp(res1, res2, this.step(this.c_df(this.float4(P12), res1), this.c_df(this.float4(P12), res2))));
+        var ret = (this.fLerp(res1, res2, this.step(this.c_df(P12, res1), this.c_df(P12, res2))));
 
-        var r = ret[1];
-        var g = ret[2];
-        var b = ret[3];
-        var a = ret[0];
+        var r = Common._Clip8(ret[0] * 255);
+        var g = Common._Clip8(ret[1] * 255);
+        var b = Common._Clip8(ret[2] * 255);
+        var a = Common._Clip8(P12[3] * 255); // copy alpha channel
 
         return Common.ARGBINT(a, r, g, b);
     }
