@@ -318,19 +318,6 @@ var Filter = class {
         var positionx = ppx;
         var positiony = ppy;
 
-        if (fpx > 0.5) {
-
-            x = -x;
-            fpx = 1.0 - fpx;
-        }
-
-        if (fpy > 0.5) {
-
-            y = -y;
-            fpy = 1.0 - fpy;
-        }
-
-
         /*
             A1 B1 C1
         A0  A  B  C  C4
