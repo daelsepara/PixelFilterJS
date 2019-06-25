@@ -366,9 +366,9 @@ var Filter = class {
         var P10 = this.float4(Common.CLR(image, srcx, srcy, (positionx - 2.0 * x) * srcx, (positiony) * srcy, 0, 0));
         var P15 = this.float4(Common.CLR(image, srcx, srcy, (positionx - 2.0 * x) * srcx, (positiony + y) * srcy, 0, 0));
 
-        var P9 = this.float4(Common.CLR(image, srcx, srcy, (positionx - 2.0 * x) * srcx, (positiony - y) * srcy, 0, 0));
-        var P14 = this.float4(Common.CLR(image, srcx, srcy, (positionx - 2.0 * x) * srcx, (positiony) * srcy, 0, 0));
-        var P19 = this.float4(Common.CLR(image, srcx, srcy, (positionx - 2.0 * x) * srcx, (positiony + y) * srcy, 0, 0));
+        var P9 = this.float4(Common.CLR(image, srcx, srcy, (positionx + 2.0 * x) * srcx, (positiony - y) * srcy, 0, 0));
+        var P14 = this.float4(Common.CLR(image, srcx, srcy, (positionx + 2.0 * x) * srcx, (positiony) * srcy, 0, 0));
+        var P19 = this.float4(Common.CLR(image, srcx, srcy, (positionx + 2.0 * x) * srcx, (positiony + y) * srcy, 0, 0));
 
         var p7 = this.lum_to(P7, P11, P17, P13);
         var p8 = this.lum_to(P8, P6, P16, P18);
