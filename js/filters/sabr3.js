@@ -312,11 +312,24 @@ var Filter = class {
         var fpx = this.fract(ppx * srcx);
         var fpy = this.fract(ppy * srcy);
 
-        var x = 1 / (scale * srcx);
-        var y = 1 / (scale * srcy);
+        var x = 0.5 / (scale * srcx);
+        var y = 0.5 / (scale * srcy);
 
-        var positionx = ppx * 1.00000000001;
+        var positionx = ppx;
         var positiony = ppy;
+
+        if (fpx > 0.5) {
+
+            x = -x;
+            fpx = 1.0 - fpx;
+        }
+
+        if (fpy > 0.5) {
+
+            y = -y;
+            fpy = 1.0 - fpy;
+        }
+
 
         /*
             A1 B1 C1
