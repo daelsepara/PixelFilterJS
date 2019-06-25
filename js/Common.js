@@ -67,6 +67,19 @@ class Common {
             dst[i] = this._Clip8(src[i]);
     }
 
+    static Copy2D(dst, src, dstx, dsty, srcx, srcy) {
+        
+        const Channels = 4;
+
+        var xdim = Math.min(srcx, dstx);
+        var ydim = Math.min(srcy, dsty);
+
+        for (var y = 0; y < ydim; y++)
+            for (var x = 0; x < xdim; x++)
+                for (var Channel = 0; Channel < Channels; Channel++)
+                    dst[(y * dstx + x) * Channels + Channel] = src[(y * srcx + x) * Channels + Channel];
+    }
+
     static _CLR(Input, srcx, srcy, x, y) {
 
         const Channels = 4;

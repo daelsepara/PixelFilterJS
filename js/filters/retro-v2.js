@@ -29,31 +29,61 @@ var Filter = class {
         var Channels = 4;
 
         scale = Math.max(1, scale);
-
+        
         Init.Init(srcx, srcy, scale, scale, threshold);
 
-        var total = Common.SizeY;
+        var tempSrc = this.CopyPadded(Input, srcx, srcy, scale);
+        var srcDim = Math.max(srcx, srcy);
+        srcDim = srcDim + (scale - srcDim % scale);
+
+        var dstDim = scale * srcDim;
+        dstDim = dstDim + (scale - dstDim % scale);
+
+        var tempDst = Init.New(dstDim, dstDim);
+        
+        var total = dstDim;
         var current = 0;
 
-        for (var y = 0; y < Common.SizeY; y++) {
+        for (var y = 0; y < dstDim; y++) {
 
-            var offset = y * Common.SizeX;
-            var positiony = y / Common.SizeY;
+            var offset = y * dstDim;
+            var positiony = y / dstDim;
 
-            for (var x = 0; x < Common.SizeX; x++) {
+            for (var x = 0; x < dstDim; x++) {
 
-                var argb = this.scale(Input, x / Common.SizeX, positiony, srcx, srcy, scale);
+                var argb = this.scale(tempSrc, x / dstDim, positiony, srcDim, srcDim, scale);
 
-                Common.ScaledImage[(offset + x) * Channels] = Common.Red(argb);
-                Common.ScaledImage[(offset + x) * Channels + 1] = Common.Green(argb);
-                Common.ScaledImage[(offset + x) * Channels + 2] = Common.Blue(argb);
-                Common.ScaledImage[(offset + x) * Channels + 3] = Common.Alpha(argb);
+                tempDst[(offset + x) * Channels] = Common.Red(argb);
+                tempDst[(offset + x) * Channels + 1] = Common.Green(argb);
+                tempDst[(offset + x) * Channels + 2] = Common.Blue(argb);
+                tempDst[(offset + x) * Channels + 3] = Common.Alpha(argb);
             }
 
             current++;
 
             notify({ ScalingProgress: current / total });
         }
+
+        this.CopyCropped(Common.ScaledImage, tempDst, Common.SizeX, Common.SizeY, dstDim, dstDim);
+    }
+
+    CopyPadded(src, srcx, srcy, scale) {
+
+        const Channels = 4;
+
+        var dim = Math.max(srcx, srcy);
+        dim = dim + (scale - dim % scale);
+
+        var dst = new Uint8ClampedArray(dim * dim * Channels);
+
+        Common.Copy2D(dst, src, dim, dim, srcx, srcy);
+
+        return dst;
+    }
+
+    CopyCropped(dst, src, dstx, dsty, srcx, srcy) {
+
+        Common.Copy2D(dst, src, dstx, dsty, srcx, srcy);
     }
 
     // This value must be between 0.0 (totally black) and 1.0 (nearest neighbor)
