@@ -274,7 +274,7 @@ var Filter = class {
 
     step(a, b) {
 
-        return a < b ? 0.0 : 1.0;
+        return a < b || a <= 0.0 ? 0.0 : 1.0;
     }
 
     fStep(a, b) {
@@ -292,7 +292,7 @@ var Filter = class {
         var dst = new Array(4);
 
         for (var i = 0; i < 4; i++)
-            dst[i] = A[i] ? 1.0 : 0.0;
+            dst[i] = A[i] == true ? 1.0 : 0.0;
 
         return dst;
     }
@@ -312,8 +312,8 @@ var Filter = class {
         var fpx = this.fract(ppx * srcx);
         var fpy = this.fract(ppy * srcy);
 
-        var x = 0.5 / (scale * srcx);
-        var y = 0.5 / (scale * srcy);
+        var x = 1 / (scale * srcx);
+        var y = 1 / (scale * srcy);
 
         var positionx = ppx;
         var positiony = ppy;
@@ -383,26 +383,28 @@ var Filter = class {
         var p22 = this.lum_to(P22, P14, P2, P10);
         var p23 = this.lum_to(P23, P9, P1, P15);
 
-        var ma45 = this.fSmoothstep(this.fDiff(this.C45, this.M45), this.fAdd(this.C45, this.M45), this.fAdd(this.fMulC(this.Ai, fpy), this.fMulC(this.B45, fpx)));
-        var ma30 = this.fSmoothstep(this.fDiff(this.C30, this.M30), this.fAdd(this.C30, this.M30), this.fAdd(this.fMulC(this.Ai, fpy), this.fMulC(this.B30, fpx)));
+        var AiMulFpy = this.fMulC(this.Ai, fpy);
+        var B45MulFpx = this.fMulC(this.B45, fpx);
 
-        var ma60 = this.fSmoothstep(this.fDiff(this.C60, this.M60), this.fAdd(this.C60, this.M60), this.fAdd(this.fMulC(this.Ai, fpy), this.fMulC(this.B60, fpx)));
-        var marn = this.fSmoothstep(this.fAdd(this.fDiff(this.C45, this.M45), this.Mshift), this.fAdd(this.fAdd(this.C45, this.M45), this.Mshift), this.fAdd(this.fMulC(this.Ai, fpy), this.fMulC(this.B45, fpx)));
+        var ma45 = this.fSmoothstep(this.fDiff(this.C45, this.M45), this.fAdd(this.C45, this.M45), this.fAdd(AiMulFpy, B45MulFpx));
+        var ma30 = this.fSmoothstep(this.fDiff(this.C30, this.M30), this.fAdd(this.C30, this.M30), this.fAdd(AiMulFpy, this.fMulC(this.B30, fpx)));
+        var ma60 = this.fSmoothstep(this.fDiff(this.C60, this.M60), this.fAdd(this.C60, this.M60), this.fAdd(AiMulFpy, this.fMulC(this.B60, fpx)));
+        var marn = this.fSmoothstep(this.fAdd(this.fDiff(this.C45, this.M45), this.Mshift), this.fAdd(this.fAdd(this.C45, this.M45), this.Mshift), this.fAdd(AiMulFpy, B45MulFpx));
 
         var e45 = this.lum_wd(p12, p8, p16, p18, p22, p14, p17, p13);
         var econt = this.lum_wd(p17, p11, p23, p13, p7, p19, p12, p18);
         var e30 = this.lum_df(p13, p16);
         var e60 = this.lum_df(p8, p17);
 
-        var r45 = this.and(this.and(this.neq(p12, p13), this.neq(p12, p17)), (this.or(this.or(this.or(this.or(
-            this.and(this.neg(this.lum_eq(p13, p7)), this.neg(this.lum_eq(p13, p8))),
-            this.and(this.neg(this.lum_eq(p17, p11)), this.neg(this.lum_eq(p17, p16)))),
-            this.and(this.lum_eq(p12, p18), this.or(
-                this.and(this.neg(this.lum_eq(p13, p14)), this.neg(this.lum_eq(p13, p19))),
-                this.and(this.neg(this.lum_eq(p17, p22)), this.neg(this.lum_eq(p17, p23)))))),
-            this.lum_eq(p12, p16)),
-            this.lum_eq(p12, p8))));
-
+        // Calculate rule results for interpolation
+        var r45_1 = this.and(this.neq(p12, p13), this.neq(p12, p17));
+        var r45_2 = this.and(this.neg(this.lum_eq(p13, p7)), this.neg(this.lum_eq(p13, p8)));
+        var r45_3 = this.and(this.neg(this.lum_eq(p17, p11)), this.neg(this.lum_eq(p17, p16)));
+        var r45_4_1 = this.and(this.neg(this.lum_eq(p13, p14)), this.neg(this.lum_eq(p13, p19)));
+        var r45_4_2 = this.and(this.neg(this.lum_eq(p17, p22)), this.neg(this.lum_eq(p17, p23)));
+        var r45_4 = this.and(this.lum_eq(p12, p18), this.or(r45_4_1, r45_4_2));
+        var r45_5 = this.or(this.lum_eq(p12, p16), this.lum_eq(p12, p8));
+        var r45 = this.and(r45_1, this.or(this.or(this.or(r45_2, r45_3), r45_4), r45_5));
         var r30 = this.and(this.neq(p12, p16), this.neq(p11, p16));
         var r60 = this.and(this.neq(p12, p8), this.neq(p7, p8));
 
@@ -412,8 +414,8 @@ var Filter = class {
         var edr60 = this.and(this.le(this.fMulC(e60, this.coef), e30), r60);
 
         var final45 = this.boolToFloat(this.and(this.and(this.neg(edr30), this.neg(edr60)), edr45));
-        var final30 = this.boolToFloat(this.and(this.and(edr45, edr30), this.neg(edr60)));
-        var final60 = this.boolToFloat(this.and(this.and(edr45, edr60), this.neg(edr30)));
+        var final30 = this.boolToFloat(this.and(this.and(edr45, this.neg(edr60)), edr30));
+        var final60 = this.boolToFloat(this.and(this.and(edr45, this.neg(edr30)), edr60));
         var final36 = this.boolToFloat(this.and(this.and(edr45, edr30), edr60));
         var finalrn = this.boolToFloat(this.and(this.neg(edr45), edrrn));
 
@@ -421,16 +423,12 @@ var Filter = class {
 
         var mac = this.fAdd(this.fAdd(this.fAdd(this.fAdd(this.fMul(final36, this.fMax(ma30, ma60)), this.fMul(final30, ma30)), this.fMul(final60, ma60)), this.fMul(final45, ma45)), this.fMul(finalrn, marn));
 
-        var res1 = P12;
-
-        res1 = this.fLerp(res1, this.fLerp(P13, P17, px[0]), mac[0]);
+        var res1 = this.fLerp(P12, this.fLerp(P13, P17, px[0]), mac[0]);
         res1 = this.fLerp(res1, this.fLerp(P7, P13, px[1]), mac[1]);
         res1 = this.fLerp(res1, this.fLerp(P11, P7, px[2]), mac[2]);
         res1 = this.fLerp(res1, this.fLerp(P17, P11, px[3]), mac[3]);
 
-        var res2 = P12;
-
-        res2 = this.fLerp(res2, this.fLerp(P17, P11, px[3]), mac[3]);
+        var res2 = this.fLerp(P12, this.fLerp(P17, P11, px[3]), mac[3]);
         res2 = this.fLerp(res2, this.fLerp(P11, P7, px[2]), mac[2]);
         res2 = this.fLerp(res2, this.fLerp(P7, P13, px[1]), mac[1]);
         res2 = this.fLerp(res2, this.fLerp(P13, P17, px[0]), mac[0]);
