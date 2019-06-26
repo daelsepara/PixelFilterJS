@@ -59,20 +59,20 @@ var Filter = class {
         }
     }
 
-    get Ai() { return [1.0, -1.0, -1.0, 1.0]; }
-    get B45() { return [1.0, 1.0, -1.0, -1.0]; }
+    get Ai() { return [1, -1, -1, 1]; }
+    get B45() { return [1, 1, -1, -1]; }
     get C45() { return [1.5, 0.5, -0.5, 0.5]; }
-    get B30() { return [0.5, 2.0, -0.5, -2.0]; }
-    get C30() { return [1.0, 1.0, -0.5, 0.0]; }
-    get B60() { return [2.0, 0.5, -2.0, -0.5]; }
-    get C60() { return [2.0, 0.0, -1.0, 0.5]; }
+    get B30() { return [0.5, 2, -0.5, -2]; }
+    get C30() { return [1, 1, -0.5, 0.0]; }
+    get B60() { return [2, 0.5, -2, -0.5]; }
+    get C60() { return [2, 0.0, -1, 0.5]; }
     get lum() { return [0.299, 0.587, 0.114]; }
     get threshold() { return [0.32, 0.32, 0.32, 0.32]; }
     get M45() { return [0.4, 0.4, 0.4, 0.4]; }
     get M30() { return [0.2, 0.4, 0.2, 0.4]; }
     get M60() { return [0.4, 0.2, 0.4, 0.2]; }
     get Mshift() { return [0.2, 0.2, 0.2, 0.2]; }
-    get coef() { return 2.0; }
+    get coef() { return 2; }
 
     float4(a) {
 
@@ -257,9 +257,9 @@ var Filter = class {
     smoothstep(a, b, x) {
 
         // clamp
-        var t = Interpolate.Fix((x - a) / (b - a), 0.0, 1.0);
+        var t = Interpolate.Fix((x - a) / (b - a), 0.0, 1);
 
-        return t * t * (3.0 - 2.0 * t);
+        return t * t * (3.0 - 2 * t);
     }
 
     fSmoothstep(a, b, x) {
@@ -274,7 +274,7 @@ var Filter = class {
 
     step(a, b) {
 
-        return a < b || a <= 0.0 ? 0.0 : 1.0;
+        return a < b || a <= 0.0 ? 0.0 : 1;
     }
 
     fStep(a, b) {
@@ -292,7 +292,7 @@ var Filter = class {
         var dst = new Array(4);
 
         for (var i = 0; i < 4; i++)
-            dst[i] = A[i] == true ? 1.0 : 0.0;
+            dst[i] = A[i] == true ? 1 : 0.0;
 
         return dst;
     }
@@ -312,11 +312,11 @@ var Filter = class {
         var fpx = this.fract(ppx * srcx);
         var fpy = this.fract(ppy * srcy);
 
-        var x = 1 / (scale * srcx);
-        var y = 1 / (scale * srcy);
+        var x = 1 / scale;
+        var y = 1 / scale;
 
-        var positionx = ppx;
-        var positiony = ppy;
+        var positionx = ppx * srcx;
+        var positiony = ppy * srcy;
 
         /*
             A1 B1 C1
@@ -342,33 +342,33 @@ var Filter = class {
         */
 
         // Store mask values
-        var P1 = this.float4(Common.CLR(image, srcx, srcy, (positionx - x) * srcx, (positiony - 2.0 * y) * srcy, 0, 0));
-        var P2 = this.float4(Common.CLR(image, srcx, srcy, (positionx) * srcx, (positiony - 2.0 * y) * srcy, 0, 0));
-        var P3 = this.float4(Common.CLR(image, srcx, srcy, (positionx + x) * srcx, (positiony - 2.0 * y) * srcy, 0, 0));
+        var P1 = this.float4(Common.CLR(image, srcx, srcy, positionx - x, positionx - 2 * y, 0, 0));
+        var P2 = this.float4(Common.CLR(image, srcx, srcy, positionx, positionx - 2 * y, 0, 0));
+        var P3 = this.float4(Common.CLR(image, srcx, srcy, positionx + x, positionx - 2 * y, 0, 0));
 
-        var P6 = this.float4(Common.CLR(image, srcx, srcy, (positionx - x) * srcx, (positiony - y) * srcy, 0, 0));
-        var P7 = this.float4(Common.CLR(image, srcx, srcy, (positionx) * srcx, (positiony - y) * srcy, 0, 0));
-        var P8 = this.float4(Common.CLR(image, srcx, srcy, (positionx + x) * srcx, (positiony - y) * srcy, 0, 0));
+        var P6 = this.float4(Common.CLR(image, srcx, srcy, positionx - x, positiony - y, 0, 0));
+        var P7 = this.float4(Common.CLR(image, srcx, srcy, positionx, positiony - y, 0, 0));
+        var P8 = this.float4(Common.CLR(image, srcx, srcy, positionx + x, positiony - y, 0, 0));
 
-        var P11 = this.float4(Common.CLR(image, srcx, srcy, (positionx - x) * srcx, (positiony) * srcy, 0, 0));
-        var P12 = this.float4(Common.CLR(image, srcx, srcy, (positionx) * srcx, (positiony) * srcy, 0, 0));
-        var P13 = this.float4(Common.CLR(image, srcx, srcy, (positionx + x) * srcx, (positiony) * srcy, 0, 0));
+        var P11 = this.float4(Common.CLR(image, srcx, srcy, positionx - x, positiony, 0, 0));
+        var P12 = this.float4(Common.CLR(image, srcx, srcy, positionx, positiony, 0, 0));
+        var P13 = this.float4(Common.CLR(image, srcx, srcy, positionx + x, positiony, 0, 0));
 
-        var P16 = this.float4(Common.CLR(image, srcx, srcy, (positionx - x) * srcx, (positiony + y) * srcy, 0, 0));
-        var P17 = this.float4(Common.CLR(image, srcx, srcy, (positionx) * srcx, (positiony + y) * srcy, 0, 0));
-        var P18 = this.float4(Common.CLR(image, srcx, srcy, (positionx + x) * srcx, (positiony + y) * srcy, 0, 0));
+        var P16 = this.float4(Common.CLR(image, srcx, srcy, positionx - x, positiony + y, 0, 0));
+        var P17 = this.float4(Common.CLR(image, srcx, srcy, positionx, positiony + y, 0, 0));
+        var P18 = this.float4(Common.CLR(image, srcx, srcy, positionx + x, positiony + y, 0, 0));
 
-        var P21 = this.float4(Common.CLR(image, srcx, srcy, (positionx - x) * srcx, (positiony + 2.0 * y) * srcy, 0, 0));
-        var P22 = this.float4(Common.CLR(image, srcx, srcy, (positionx) * srcx, (positiony + 2.0 * y) * srcy, 0, 0));
-        var P23 = this.float4(Common.CLR(image, srcx, srcy, (positionx + x) * srcx, (positiony + 2.0 * y) * srcy, 0, 0));
+        var P21 = this.float4(Common.CLR(image, srcx, srcy, positionx - x, positiony + 2 * y, 0, 0));
+        var P22 = this.float4(Common.CLR(image, srcx, srcy, positionx, positiony + 2 * y, 0, 0));
+        var P23 = this.float4(Common.CLR(image, srcx, srcy, positionx + x, positiony + 2 * y, 0, 0));
 
-        var P5 = this.float4(Common.CLR(image, srcx, srcy, (positionx - 2.0 * x) * srcx, (positiony - y) * srcy, 0, 0));
-        var P10 = this.float4(Common.CLR(image, srcx, srcy, (positionx - 2.0 * x) * srcx, (positiony) * srcy, 0, 0));
-        var P15 = this.float4(Common.CLR(image, srcx, srcy, (positionx - 2.0 * x) * srcx, (positiony + y) * srcy, 0, 0));
+        var P5 = this.float4(Common.CLR(image, srcx, srcy, positionx - 2 * x, positiony - y, 0, 0));
+        var P10 = this.float4(Common.CLR(image, srcx, srcy, positionx - 2 * x, positiony, 0, 0));
+        var P15 = this.float4(Common.CLR(image, srcx, srcy, positionx - 2 * x, positiony + y, 0, 0));
 
-        var P9 = this.float4(Common.CLR(image, srcx, srcy, (positionx + 2.0 * x) * srcx, (positiony - y) * srcy, 0, 0));
-        var P14 = this.float4(Common.CLR(image, srcx, srcy, (positionx + 2.0 * x) * srcx, (positiony) * srcy, 0, 0));
-        var P19 = this.float4(Common.CLR(image, srcx, srcy, (positionx + 2.0 * x) * srcx, (positiony + y) * srcy, 0, 0));
+        var P9 = this.float4(Common.CLR(image, srcx, srcy, positionx + 2 * x, positiony - y, 0, 0));
+        var P14 = this.float4(Common.CLR(image, srcx, srcy, positionx + 2 * x, positiony, 0, 0));
+        var P19 = this.float4(Common.CLR(image, srcx, srcy, positionx + 2 * x, positiony + y, 0, 0));
 
         var p7 = this.lum_to(P7, P11, P17, P13);
         var p8 = this.lum_to(P8, P6, P16, P18);
@@ -420,7 +420,6 @@ var Filter = class {
         var finalrn = this.boolToFloat(this.and(this.neg(edr45), edrrn));
 
         var px = this.fStep(this.lum_df(p12, p17), this.lum_df(p12, p13));
-
         var mac = this.fAdd(this.fAdd(this.fAdd(this.fAdd(this.fMul(final36, this.fMax(ma30, ma60)), this.fMul(final30, ma30)), this.fMul(final60, ma60)), this.fMul(final45, ma45)), this.fMul(finalrn, marn));
 
         var res1 = this.fLerp(P12, this.fLerp(P13, P17, px[0]), mac[0]);
