@@ -29,18 +29,17 @@ var Filter = class {
         var Channels = 4;
 
         scale = Math.max(1, scale);
-        
+
         Init.Init(srcx, srcy, scale, scale, threshold);
 
         var tempSrc = this.CopyPadded(Input, srcx, srcy, scale);
-        var srcDim = Math.max(srcx, srcy);
-        srcDim = srcDim + (scale - srcDim % scale);
+        var srcDim = Math.sqrt(tempSrc.length / Channels);
 
         var dstDim = scale * srcDim;
-        dstDim = dstDim + (scale - dstDim % scale);
+        dstDim = this.NextPow(dstDim, scale);
 
         var tempDst = Init.New(dstDim, dstDim);
-        
+
         var total = dstDim;
         var current = 0;
 
@@ -67,12 +66,27 @@ var Filter = class {
         this.CopyCropped(Common.ScaledImage, tempDst, Common.SizeX, Common.SizeY, dstDim, dstDim);
     }
 
+    NextPow(v, scale) {
+
+        var dim = 1;
+
+        for (var i = 0; i < 10; i++) {
+
+            if (v <= dim)
+                break;
+
+            dim *= scale;
+        }
+
+        return dim;
+    }
+
     CopyPadded(src, srcx, srcy, scale) {
 
         const Channels = 4;
 
         var dim = Math.max(srcx, srcy);
-        dim = dim + (scale - dim % scale);
+        dim = this.NextPow(dim, scale);
 
         var dst = new Uint8ClampedArray(dim * dim * Channels);
 
