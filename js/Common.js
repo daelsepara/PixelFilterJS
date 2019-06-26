@@ -68,7 +68,7 @@ class Common {
     }
 
     static Copy2D(dst, src, dstx, dsty, srcx, srcy) {
-        
+
         const Channels = 4;
 
         var xdim = Math.min(srcx, dstx);
@@ -78,6 +78,25 @@ class Common {
             for (var x = 0; x < xdim; x++)
                 for (var Channel = 0; Channel < Channels; Channel++)
                     dst[(y * dstx + x) * Channels + Channel] = src[(y * srcx + x) * Channels + Channel];
+    }
+
+    static CopyPadded(src, srcx, srcy, scale) {
+
+        const Channels = 4;
+
+        var dim = Math.max(srcx, srcy);
+        dim = Common.NextPow(dim, scale);
+
+        var dst = new Uint8ClampedArray(dim * dim * Channels);
+
+        Common.Copy2D(dst, src, dim, dim, srcx, srcy);
+
+        return dst;
+    }
+
+    static CopyCropped(dst, src, dstx, dsty, srcx, srcy) {
+
+        Common.Copy2D(dst, src, dstx, dsty, srcx, srcy);
     }
 
     static _CLR(Input, srcx, srcy, x, y) {
@@ -385,6 +404,21 @@ class Common {
     static Truncate(color) {
 
         return this._Clip8(color);
+    }
+
+    static NextPow(v, scale) {
+
+        var dim = 1;
+
+        for (var i = 0; i < 10; i++) {
+
+            if (v <= dim)
+                break;
+
+            dim *= scale;
+        }
+
+        return dim;
     }
 }
 

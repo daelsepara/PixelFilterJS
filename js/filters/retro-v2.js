@@ -32,11 +32,11 @@ var Filter = class {
 
         Init.Init(srcx, srcy, scale, scale, threshold);
 
-        var tempSrc = this.CopyPadded(Input, srcx, srcy, scale);
+        var tempSrc = Common.CopyPadded(Input, srcx, srcy, scale);
         var srcDim = Math.sqrt(tempSrc.length / Channels);
 
         var dstDim = scale * srcDim;
-        dstDim = this.NextPow(dstDim, scale);
+        dstDim = Common.NextPow(dstDim, scale);
 
         var tempDst = Init.New(dstDim, dstDim);
 
@@ -63,41 +63,7 @@ var Filter = class {
             notify({ ScalingProgress: current / total });
         }
 
-        this.CopyCropped(Common.ScaledImage, tempDst, Common.SizeX, Common.SizeY, dstDim, dstDim);
-    }
-
-    NextPow(v, scale) {
-
-        var dim = 1;
-
-        for (var i = 0; i < 10; i++) {
-
-            if (v <= dim)
-                break;
-
-            dim *= scale;
-        }
-
-        return dim;
-    }
-
-    CopyPadded(src, srcx, srcy, scale) {
-
-        const Channels = 4;
-
-        var dim = Math.max(srcx, srcy);
-        dim = this.NextPow(dim, scale);
-
-        var dst = new Uint8ClampedArray(dim * dim * Channels);
-
-        Common.Copy2D(dst, src, dim, dim, srcx, srcy);
-
-        return dst;
-    }
-
-    CopyCropped(dst, src, dstx, dsty, srcx, srcy) {
-
-        Common.Copy2D(dst, src, dstx, dsty, srcx, srcy);
+        Common.CopyCropped(Common.ScaledImage, tempDst, Common.SizeX, Common.SizeY, dstDim, dstDim);
     }
 
     // This value must be between 0.0 (totally black) and 1.0 (nearest neighbor)

@@ -33,28 +33,38 @@ var Filter = class {
 
         Init.Init(srcx, srcy, scale, scale, threshold);
 
-        var total = Common.SizeY;
+        var tempSrc = Common.CopyPadded(Input, srcx, srcy, scale);
+        var srcDim = Math.sqrt(tempSrc.length / Channels);
+
+        var dstDim = scale * srcDim;
+        dstDim = Common.NextPow(dstDim, scale);
+
+        var tempDst = Init.New(dstDim, dstDim);
+
+        var total = dstDim;
         var current = 0;
 
-        for (var y = 0; y < Common.SizeY; y++) {
+        for (var y = 0; y < dstDim; y++) {
 
-            var offset = y * Common.SizeX;
-            var positiony = y / Common.SizeY;
+            var offset = y * dstDim;
+            var positiony = y / dstDim;
 
-            for (var x = 0; x < Common.SizeX; x++) {
+            for (var x = 0; x < dstDim; x++) {
 
-                var argb = this.scale(Input, x / Common.SizeX, positiony, srcx, srcy);
+                var argb = this.scale(tempSrc, x / dstDim, positiony, srcDim, srcDim);
 
-                Common.ScaledImage[(offset + x) * Channels] = Common.Red(argb);
-                Common.ScaledImage[(offset + x) * Channels + 1] = Common.Green(argb);
-                Common.ScaledImage[(offset + x) * Channels + 2] = Common.Blue(argb);
-                Common.ScaledImage[(offset + x) * Channels + 3] = Common.Alpha(argb);
+                tempDst[(offset + x) * Channels] = Common.Red(argb);
+                tempDst[(offset + x) * Channels + 1] = Common.Green(argb);
+                tempDst[(offset + x) * Channels + 2] = Common.Blue(argb);
+                tempDst[(offset + x) * Channels + 3] = Common.Alpha(argb);
             }
 
             current++;
 
             notify({ ScalingProgress: current / total });
         }
+
+        Common.CopyCropped(Common.ScaledImage, tempDst, Common.SizeX, Common.SizeY, dstDim, dstDim);
     }
 
     // Bevel Level
