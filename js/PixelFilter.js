@@ -31,6 +31,7 @@ angular
 			{ name: 'des', parameters: [1, 2], description: 'DES filters from FNES' },
 			{ name: 'dotmask', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Dot mask filter (CRT-style)' },
 			{ name: 'eagle', parameters: [2, 3], description: 'Eagle nX Family of Filters' },
+			{ name: 'emboss', parameters: [2, 3, 4, 5, 6, 7, 8, 9, 10], description: 'Emboss' },
 			{ name: 'epx', parameters: [2, 3], description: 'EPX/Scale 2/3X - Eric\'s Pixel eXpander / Advance Mame Scale 2/3X' },
 			{ name: 'epxb', parameters: [2], description: 'SNES9x\'s EPX (variant B) modified by Hawkynt to support thresholds' },
 			{ name: 'epxc', parameters: [2], description: 'SNES9x\'s EPX (variant C) modified by Hawkynt to support thresholds' },
