@@ -99,6 +99,49 @@ class Common {
         Common.Copy2D(dst, src, dstx, dsty, srcx, srcy);
     }
 
+    static ToArray(Input, srcx, srcy) {
+
+        var dst = new Uint32Array(srcx * srcy);
+
+        var Channels = 4;
+
+        for (var y = 0; y < srcy; y++) {
+
+            for (var x = 0; x < srcx; x++) {
+
+                var index = y * srcx + x;
+                var pixel = index * Channels;
+
+                var r = Input[pixel];
+                var g = Input[pixel + 1];
+                var b = Input[pixel + 2];
+                var a = Input[pixel + 3];
+
+                dst[index] = this.ARGBINT(a, r, g, b);
+            }
+        }
+
+        return dst;
+    }
+
+    static ToImage(dst, src, srcx, srcy) {
+
+        var Channels = 4;
+
+        for (var y = 0; y < srcy; y++) {
+            for (var x = 0; x < srcx; x++) {
+
+                var index = y * srcx + x;
+                var pixel = index * Channels;
+
+                dst[pixel] = this.Red(src[index]);
+                dst[pixel + 1] = this.Green(src[index]);
+                dst[pixel + 2] = this.Blue(src[index]);
+                dst[pixel + 3] = this.Alpha(src[index]);
+            }
+        }
+    }
+    
     static _CLR(Input, srcx, srcy, x, y) {
 
         const Channels = 4;

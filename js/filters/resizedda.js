@@ -9,12 +9,12 @@ var Filter = class {
 
         Init.Init(srcx, srcy, scale, scale, threshold);
 
-        var src = this.ToArray(Input, srcx, srcy);
+        var src = Common.ToArray(Input, srcx, srcy);
         var dst = new Uint32Array(Common.SizeX * Common.SizeY);
 
         this.ResizeDDA(src, dst, srcy, srcx, scale);
 
-        this.ToImage(Common.ScaledImage, dst, Common.SizeX, Common.SizeY);
+        Common.ToImage(Common.ScaledImage, dst, Common.SizeX, Common.SizeY);
 
         notify({ ScalingProgress: 1.0 });
     }
@@ -98,50 +98,6 @@ var Filter = class {
             current++;
 
             notify({ ScalingProgress: current / total * 0.8 });
-        }
-    }
-
-    // helper functions added to work with PixelFilter
-    ToArray(Input, srcx, srcy) {
-
-        var dst = new Uint32Array(srcx * srcy);
-
-        var Channels = 4;
-
-        for (var y = 0; y < srcy; y++) {
-
-            for (var x = 0; x < srcx; x++) {
-
-                var index = y * srcx + x;
-                var pixel = index * Channels;
-
-                var r = Input[pixel];
-                var g = Input[pixel + 1];
-                var b = Input[pixel + 2];
-                var a = Input[pixel + 3];
-
-                dst[index] = Common.ARGBINT(a, r, g, b);
-            }
-        }
-
-        return dst;
-    }
-
-    ToImage(dst, src, srcx, srcy) {
-
-        var Channels = 4;
-
-        for (var y = 0; y < srcy; y++) {
-            for (var x = 0; x < srcx; x++) {
-
-                var index = y * srcx + x;
-                var pixel = index * Channels;
-
-                dst[pixel] = Common.Red(src[index]);
-                dst[pixel + 1] = Common.Green(src[index]);
-                dst[pixel + 2] = Common.Blue(src[index]);
-                dst[pixel + 3] = Common.Alpha(src[index]);
-            }
         }
     }
 }
