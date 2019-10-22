@@ -141,7 +141,7 @@ class Common {
             }
         }
     }
-    
+
     static _CLR(Input, srcx, srcy, x, y) {
 
         const Channels = 4;

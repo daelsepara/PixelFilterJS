@@ -68,16 +68,16 @@ var Filter = class {
 
         ppy *= y_multiplier;
         ppy -= (y_multiplier - 1) / 2;
-        
+
         if (ppy < 0.0) return Common.ARGBINT(0, 0, 0, 0);
         if (ppy > 1.0) return Common.ARGBINT(0, 0, 0, 0);
 
         var x_curve = Math.cos(ppy - 0.5) * CURVENESS + (1 - CURVENESS);
         var x_multiplier = 1 / x_curve;
-        
+
         ppx *= x_multiplier;
         ppx -= (x_multiplier - 1) / 2;
-        
+
         if (ppx < 0.0) return Common.ARGBINT(0, 0, 0, 0);
         if (ppx > 1.0) return Common.ARGBINT(0, 0, 0, 0);
 

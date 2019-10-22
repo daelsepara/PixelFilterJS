@@ -141,7 +141,7 @@ var Filter = class {
 
         Color = this.fDiff(Color, this.fMulC(this.float4(Common.CLR(image, srcx, srcy, (ppx - deltax) * srcx, (ppy - deltay) * srcy, 0, 0)), 2.0));
         Color = this.fAdd(Color, this.fMulC(this.float4(Common.CLR(image, srcx, srcy, (ppx + deltax) * srcx, (ppy + deltay) * srcy, 0, 0)), 2.0));
-        
+
         var rgb = (Color[0] + Color[1] + Color[2]) / 3.0;
 
         var r = Common._Clip8(rgb * 255);

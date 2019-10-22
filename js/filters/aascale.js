@@ -85,9 +85,9 @@ var Filter = class {
 
         var B = Common.CLR(image, srcx, srcy, parseInt((ppx) * srcx), parseInt((ppy - oy) * srcy), 0, 0);
         var D = Common.CLR(image, srcx, srcy, parseInt((ppx - ox) * srcx), parseInt((ppy) * srcy), 0, 0);
-        var E = Common.CLR(image, srcx, srcy, parseInt((ppx) * srcx),  parseInt((ppy) * srcy), 0, 0);
-        var F = Common.CLR(image, srcx, srcy, parseInt((ppx + ox) * srcx),  parseInt((ppy) * srcy), 0, 0);
-        var H = Common.CLR(image, srcx, srcy, parseInt((ppx) * srcx),  parseInt((ppy + oy) * srcy), 0, 0);
+        var E = Common.CLR(image, srcx, srcy, parseInt((ppx) * srcx), parseInt((ppy) * srcy), 0, 0);
+        var F = Common.CLR(image, srcx, srcy, parseInt((ppx + ox) * srcx), parseInt((ppy) * srcy), 0, 0);
+        var H = Common.CLR(image, srcx, srcy, parseInt((ppx) * srcx), parseInt((ppy + oy) * srcy), 0, 0);
 
         // p = the position within a pixel [0...1]
         if (px > .5) {
