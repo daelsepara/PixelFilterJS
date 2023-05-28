@@ -3,10 +3,10 @@
 /*
 	SABR v3.0 Shader
 	Joshua Street
-	
+
 	Portions of this algorithm were taken from Hyllian's 5xBR v3.7c
 	shader.
-	
+
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
 	as published by the Free Software Foundation; either version 2
@@ -23,7 +23,7 @@
 
 */
 /*
-* This JavaScript Version was adapted from the cg language to work in PixelFilterJS by sdsepara (June, 2019). See above link to cg source. 
+* This JavaScript Version was adapted from the cg language to work in PixelFilterJS by sdsepara (June, 2019). See above link to cg source.
 */
 var Filter = class {
 

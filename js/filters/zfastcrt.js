@@ -17,7 +17,7 @@ Notes:  This shader does scaling with a weighted linear filter for adjustable
 	resolutions (1920x1080 or 1600x1200).
 */
 /*
-* This JavaScript Version was adapted from the cg language to work in PixelFilterJS by sdsepara (June, 2019). See above link to cg source. 
+* This JavaScript Version was adapted from the cg language to work in PixelFilterJS by sdsepara (June, 2019). See above link to cg source.
 */
 var Filter = class {
 

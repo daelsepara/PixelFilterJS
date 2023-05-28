@@ -2,11 +2,11 @@
 // https://github.com/libretro/common-shaders/blob/master/anti-aliasing/shaders/reverse-aa-noring.cg
 /*
    Reverse Antialiasing Shader
-  
+
    Adapted from the C source (see Copyright below) to shader
    cg language by Hyllian/Jararaca - sergiogdb@gmail.com
 
-   This shader works best in 2x scale. 
+   This shader works best in 2x scale.
 */
 
 /*
@@ -39,7 +39,7 @@
 */
 
 /*
-* This JavaScript Version was adapted from the cg language to work in PixelFilterJS by sdsepara (June, 2019). See above link to cg source. 
+* This JavaScript Version was adapted from the cg language to work in PixelFilterJS by sdsepara (June, 2019). See above link to cg source.
 */
 var Filter = class {
 

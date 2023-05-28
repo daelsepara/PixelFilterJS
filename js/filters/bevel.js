@@ -2,7 +2,7 @@
 // see: https://github.com/libretro/common-shaders/blob/master/retro/shaders/bevel.cg
 /*
    Hyllian's Bevel Shader
-  
+
    Copyright (C) 2011-2014 Hyllian/Jararaca - sergiogdb@gmail.com
 
    This program is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 
 */
 /*
-* This JavaScript Version was adapted from the cg language to work in PixelFilterJS by sdsepara (June, 2019). See above link to cg source. 
+* This JavaScript Version was adapted from the cg language to work in PixelFilterJS by sdsepara (June, 2019). See above link to cg source.
 */
 var Filter = class {
 

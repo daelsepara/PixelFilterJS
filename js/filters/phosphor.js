@@ -1,7 +1,7 @@
 // Phosphor
 // https://github.com/libretro/common-shaders/blob/master/crt/shaders/phosphor.cg
 /*
-* This JavaScript Version was adapted from the cg language to work in PixelFilterJS by sdsepara (June, 2019). See above link to cg source. 
+* This JavaScript Version was adapted from the cg language to work in PixelFilterJS by sdsepara (June, 2019). See above link to cg source.
 */
 var Filter = class {
 
